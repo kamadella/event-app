@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "event-app-4eaf2": {
+      "hosting": {
+        "event-app": [
+          "event-app-4eaf2"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "event-app-4eaf2"
+  }
+}
