@@ -93,8 +93,8 @@
 
 
     <mat-radio-group class="example-radio-group" [(ngModel)]="event.category">
-      <mat-radio-button class="form-check form-check-inline" *ngFor="let category of categories" [value]="category">
-        {{category}}
+      <mat-radio-button class="form-check form-check-inline" *ngFor="let category of categoriess" [value]="category.id">
+        {{category.name}}
       </mat-radio-button>
     </mat-radio-group>
 
@@ -117,6 +117,6 @@
 
   <div *ngIf="submitted">
     <h4>Zapisałeś nowe wydarznie!</h4>
-    <button class="btn btn-success" (click)="newEvent()">Dodaj nowe wydarzenie</button>
+    <button class="btn btn-success" (click)="newEvent()">Dodaj kolejne wydarzenie</button>
   </div>
 </div>

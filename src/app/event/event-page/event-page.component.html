@@ -1,6 +1,7 @@
 
   <div *ngIf="currentEvent">
     <h2 class="text-center">{{currentEvent.name}} </h2>
+    <p class="text-center"> {{currentEvent.category}} </p>
     <p class="text-center"> {{currentEvent.date_start | date }} - {{currentEvent.date_end | date}} </p>
     <p class="text-center"> {{currentEvent.description}} </p>
     <p class="text-center"> {{currentEvent.localization}} </p>
