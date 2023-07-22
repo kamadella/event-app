@@ -21,7 +21,7 @@ export class CategoryService {
     return this.categoriesRef.add({ ...category });
   }
 
-  getOne(id: string): AngularFirestoreDocument<Event> {
+  getOne(id: string): AngularFirestoreDocument<Category> {
     return this.categoriesRef.doc(id);
   }
 

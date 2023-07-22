@@ -22,8 +22,13 @@ import { EventsListComponent } from './components/events-list/events-list.compon
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import { CategoryComponent } from './components/category/category.component';
+import { MapComponent } from './map/map.component';
+import { EventCardComponent } from './components/events-list/event-card/event-card.component';
 
-
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -36,7 +41,9 @@ import { CategoryComponent } from './components/category/category.component';
     EventPageComponent,
     AddEventComponent,
     EventsListComponent,
-    CategoryComponent
+    CategoryComponent,
+    MapComponent,
+    EventCardComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +56,11 @@ import { CategoryComponent } from './components/category/category.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     BrowserAnimationsModule, // for firestore
-    MatRadioModule
+    MatRadioModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

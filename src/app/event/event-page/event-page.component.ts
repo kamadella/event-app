@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';;
 import { EventService } from 'src/app/services/event.service';
 import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
+import { Category } from 'src/app/models/category.model';
+import { CategoryService } from 'src/app/services/category.service';
 
 
 @Component({
@@ -12,6 +14,7 @@ import { Event } from 'src/app/models/event.model';
 })
 export class EventPageComponent implements OnInit {
   eventId:string = "-1";
+  categoryId: string = "-1";
   currentEvent: Event = {
     name: '',
     description: '',
@@ -21,17 +24,34 @@ export class EventPageComponent implements OnInit {
     date_start: new Date,
     date_end: new Date,
     category: '',
-    tickets: 0,
+    tickets: 0
+  };
+  currentCategory: Category = {
+    name: ''
   };
   message = '';
 
 
-  constructor(private route: ActivatedRoute, private eventService: EventService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private eventService: EventService,private categoryService: CategoryService, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe( params=> this.eventId = params['id']);
     this.getCurrentEvent(this.eventId);
+
     this.message = '';
+  }
+
+  getCurrentCategory(id: string) : void{
+    this.categoryService.getOne(id).snapshotChanges().pipe(
+      map(c =>{
+        const categoryData = c.payload.data() as Category;
+        const categoryId = c.payload.id;
+        return { id: categoryId, ...categoryData };
+  })
+    ).subscribe(data => {
+      console.log("KATEGORIA = " + data.name); // Możesz tutaj użyć danych w dalszej części kodu
+      this.currentCategory = data;
+    });
   }
 
 
@@ -43,9 +63,11 @@ export class EventPageComponent implements OnInit {
         return { id: eventId, ...eventData };
   })
     ).subscribe(data => {
-      console.log(data); // Możesz tutaj użyć danych w dalszej części kodu
+      console.log("EVENT = "+ data.category); // Możesz tutaj użyć danych w dalszej części kodu
       this.currentEvent = data;
+      this.getCurrentCategory(this.currentEvent.category!);
     });
+
   }
 
   deleteEvent(): void {

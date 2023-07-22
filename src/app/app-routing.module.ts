@@ -6,6 +6,7 @@ import { EventPageComponent } from './event/event-page/event-page.component';
 import { EventsListComponent } from './components/events-list/events-list.component';
 import { AddEventComponent } from './components/add-event/add-event.component';
 import { CategoryComponent } from './components/category/category.component';
+import { MapComponent } from './map/map.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'event/:id', component: EventPageComponent },
   { path: 'events', component: EventsListComponent },
   { path: 'add', component: AddEventComponent },
-  { path: 'category', component: CategoryComponent }
+  { path: 'category', component: CategoryComponent },
+  { path: 'map', component: MapComponent }
 ];
 
 @NgModule({

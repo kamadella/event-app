@@ -12,8 +12,14 @@ export const environment = {
     appId: "1:242618419210:web:ff6c1da8085da8bd3677f3",
     measurementId: "G-FNMGPE6R7C"
   },
+
+  mapbox: {
+    accessToken: 'pk.eyJ1Ijoia2FtYWRlbGxhIiwiYSI6ImNsa2NwNzNrMTBkaW0zcnBmdDFnbGsyYnMifQ.CRgImE17OeXCeC1kbIl-rg'
+  },
+
   production: false
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file
