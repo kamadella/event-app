@@ -20,8 +20,8 @@ export class EventsListComponent implements OnInit {
   filteredEventList?: Event[] = [];
   nameFilter: string = '';
   localizationFilter: string = '';
-  dateStartFilter: Date = new Date;
-  dateEndFilter: Date = new Date;
+  dateStartFilter: Date | null = new Date();
+  dateEndFilter: Date | null = new Date();
 
 
 
@@ -32,7 +32,8 @@ export class EventsListComponent implements OnInit {
   ngOnInit(): void {
     this.retrieveEvents();
     this.retrieveCategories();
-
+    this.dateStartFilter = null;
+    this.dateEndFilter = null;
   }
 
 
@@ -74,15 +75,10 @@ export class EventsListComponent implements OnInit {
   }
 
   NewFilter(){
-    /*
-    if (!this.nameFilter || !this.localizationFilter) {
-      this.filteredEventList = this.events;
-    }
-*/
-const dateStartFilter = this.dateStartFilter ?? new Date(0);
-const dateEndFilter = this.dateEndFilter ?? new Date(9999, 11, 31);
+    const dateStartFilter = this.dateStartFilter ?? new Date(0);
+    const dateEndFilter = this.dateEndFilter ?? new Date(9999, 11, 31);
 
-console.log("START = " + dateStartFilter);
+    console.log("START = " + dateStartFilter);
 
     this.filteredEventList = this.events!.filter(
 
@@ -101,8 +97,8 @@ console.log("START = " + dateStartFilter);
     this.filteredEventList = this.events;
     this.nameFilter = '';
     this.localizationFilter = '';
-    this.dateStartFilter = new Date();
-    this.dateEndFilter = new Date();
+    this.dateStartFilter = null;
+    this.dateEndFilter = null;
   }
 
 
