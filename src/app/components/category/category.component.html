@@ -1,0 +1,30 @@
+<div class="py-5 text-center">
+  <h2>Dodaj nową kategorię</h2>
+  <hr>
+</div>
+<div class="submit-form g-5 d-flex justify-content-center">
+  <div *ngIf="!submitted" class="col-md-7">
+    <div class="row g-3">
+
+      <div class="form-group col-sm-12">
+      <label for="title">Nazwa</label>
+      <input
+        placeholder="nazwa kategorii..."
+        type="text"
+        class="form-control"
+        id="name"
+        required
+        [(ngModel)]="category.name"
+        name="title"
+      />
+    </div>
+  </div>
+  <hr class="my-4">
+    <button (click)="saveCategory()" class="btn btn-success">Zapisz</button>
+  </div>
+
+  <div *ngIf="submitted">
+    <h4>Zapisałeś nową kategorie!</h4>
+    <button class="btn btn-success" (click)="newCategory()">Dodaj kolejną kategorię</button>
+  </div>
+</div>
