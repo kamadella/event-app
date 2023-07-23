@@ -1,6 +1,7 @@
 import { environment } from '../../environments/environment';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
+import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 
 @Component({
@@ -24,6 +25,12 @@ export class MapComponent implements OnInit {
        zoom: 13,
        center: [this.lng, this.lat]
      });
+     this.map.addControl(
+        new MapboxGeocoder({
+        accessToken: environment.mapbox.accessToken,
+        mapboxgl: mapboxgl
+      })
+      );
  }
 
 }
