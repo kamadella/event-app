@@ -18,7 +18,7 @@ export class EventPageComponent implements OnInit {
   currentEvent: Event = {
     name: '',
     description: '',
-    localization: '',
+    place_name: '',
     organizator: '',
     img: '',
     date_start: new Date,

@@ -2,7 +2,9 @@ export class Event {
   id?: string;
   name?: string;
   description?: string;
-  localization?: string;
+  lat?: number;
+  lng?: number;
+  place_name?: string;
   organizator?: string;
   img?: string;
   date_start?: Date;

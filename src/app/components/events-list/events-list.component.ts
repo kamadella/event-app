@@ -45,7 +45,6 @@ export class EventsListComponent implements OnInit {
         )
       )
     ).subscribe(data => {
-      console.log("NAZWA eventu = " + data[0].name);
       this.events = data;
       this.filteredEventList = data;
     });
@@ -59,7 +58,6 @@ export class EventsListComponent implements OnInit {
         )
       )
     ).subscribe(data => {
-      console.log("NAZWA kategorii = " + data[0].name);
       this.categories = data;
     });
   }
@@ -81,10 +79,9 @@ export class EventsListComponent implements OnInit {
     console.log("START = " + dateStartFilter);
 
     this.filteredEventList = this.events!.filter(
-
       event =>{
         return(
-          event?.localization?.toLowerCase().includes(this.localizationFilter.toLowerCase()) &&
+          //event?.place_name?.toLowerCase().includes(this.localizationFilter.toLowerCase()) &&
           event?.name?.toLowerCase().includes(this.nameFilter.toLowerCase()) &&
           event?.date_start && new Date(event.date_start) >= dateStartFilter &&
           event?.date_end && new Date(event.date_end) <= dateEndFilter
