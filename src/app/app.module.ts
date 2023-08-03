@@ -16,7 +16,7 @@ import { SearchComponent } from './search/search.component';
 import { JsonPipe } from '@angular/common';
 import { CalendarComponent } from './home/calendar/calendar.component';
 import { environment } from '../environments/environment';
-import { EventPageComponent } from './event/event-page/event-page.component';
+import { EventPageComponent } from './components/event-page/event-page.component';
 import { AddEventComponent } from './components/add-event/add-event.component';
 import { EventsListComponent } from './components/events-list/events-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +29,10 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+
+
+import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-content.component';
 
 
 @NgModule({
@@ -43,7 +47,8 @@ import {MatInputModule} from '@angular/material/input';
     EventsListComponent,
     CategoryComponent,
     MapComponent,
-    EventCardComponent
+    EventCardComponent,
+    MapDialogContentComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +65,8 @@ import {MatInputModule} from '@angular/material/input';
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
