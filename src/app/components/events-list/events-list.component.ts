@@ -4,7 +4,6 @@ import { CategoryService } from 'src/app/services/category.service';
 import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
-import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -13,7 +12,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./events-list.component.css']
 })
 export class EventsListComponent implements OnInit {
-  categories?: Category[];
+  categories!: Category[];
   events?: Event[];
   currentEvent?: Event;
   title = '';
@@ -22,6 +21,7 @@ export class EventsListComponent implements OnInit {
   localizationFilter: string = '';
   dateStartFilter: Date | null = new Date();
   dateEndFilter: Date | null = new Date();
+  selectedCategories: number[] = []; // Tablica do przechowywania zaznaczonych indeksów kategorii
 
 
 
@@ -45,8 +45,8 @@ export class EventsListComponent implements OnInit {
         )
       )
     ).subscribe(data => {
-      this.events = data;
-      this.filteredEventList = data;
+      this.events = data.filter(event => event.published === true);
+      this.filteredEventList = data.filter(event => event.published === true);
     });
   }
 
@@ -76,19 +76,25 @@ export class EventsListComponent implements OnInit {
     const dateStartFilter = this.dateStartFilter ?? new Date(0);
     const dateEndFilter = this.dateEndFilter ?? new Date(9999, 11, 31);
 
-    console.log("START = " + dateStartFilter);
+    const selectedCategoryObjects = this.getSelectedCategories();
 
     this.filteredEventList = this.events!.filter(
       event =>{
+
         return(
-          //event?.place_name?.toLowerCase().includes(this.localizationFilter.toLowerCase()) &&
+          event?.place_name?.toLowerCase().includes(this.localizationFilter.toLowerCase()) &&
           event?.name?.toLowerCase().includes(this.nameFilter.toLowerCase()) &&
           event?.date_start && new Date(event.date_start) >= dateStartFilter &&
-          event?.date_end && new Date(event.date_end) <= dateEndFilter
+          event?.date_end && new Date(event.date_end) <= dateEndFilter  &&
+          (selectedCategoryObjects.length === 0 || // Jeśli nie ma wybranych kategorii, to zwróć true (bez filtrowania po kategoriach)
+          selectedCategoryObjects.some(category => category.id === event?.category))
+
           )
       }
     );
   }
+
+
 
   CleanFilter(){
     this.filteredEventList = this.events;
@@ -98,5 +104,19 @@ export class EventsListComponent implements OnInit {
     this.dateEndFilter = null;
   }
 
+
+    // Metoda do obsługi zaznaczania kategorii
+    toggleCategory(index: number) {
+      if (this.selectedCategories.includes(index)) {
+        this.selectedCategories = this.selectedCategories.filter(i => i !== index);
+      } else {
+        this.selectedCategories.push(index);
+      }
+    }
+
+    getSelectedCategories() {
+      const selectedCategoryObjects = this.selectedCategories.map(index => this.categories[index]);
+      return selectedCategoryObjects;
+    }
 
 }

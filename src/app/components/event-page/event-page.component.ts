@@ -71,7 +71,7 @@ export class EventPageComponent implements OnInit {
   }
 
   deleteEvent(): void {
-    if(confirm("Are you sure to delete? ")){
+    if(confirm("Czy na pewno chcesz usunąć? ")){
       if (this.currentEvent.id) {
         this.eventService.delete(this.currentEvent.id)
           .then(() => {
@@ -83,4 +83,19 @@ export class EventPageComponent implements OnInit {
     }
     this.router.navigate(['/events']);
   }
+
+  publishEvent(status: boolean): void {
+    if(confirm("Czy na pewno chcesz opublikowąc to wydarzenie? ")){
+      if (this.currentEvent.id) {
+        this.eventService.update(this.currentEvent.id, { published: status })
+        .then(() => {
+          this.currentEvent.published = status;
+          this.message = 'The status was updated successfully!';
+        })
+        .catch(err => console.log(err));
+      }
+    }
+    this.router.navigate(['/events']);
+  }
+
 }

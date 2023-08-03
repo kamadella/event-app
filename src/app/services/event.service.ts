@@ -32,4 +32,5 @@ export class EventService {
   getOne(id: string): AngularFirestoreDocument<Event> {
     return this.eventsRef.doc(id);
   }
+
 }

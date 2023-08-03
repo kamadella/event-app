@@ -30,9 +30,11 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-content.component';
+import { AdminEventsToPublishComponent } from './components/admin-events-to-publish/admin-events-to-publish.component';
 
 
 @NgModule({
@@ -48,7 +50,8 @@ import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-c
     CategoryComponent,
     MapComponent,
     EventCardComponent,
-    MapDialogContentComponent
+    MapDialogContentComponent,
+    AdminEventsToPublishComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +65,7 @@ import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-c
     AngularFirestoreModule,
     BrowserAnimationsModule, // for firestore
     MatRadioModule,
+    MatCheckboxModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,

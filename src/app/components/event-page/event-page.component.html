@@ -19,6 +19,18 @@
     <p>{{currentEvent.organizator}} </p>
 </div>
 
-  <button type="button" class="btn btn-danger" (click)="deleteEvent()">
-    Delete
-  </button>
+<button type="button" class="btn btn-danger" (click)="deleteEvent()">Usuń wydarzenie</button>
+<button
+class="btn btn-danger"
+*ngIf="currentEvent.published"
+(click)="publishEvent(false)"
+>
+UnPublish
+</button>
+<button
+*ngIf="!currentEvent.published"
+class="btn btn-success"
+(click)="publishEvent(true)"
+>
+Publish
+</button>

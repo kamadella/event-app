@@ -58,10 +58,10 @@ export class AddEventComponent implements OnInit {
   }
 
   saveEvent(): void {
+    this.event.published = false;
 
 
-
-    if(confirm("Are you sure to add? ")){
+    if(confirm("Czy na pewno chcesz dodać nowe wydarzenie? ")){
       this.eventService.create(this.event).then(() => {
         console.log('Created new item successfully!');
         this.submitted = true;
