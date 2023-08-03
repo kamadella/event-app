@@ -68,7 +68,7 @@ export class MapComponent implements OnInit {
         )
       )
       ).subscribe(data => {
-        this.events = data;
+        this.events = data.filter(event => event.published === true);
         this.retrieveMarkers();
       });
    }
