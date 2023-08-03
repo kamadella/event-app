@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Event } from 'src/app/models/event.model';
+import { Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
@@ -25,35 +26,51 @@ export class AddEventComponent implements OnInit {
   lat: number = 53.1322;
   lng: number = 23.1687;
 
-  constructor(private eventService: EventService, private categoryService: CategoryService) { }
+  constructor(private eventService: EventService, private categoryService: CategoryService, private router: Router) { }
 
   ngOnInit(): void {
     this.retrieveCategory();
     const geocoder = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
-      types: 'country,region,place,postcode,locality,neighborhood'
+      types: 'country,place,postcode,locality,neighborhood,address',
+      mapboxgl: mapboxgl
     });
 
     geocoder.addTo('#geocoder');
 
-    // Get the geocoder results container.
-    const results = document.getElementById('result');
     // Add geocoder result to container.
     geocoder.on('result', (e) => {
-      results!.innerText = JSON.stringify(e.result, null, 2);
+      var latitude = e.result.center[1];
+      var longitude = e.result.center[0];
+      var place_name = e.result.place_name;
+      console.log(place_name);
+
+      this.event.lat = latitude;
+      this.event.lng = longitude;
+      this.event.place_name = place_name;
       });
 
-      // Clear results container when search is cleared.
-      geocoder.on('clear', () => {
-      results!.innerText = '';
-      });
+    // Clear results container when search is cleared.
+    geocoder.on('clear', () => {
+      this.event.lat = undefined;
+      this.event.lng = undefined;
+    });
   }
 
   saveEvent(): void {
-    this.eventService.create(this.event).then(() => {
-      console.log('Created new item successfully!');
-      this.submitted = true;
-    });
+
+
+
+    if(confirm("Are you sure to add? ")){
+      this.eventService.create(this.event).then(() => {
+        console.log('Created new item successfully!');
+        this.submitted = true;
+      });
+
+      this.router.navigate(['/events']);
+    }
+
+
   }
 
   newEvent(): void {

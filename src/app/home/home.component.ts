@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Event } from 'src/event';
 import { AngularFirestore  } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 
