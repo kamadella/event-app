@@ -1,34 +1,37 @@
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
 
 
-<div class="py-5 text-center">
-  <h2>Szukaj wydarzenia</h2>
-  <hr>
-</div>
-<div class="d-flex justify-content-center">
+<div class="py-5 search">
+<div class="d-flex justify-content-center ">
   <div class="">
     <div class="row">
       <div class="form-group col-4">
         <mat-form-field appearance="fill">
           <mat-label>Co...</mat-label>
-          <input matInput placeholder="Nazwa wydarzenia..." type="text" id="name" [(ngModel)]="nameFilter">
+          <input matInput type="text" id="name" [(ngModel)]="nameFilter">
         </mat-form-field>
       </div>
 
+
+
       <div class="form-group col-4">
+        <div id="geocoder"></div>
         <mat-form-field appearance="fill">
-          <mat-label>Gdzie...</mat-label>
-          <input matInput placeholder="Adres..." type="text" id="localization" [(ngModel)]="localizationFilter">
+          <mat-label>+ km</mat-label>
+          <input matInput type="number" id="kilometers" [(ngModel)]="kilometersFilter">
         </mat-form-field>
       </div>
+
 
 
       <div class="form-group col-4">
         <mat-form-field appearance="fill">
           <mat-label>Kiedy...</mat-label>
           <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate  placeholder="Data początku"  [(ngModel)]="dateStartFilter">
-            <input matEndDate  placeholder="Data końca"  [(ngModel)]="dateEndFilter">
+            <input matStartDate [(ngModel)]="dateStartFilter">
+            <input matEndDate [(ngModel)]="dateEndFilter">
           </mat-date-range-input>
           <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -53,8 +56,7 @@
 
   </div>
 </div>
-
-
+</div>
 
 
 
