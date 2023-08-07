@@ -4,7 +4,9 @@ import { CategoryService } from 'src/app/services/category.service';
 import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
-
+import * as mapboxgl from 'mapbox-gl';
+import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-events-list',
@@ -19,10 +21,18 @@ export class EventsListComponent implements OnInit {
   filteredEventList?: Event[] = [];
   nameFilter: string = '';
   localizationFilter: string = '';
+  kilometersFilter: number = 0;
+
   dateStartFilter: Date | null = new Date();
   dateEndFilter: Date | null = new Date();
   selectedCategories: number[] = []; // Tablica do przechowywania zaznaczonych indeksów kategorii
 
+  bbox?: number[];
+
+  map: mapboxgl.Map | undefined;
+  style = 'mapbox://styles/mapbox/streets-v11';
+  lat: number = 53.1322;
+  lng: number = 23.1687;
 
 
   constructor(private eventService: EventService, private categoryService: CategoryService) {
@@ -34,6 +44,25 @@ export class EventsListComponent implements OnInit {
     this.retrieveCategories();
     this.dateStartFilter = null;
     this.dateEndFilter = null;
+
+    const geocoder = new MapboxGeocoder({
+      accessToken: environment.mapbox.accessToken,
+      mapboxgl: mapboxgl
+    });
+
+    geocoder.addTo('#geocoder');
+
+    // Add geocoder result to container.
+    geocoder.on('result', (e) => {
+      this.bbox = e.result.bbox;
+      console.log(this.bbox);
+
+      });
+
+    // Clear results container when search is cleared.
+    geocoder.on('clear', () => {
+
+    });
   }
 
 
@@ -62,6 +91,7 @@ export class EventsListComponent implements OnInit {
     });
   }
 
+
   filterResults(text: string) {
     if (!text) {
       this.filteredEventList = this.events;
@@ -71,6 +101,7 @@ export class EventsListComponent implements OnInit {
       event => event?.name?.toLowerCase().includes(text.toLowerCase())
     );
   }
+
 
   NewFilter(){
     const dateStartFilter = this.dateStartFilter ?? new Date(0);

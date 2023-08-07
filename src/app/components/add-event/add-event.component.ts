@@ -16,10 +16,9 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./add-event.component.css']
 })
 export class AddEventComponent implements OnInit {
-  categoriess?: Category[];
+  categories?: Category[];
   event: Event = new Event();
   submitted = false;
-  categories: string[] = ['kat1', 'kat2', 'kat3', 'kat4'];
 
   map: mapboxgl.Map | undefined;
   style = 'mapbox://styles/mapbox/streets-v11';
@@ -32,7 +31,6 @@ export class AddEventComponent implements OnInit {
     this.retrieveCategory();
     const geocoder = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
-      types: 'country,place,postcode,locality,neighborhood,address',
       mapboxgl: mapboxgl
     });
 
@@ -86,7 +84,7 @@ export class AddEventComponent implements OnInit {
         )
       )
     ).subscribe(data => {
-      this.categoriess = data;
+      this.categories = data;
     });
   }
 

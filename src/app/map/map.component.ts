@@ -29,7 +29,7 @@ export class MapComponent implements OnInit {
        accessToken: environment.mapbox.accessToken,
        container: 'map',
        style: this.style,
-       zoom: 13,
+       zoom: 11,
        center: [this.lng, this.lat]
      });
      this.map.addControl(
@@ -38,7 +38,10 @@ export class MapComponent implements OnInit {
         mapboxgl: mapboxgl
       })
       );
+
   }
+
+
 
   retrieveMarkers(): void {
     this.events?.filter(e => e.lng !== undefined && e.lat !== undefined)
@@ -47,18 +50,22 @@ export class MapComponent implements OnInit {
         const marker = new mapboxgl.Marker().setLngLat([e.lng! , e.lat!]).addTo(this.map!);
         // use GetElement to get HTML Element from marker and add event
         marker.getElement().addEventListener('click', () => {
+          //this.createPopUp(e);
           this.openDialog(e);
         });
       });
   }
 
   openDialog(e: Event) {
+    console.log(`openDialog()`);
+
     const dialogRef = this.dialog.open(MapDialogContentComponent, {data: e,});
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
   }
+
 
   retrieveEvents(): void {
     this.eventService.getAll().snapshotChanges().pipe(
@@ -71,6 +78,42 @@ export class MapComponent implements OnInit {
         this.events = data.filter(event => event.published === true);
         this.retrieveMarkers();
       });
-   }
+  }
+
+
+
+  flyToStore(event: Event) : void{
+    this.map!.flyTo({
+      center: [event.lng!, event.lat!],
+      zoom: 13
+    });
+  }
+
+
+  createPopUp(event: Event) {
+    const popUps = document.getElementsByClassName('mapboxgl-popup');
+    /** Check if there is already a popup on the map and if so, remove it */
+    if (popUps[0]) popUps[0].remove();
+
+    const popup = new mapboxgl.Popup({ closeOnClick: true })
+    .setLngLat([event.lng!, event.lat!])
+    .setHTML(`
+
+      <button class="btn-open-dialog btn btn-primary">Informacje</button>
+    `)
+    .addTo(this.map!);
+
+    // Get the popup's content element
+    const popupContent = popup.getElement();
+
+    // Attach a click event listener to the button using event delegation
+    popupContent.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains('btn-open-dialog')) {
+        this.openDialog(event);
+      }
+    });
+
+  }
 
 }
