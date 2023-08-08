@@ -49,7 +49,6 @@ export class EventPageComponent implements OnInit {
         return { id: categoryId, ...categoryData };
   })
     ).subscribe(data => {
-      console.log("KATEGORIA = " + data.name); // Możesz tutaj użyć danych w dalszej części kodu
       this.currentCategory = data;
     });
   }
@@ -63,7 +62,6 @@ export class EventPageComponent implements OnInit {
         return { id: eventId, ...eventData };
   })
     ).subscribe(data => {
-      console.log("EVENT = "+ data.category); // Możesz tutaj użyć danych w dalszej części kodu
       this.currentEvent = data;
       this.getCurrentCategory(this.currentEvent.category!);
     });
