@@ -34,3 +34,13 @@ class="btn btn-success"
 >
 Publish
 </button>
+
+
+<div class="py-5 text-center">
+  <h3>Komentarze</h3>
+  <hr>
+</div>
+
+<app-comments-list [eventId]="currentEvent.id"></app-comments-list>
+<app-add-comment [eventId]="currentEvent.id"></app-add-comment>
+

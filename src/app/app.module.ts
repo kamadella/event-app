@@ -34,6 +34,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-content.component';
 import { AdminEventsToPublishComponent } from './components/admin-events-to-publish/admin-events-to-publish.component';
+import { AddCommentComponent } from './components/add-comment/add-comment.component';
+import { CommentsListComponent } from './components/comments-list/comments-list.component';
 
 
 @NgModule({
@@ -49,7 +51,9 @@ import { AdminEventsToPublishComponent } from './components/admin-events-to-publ
     MapComponent,
     EventCardComponent,
     MapDialogContentComponent,
-    AdminEventsToPublishComponent
+    AdminEventsToPublishComponent,
+    AddCommentComponent,
+    CommentsListComponent
   ],
   imports: [
     BrowserModule,
