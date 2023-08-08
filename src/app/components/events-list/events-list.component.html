@@ -20,7 +20,7 @@
         <div id="geocoder"></div>
         <mat-form-field appearance="fill">
           <mat-label>+ km</mat-label>
-          <input matInput type="number" id="kilometers" [(ngModel)]="kilometersFilter">
+          <input matInput type="number" id="kilometers" [(ngModel)]="distanceFilter">
         </mat-form-field>
       </div>
 
@@ -42,7 +42,7 @@
 
     <div class="d-flex justify-content-center">
       <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" *ngFor="let category of categories; let i = index" >
-        <input type="checkbox" class="btn-check" id={{i}} autocomplete="off" (change)="toggleCategory(i)">
+        <input type="checkbox" class="btn-check" id={{i}} autocomplete="off" [ngModel]="selectedCategories.includes(i)" (change)="toggleCategory(i)">
         <label class="btn btn-outline-primary" for={{i}}> {{category.name}}</label>
       </div>
     </div>
