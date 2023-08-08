@@ -21,13 +21,13 @@ export class EventsListComponent implements OnInit {
   filteredEventList?: Event[] = [];
   nameFilter: string = '';
   localizationFilter: string = '';
-  kilometersFilter: number = 0;
+  distanceFilter: number = 0;
 
   dateStartFilter: Date | null = new Date();
   dateEndFilter: Date | null = new Date();
   selectedCategories: number[] = []; // Tablica do przechowywania zaznaczonych indeksów kategorii
 
-  bbox?: number[];
+  cityBbox?: number[];
 
   map: mapboxgl.Map | undefined;
   style = 'mapbox://styles/mapbox/streets-v11';
@@ -47,15 +47,17 @@ export class EventsListComponent implements OnInit {
 
     const geocoder = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
-      mapboxgl: mapboxgl
+      mapboxgl: mapboxgl,
+      types: 'country,place,postcode,locality,neighborhood'
+
     });
 
     geocoder.addTo('#geocoder');
 
     // Add geocoder result to container.
     geocoder.on('result', (e) => {
-      this.bbox = e.result.bbox;
-      console.log(this.bbox);
+      this.cityBbox = e.result.bbox;
+      console.log(this.cityBbox);
 
       });
 
@@ -92,35 +94,44 @@ export class EventsListComponent implements OnInit {
   }
 
 
-  filterResults(text: string) {
-    if (!text) {
-      this.filteredEventList = this.events;
-    }
-
-    this.filteredEventList = this.events!.filter(
-      event => event?.name?.toLowerCase().includes(text.toLowerCase())
-    );
-  }
-
-
   NewFilter(){
     const dateStartFilter = this.dateStartFilter ?? new Date(0);
     const dateEndFilter = this.dateEndFilter ?? new Date(9999, 11, 31);
 
     const selectedCategoryObjects = this.getSelectedCategories();
 
+    if(this.cityBbox){
+      this.calculateBbox(this.cityBbox, this.distanceFilter);
+      console.log("nowy bbox: " + this.cityBbox);
+    }
+
     this.filteredEventList = this.events!.filter(
       event =>{
-
-        return(
-          event?.place_name?.toLowerCase().includes(this.localizationFilter.toLowerCase()) &&
-          event?.name?.toLowerCase().includes(this.nameFilter.toLowerCase()) &&
+        const isWithinDateRange =
           event?.date_start && new Date(event.date_start) >= dateStartFilter &&
-          event?.date_end && new Date(event.date_end) <= dateEndFilter  &&
-          (selectedCategoryObjects.length === 0 || // Jeśli nie ma wybranych kategorii, to zwróć true (bez filtrowania po kategoriach)
-          selectedCategoryObjects.some(category => category.id === event?.category))
+          event?.date_end && new Date(event.date_end) <= dateEndFilter;
 
-          )
+        const isMatchingCategory =
+          selectedCategoryObjects.length === 0 ||
+          selectedCategoryObjects.some(category => category.id === event?.category);
+
+        const isMatchingName = event?.name?.toLowerCase().includes(this.nameFilter.toLowerCase());
+
+        let isInsideBbox = true; // Domyślnie załóż, że punkt jest wewnątrz bbox
+
+        if (this.cityBbox && event.lng && event.lat) {
+          const isPointInsideBbox =
+            event.lng >= this.cityBbox[0] && event.lng <= this.cityBbox[1] &&
+            event.lat >= this.cityBbox[2] && event.lat <= this.cityBbox[3];
+
+          isInsideBbox = isPointInsideBbox; // Ustaw wartość na podstawie sprawdzenia punktu w bbox
+        }
+
+        return (
+          isInsideBbox && isWithinDateRange && isMatchingCategory && isMatchingName
+        )
+
+
       }
     );
   }
@@ -133,21 +144,46 @@ export class EventsListComponent implements OnInit {
     this.localizationFilter = '';
     this.dateStartFilter = null;
     this.dateEndFilter = null;
+    this.distanceFilter = 0;
+    this.selectedCategories = [];
+
+    const geocoderInput = document.querySelector('.mapboxgl-ctrl-geocoder input');
+    if (geocoderInput instanceof HTMLInputElement) {
+      geocoderInput.value = ''; // Wyczyść input geokodera
+    }
   }
 
 
     // Metoda do obsługi zaznaczania kategorii
-    toggleCategory(index: number) {
-      if (this.selectedCategories.includes(index)) {
-        this.selectedCategories = this.selectedCategories.filter(i => i !== index);
-      } else {
-        this.selectedCategories.push(index);
-      }
+  toggleCategory(index: number) {
+    console.log(this.selectedCategories);
+    if (this.selectedCategories.includes(index)) {
+      this.selectedCategories = this.selectedCategories.filter(i => i !== index);
+    } else {
+      this.selectedCategories.push(index);
     }
+  }
 
-    getSelectedCategories() {
-      const selectedCategoryObjects = this.selectedCategories.map(index => this.categories[index]);
-      return selectedCategoryObjects;
-    }
+  getSelectedCategories() {
+    const selectedCategoryObjects = this.selectedCategories.map(index => this.categories[index]);
+    return selectedCategoryObjects;
+  }
+
+
+  calculateBbox(cityBbox : number[], distanceFilter: number) : void {
+    const R = 6371; // Średnica Ziemi w kilometrach
+    const latPerKm = 1 / (R * (Math.PI / 180)); // Przybliżona liczba stopni szerokości na jeden kilometr
+    const lonPerKm = latPerKm / Math.cos(cityBbox[1] * (Math.PI / 180)); // Przybliżona liczba stopni długości na jeden kilometr
+
+    // Obliczasz nowe współrzędne bbox z uwzględnieniem odległości
+    const newMinLon = cityBbox[0] - (lonPerKm * distanceFilter);
+    const newMinLat = cityBbox[1] - (latPerKm * distanceFilter);
+    const newMaxLon = cityBbox[2] + (lonPerKm * distanceFilter);
+    const newMaxLat = cityBbox[3] + (latPerKm * distanceFilter);
+    console.log("jestem calculateBbox");
+
+    //cityBbox = [newMinLon, newMinLat, newMaxLon, newMaxLat];
+    this.cityBbox = [newMinLon, newMinLat, newMaxLon, newMaxLat];
+  }
 
 }

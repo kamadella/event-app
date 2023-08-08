@@ -12,7 +12,6 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
-import { SearchComponent } from './search/search.component';
 import { JsonPipe } from '@angular/common';
 import { CalendarComponent } from './home/calendar/calendar.component';
 import { environment } from '../environments/environment';
@@ -42,7 +41,6 @@ import { AdminEventsToPublishComponent } from './components/admin-events-to-publ
     AppComponent,
     NavbarComponent,
     HomeComponent,
-    SearchComponent,
     CalendarComponent,
     EventPageComponent,
     AddEventComponent,
