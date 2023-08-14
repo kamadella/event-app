@@ -9,7 +9,7 @@
 
 
 
-
+<form [formGroup]="eventForm" (ngSubmit)="saveEvent()" novalidate>
 <div class="submit-form g-5 d-flex justify-content-center">
   <div class="col-md-7">
     <div class="row g-3">
@@ -22,7 +22,7 @@
           class="form-control"
           id="name"
           required
-          [(ngModel)]="event.name"
+          formControlName="name"
           name="title"
         />
       </div>
@@ -34,7 +34,7 @@
           class="form-control"
           id="description"
           required
-          [(ngModel)]="event.description"
+          formControlName="description"
           name="description"
         ></textarea>
       </div>
@@ -52,7 +52,7 @@
           class="form-control"
           id="organizator"
           required
-          [(ngModel)]="event.organizator"
+          formControlName="organizator"
           name="organizator"
         />
       </div>
@@ -64,7 +64,7 @@
           class="form-control"
           id="img"
           required
-          [(ngModel)]="event.img"
+          formControlName="img"
           name="img"
         />
       </div>
@@ -76,7 +76,7 @@
           type="datetime-local"
           id="date_start"
           required
-          [(ngModel)]="event.date_start"
+          formControlName="date_start"
           name="date_start"
         />
       </div>
@@ -88,13 +88,13 @@
           type="datetime-local"
           id="date_end"
           required
-          [(ngModel)]="event.date_end"
+          formControlName="date_end"
           name="date_end"
         />
       </div>
 
 
-      <mat-radio-group class="example-radio-group" [(ngModel)]="event.category">
+      <mat-radio-group class="example-radio-group" formControlName="category">
         <mat-radio-button class="form-check form-check-inline" *ngFor="let category of categories" [value]="category.id">
           {{category.name}}
         </mat-radio-button>
@@ -107,14 +107,16 @@
           class="form-control"
           value="0"
           id="tickets"
-          [(ngModel)]="event.tickets"
+          formControlName="tickets"
           name="tickets"
         />
       </div>
 
     </div>
     <hr class="my-4">
-      <button (click)="saveEvent()" class="btn btn-success">Zapisz</button>
+    <button type="submit" class="btn btn-success" [disabled]="!eventForm.valid">
+      Dodaj
+    </button>
     </div>
   </div>
 

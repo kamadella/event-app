@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
 import { EventPageComponent } from './components/event-page/event-page.component';
 import { EventsListComponent } from './components/events-list/events-list.component';
 import { AddEventComponent } from './components/add-event/add-event.component';
@@ -14,7 +13,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: EventsListComponent },
   { path: 'event/:id', component: EventPageComponent },
   { path: 'events-list', component: EventsListComponent },
   { path: 'add-event', component: AddEventComponent },
