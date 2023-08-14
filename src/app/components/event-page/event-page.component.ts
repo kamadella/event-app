@@ -82,6 +82,7 @@ export class EventPageComponent implements OnInit {
     this.router.navigate(['/events']);
   }
 
+
   publishEvent(status: boolean): void {
     if(confirm("Czy na pewno chcesz opublikowąc to wydarzenie? ")){
       if (this.currentEvent.id) {

@@ -52,6 +52,7 @@ export class AddEventComponent implements OnInit {
     geocoder.on('clear', () => {
       this.event.lat = undefined;
       this.event.lng = undefined;
+      this.event.place_name = undefined;
     });
   }
 
