@@ -36,6 +36,11 @@ import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-c
 import { AdminEventsToPublishComponent } from './components/admin-events-to-publish/admin-events-to-publish.component';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
 import { CommentsListComponent } from './components/comments-list/comments-list.component';
+import { EditEventComponent } from './components/edit-event/edit-event.component';
+import { SignInComponent } from './components/sign-in/sign-in.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 
 
 @NgModule({
@@ -53,7 +58,12 @@ import { CommentsListComponent } from './components/comments-list/comments-list.
     MapDialogContentComponent,
     AdminEventsToPublishComponent,
     AddCommentComponent,
-    CommentsListComponent
+    CommentsListComponent,
+    EditEventComponent,
+    SignInComponent,
+    SignUpComponent,
+    ForgotPasswordComponent,
+    VerifyEmailComponent
   ],
   imports: [
     BrowserModule,
