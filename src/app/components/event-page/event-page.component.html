@@ -17,6 +17,11 @@
     <p>{{currentEvent.description}} </p>
     <h2>Organizator</h2>
     <p>{{currentEvent.organizator}} </p>
+    <div *ngIf = "currentEvent && currentEvent.tickets && currentEvent.tickets > 0" >
+      <h2>Bilety</h2>
+      <p>{{currentEvent.tickets}} </p>
+    </div>
+
 </div>
 
 <button type="button" class="btn btn-danger" (click)="deleteEvent()">Usuń wydarzenie</button>

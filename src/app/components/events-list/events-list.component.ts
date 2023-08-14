@@ -45,24 +45,24 @@ export class EventsListComponent implements OnInit {
     this.dateStartFilter = null;
     this.dateEndFilter = null;
 
-    const geocoder = new MapboxGeocoder({
+    const geocoderFilter = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
       mapboxgl: mapboxgl,
       types: 'country,place,postcode,locality,neighborhood'
 
     });
 
-    geocoder.addTo('#geocoder');
+    geocoderFilter.addTo('#geocoderFilter');
 
     // Add geocoder result to container.
-    geocoder.on('result', (e) => {
+    geocoderFilter.on('result', (e) => {
       this.cityBbox = e.result.bbox;
       console.log(this.cityBbox);
 
       });
 
     // Clear results container when search is cleared.
-    geocoder.on('clear', () => {
+    geocoderFilter.on('clear', () => {
 
     });
   }
