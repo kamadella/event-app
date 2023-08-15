@@ -11,12 +11,16 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+
+import { AuthGuard } from './shared/guard/auth.guard';
+
 
 const routes: Routes = [
-  { path: '', component: EventsListComponent },
+  { path: '', redirectTo: '/events-list', pathMatch: 'full'},
   { path: 'event/:id', component: EventPageComponent },
   { path: 'events-list', component: EventsListComponent },
-  { path: 'add-event', component: AddEventComponent },
+  { path: 'add-event', component: AddEventComponent, canActivate: [AuthGuard] },
   { path: 'map', component: MapComponent },
   { path: 'admin/category', component: CategoryComponent },
   { path: 'admin/events', component: AdminEventsToPublishComponent },
@@ -25,6 +29,8 @@ const routes: Routes = [
   { path: 'register-user', component: SignUpComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+
 ];
 
 @NgModule({

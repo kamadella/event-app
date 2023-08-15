@@ -17,6 +17,13 @@
     </div>
   </div>
   <hr class="my-4">
-  <button (click)="saveComment()" class="btn btn-success">Dodaj</button>
+  <ng-container *ngIf="isLoggedIn(); else loginPanel">
+    <hr class="my-4">
+    <button (click)="saveComment()" class="btn btn-success">Dodaj komentarz</button>
+  </ng-container>
+  <ng-template #loginPanel>
+    <hr class="my-4">
+    <button (click)="openDialog()" class="btn btn-primary">Dodaj komentarz</button>
+  </ng-template>
 </div>
 
