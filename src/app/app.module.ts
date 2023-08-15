@@ -47,6 +47,10 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddCommentDialogComponent } from './components/add-comment/add-comment-dialog/add-comment-dialog.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AdminNavbarComponent } from './layouts/admin-navbar/admin-navbar.component';
+import { UserNavbarComponent } from './layouts/user-navbar/user-navbar.component';
+import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 
 
 @NgModule({
@@ -71,7 +75,11 @@ import { AddCommentDialogComponent } from './components/add-comment/add-comment-
     ForgotPasswordComponent,
     VerifyEmailComponent,
     DashboardComponent,
-    AddCommentDialogComponent
+    AddCommentDialogComponent,
+    AdminLayoutComponent,
+    AdminNavbarComponent,
+    UserNavbarComponent,
+    UserLayoutComponent
   ],
   imports: [
     BrowserModule,

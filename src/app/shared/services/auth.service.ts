@@ -22,9 +22,19 @@ export class AuthService {
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
+        this.afs.doc(`users/${user.uid}`).get().subscribe((userData) => {
+          const userWithRole = {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            emailVerified: user.emailVerified,
+            role: userData.get('role'),
+          };
+          this.userData = userWithRole;
+          localStorage.setItem('user', JSON.stringify(this.userData));
+          JSON.parse(localStorage.getItem('user')!);
+        });
       } else {
         localStorage.setItem('user', 'null');
         JSON.parse(localStorage.getItem('user')!);
@@ -39,10 +49,10 @@ export class AuthService {
       .then((result) => {
         this.SetUserData(result.user);
         this.afAuth.authState.subscribe((user) => {
-          console.log("elo");
           if (user) {
-            console.log("fdfddfs");
-            this.router.navigate(['dashboard']);
+            console.log("elo");
+            this.router.navigate(['events-list']);
+            console.log("elo");
           }
         });
       })
@@ -60,6 +70,7 @@ export class AuthService {
         up and returns promise */
         this.SendVerificationMail();
         this.SetUserData(result.user);
+        this.UpdateUserRole(result.user!.uid, "user")
       })
       .catch((error) => {
         window.alert(error.message);
@@ -93,11 +104,12 @@ export class AuthService {
     return user !== null && user.emailVerified !== false ? true : false;
   }
 
-    // Sprawdź, czy użytkownik ma rolę admina
-    isAdmin(): boolean {
-      const user = JSON.parse(localStorage.getItem('user')!);
-      return user !== null && user.role === 'admin';
-    }
+    // W serwisie AuthService
+  // Sprawdź, czy użytkownik ma określoną rolę
+  get isAdmin(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user !== null && user.role === "admin";
+  }
 
   /* Setting up user data when sign in with username/password,
   sign up with username/password and sign in with social auth
@@ -112,7 +124,6 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      role: "user",
     };
     return userRef.set(userData, {
       merge: true,
@@ -126,4 +137,12 @@ export class AuthService {
       this.router.navigate(['sign-in']);
     });
   }
+
+
+  UpdateUserRole(uid: string, role: string): Promise<void> {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    return userRef.update({ role: role });
+  }
+
+
 }

@@ -24,23 +24,25 @@
 
 </div>
 
-<button type="button" class="btn btn-danger" (click)="deleteEvent()">Usuń wydarzenie</button>
-<button
-class="btn btn-danger"
-*ngIf="currentEvent.published"
-(click)="publishEvent(false)"
->
-UnPublish
-</button>
-<button
-*ngIf="!currentEvent.published"
-class="btn btn-success"
-(click)="publishEvent(true)"
->
-Publish
-</button>
+<div *ngIf="isAdmin()">
+  <button type="button" class="btn btn-danger" (click)="deleteEvent()">Usuń wydarzenie</button>
+  <button
+    class="btn btn-danger"
+    *ngIf="currentEvent.published"
+    (click)="publishEvent(false)"
+    >
+    UnPublish
+  </button>
+  <button
+    *ngIf="!currentEvent.published"
+    class="btn btn-success"
+    (click)="publishEvent(true)">
+    Publish
+  </button>
 
-<button type="button" class="btn btn-primary" routerLink="/admin/event/edit/{{currentEvent.id}}">Edytuj</button>
+  <button type="button" class="btn btn-primary" routerLink="/admin/event/edit/{{currentEvent.id}}">Edytuj</button>
+</div>
+
 
 <div class="py-5 text-center">
   <h3>Komentarze</h3>

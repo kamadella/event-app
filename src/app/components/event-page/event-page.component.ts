@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class EventPageComponent implements OnInit {
   message = '';
 
 
-  constructor(private route: ActivatedRoute, private eventService: EventService,private categoryService: CategoryService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private eventService: EventService,private categoryService: CategoryService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe( params=> this.eventId = params['id']);
@@ -95,6 +96,10 @@ export class EventPageComponent implements OnInit {
       }
     }
     this.router.navigate(['/events']);
+  }
+
+  isAdmin() {
+    return this.authService.isAdmin;
   }
 
 }

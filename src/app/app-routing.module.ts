@@ -14,23 +14,36 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { AuthGuard } from './shared/guard/auth.guard';
+import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/events-list', pathMatch: 'full'},
-  { path: 'event/:id', component: EventPageComponent },
-  { path: 'events-list', component: EventsListComponent },
-  { path: 'add-event', component: AddEventComponent, canActivate: [AuthGuard] },
-  { path: 'map', component: MapComponent },
-  { path: 'admin/category', component: CategoryComponent },
-  { path: 'admin/events', component: AdminEventsToPublishComponent },
-  { path: 'admin/event/edit/:id', component: EditEventComponent },
-  { path: 'sign-in', component: SignInComponent },
-  { path: 'register-user', component: SignUpComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'verify-email-address', component: VerifyEmailComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+    {
+      path: '', component: UserLayoutComponent,
+      children: [
+        { path: '', redirectTo: '/events-list', pathMatch: 'full'},
+        { path: 'event/:id', component: EventPageComponent },
+        { path: 'events-list', component: EventsListComponent },
+        { path: 'add-event', component: AddEventComponent, canActivate: [AuthGuard] },
+        { path: 'map', component: MapComponent },
+        { path: 'sign-in', component: SignInComponent },
+        { path: 'register-user', component: SignUpComponent },
+        { path: 'forgot-password', component: ForgotPasswordComponent },
+        { path: 'verify-email-address', component: VerifyEmailComponent },
+        { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      ]
+    },
 
+    {
+      path: 'admin', component: AdminLayoutComponent,
+      children: [
+        { path: '', redirectTo: '/events', pathMatch: 'full' },
+        { path: 'category', component: CategoryComponent },
+        { path: 'events', component: AdminEventsToPublishComponent },
+        { path: 'event/edit/:id', component: EditEventComponent },
+      ]
+    },
 ];
 
 @NgModule({
