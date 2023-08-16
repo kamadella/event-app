@@ -12,6 +12,7 @@ export class UserNavbarComponent implements OnInit {
   constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
+
   }
 
   isLoggedIn() {

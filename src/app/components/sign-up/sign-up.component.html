@@ -4,6 +4,15 @@
       <h3>Zarejestruj sie</h3>
       <div class="formGroup">
         <input
+          type="displayName"
+          class="formControl"
+          placeholder="displayName"
+          #userDisplayName
+          required
+        />
+      </div>
+      <div class="formGroup">
+        <input
           type="email"
           class="formControl"
           placeholder="Email Address"
@@ -25,7 +34,7 @@
           type="button"
           class="btn btn-primary"
           value="Sign Up"
-          (click)="authService.SignUp(userEmail.value, userPwd.value)"
+          (click)="authService.SignUp(userEmail.value, userPwd.value, userDisplayName.value)"
         />
       </div>
       <div class="formGroup">

@@ -14,6 +14,7 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { AuthGuard } from './shared/guard/auth.guard';
+import { AdminGuard } from './shared/guard/admin.guard';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
@@ -38,10 +39,10 @@ const routes: Routes = [
     {
       path: 'admin', component: AdminLayoutComponent,
       children: [
-        { path: '', redirectTo: '/events', pathMatch: 'full' },
-        { path: 'category', component: CategoryComponent },
-        { path: 'events', component: AdminEventsToPublishComponent },
-        { path: 'event/edit/:id', component: EditEventComponent },
+        { path: '', redirectTo: '/events', pathMatch: 'full'},
+        { path: 'category', component: CategoryComponent, canActivate: [AdminGuard] },
+        { path: 'events', component: AdminEventsToPublishComponent, canActivate: [AdminGuard] },
+        { path: 'event/edit/:id', component: EditEventComponent, canActivate: [AdminGuard] },
       ]
     },
 ];

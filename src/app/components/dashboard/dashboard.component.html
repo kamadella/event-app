@@ -32,6 +32,21 @@
                 alt="{{user.displayName}}">
               <div class="media-body">
                 <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
+
+                <div class="form-group col-sm-12">
+                  <label for="displayName">Nazwa użytkownika</label>
+                  <input
+                    placeholder="podaj nową nazwę..."
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    required
+                    [(ngModel)]="displayName"
+                    name="displayName"
+                  />
+                </div>
+                <button (click)="updateDisplayName()" class="btn btn-success">Zapisz</button>
+
                 <p>User ID: <strong>{{user.uid}}</strong></p>
                 <p>Email: <strong>{{user.email}}</strong></p>
                 <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
