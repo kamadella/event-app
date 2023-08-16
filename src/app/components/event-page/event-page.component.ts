@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 
 @Component({
@@ -29,16 +30,14 @@ export class EventPageComponent implements OnInit {
   currentCategory: Category = {
     name: ''
   };
-  message = '';
 
 
-  constructor(private route: ActivatedRoute, private eventService: EventService,private categoryService: CategoryService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private eventService: EventService,private categoryService: CategoryService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe( params=> this.eventId = params['id']);
     this.getCurrentEvent(this.eventId);
 
-    this.message = '';
   }
 
   getCurrentCategory(id: string) : void{
@@ -53,6 +52,18 @@ export class EventPageComponent implements OnInit {
     });
   }
 
+  canActivateEvent(): boolean {
+    // Sprawdź, czy użytkownik jest administratorem
+    const isAdmin = this.authService.isAdmin;
+
+    // Sprawdź, czy wydarzenie ma właściwość 'published' ustawioną na true
+    const isEventPublished = this.currentEvent.published === true;
+
+    // Zwróć true, jeśli użytkownik jest administratorem lub wydarzenie jest opublikowane
+    // W przeciwnym przypadku zwróć false
+    return isAdmin || isEventPublished;
+  }
+
 
   getCurrentEvent(id: string) : void{
     this.eventService.getOne(id).snapshotChanges().pipe(
@@ -65,7 +76,6 @@ export class EventPageComponent implements OnInit {
       this.currentEvent = data;
       this.getCurrentCategory(this.currentEvent.category!);
     });
-
   }
 
   deleteEvent(): void {
@@ -74,7 +84,6 @@ export class EventPageComponent implements OnInit {
         this.eventService.delete(this.currentEvent.id)
           .then(() => {
             //this.refreshList.emit();
-            this.message = 'The tutorial was updated successfully!';
           })
           .catch(err => console.log(err));
       }
@@ -89,12 +98,15 @@ export class EventPageComponent implements OnInit {
         this.eventService.update(this.currentEvent.id, { published: status })
         .then(() => {
           this.currentEvent.published = status;
-          this.message = 'The status was updated successfully!';
         })
         .catch(err => console.log(err));
       }
     }
     this.router.navigate(['/events']);
+  }
+
+  isAdmin() {
+    return this.authService.isAdmin;
   }
 
 }

@@ -3,8 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
+// Firebase services + environment module
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { environment } from '../environments/environment';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,12 +19,11 @@ import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
 import { JsonPipe } from '@angular/common';
 import { CalendarComponent } from './home/calendar/calendar.component';
-import { environment } from '../environments/environment';
 import { EventPageComponent } from './components/event-page/event-page.component';
 import { AddEventComponent } from './components/add-event/add-event.component';
 import { EventsListComponent } from './components/events-list/events-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { CategoryComponent } from './components/category/category.component';
 import { MapComponent } from './map/map.component';
 import { EventCardComponent } from './components/events-list/event-card/event-card.component';
@@ -41,6 +45,12 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AddCommentDialogComponent } from './components/add-comment/add-comment-dialog/add-comment-dialog.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AdminNavbarComponent } from './layouts/admin-navbar/admin-navbar.component';
+import { UserNavbarComponent } from './layouts/user-navbar/user-navbar.component';
+import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 
 
 @NgModule({
@@ -63,7 +73,13 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
     SignInComponent,
     SignUpComponent,
     ForgotPasswordComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    DashboardComponent,
+    AddCommentDialogComponent,
+    AdminLayoutComponent,
+    AdminNavbarComponent,
+    UserNavbarComponent,
+    UserLayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -75,6 +91,9 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
     JsonPipe,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
     BrowserAnimationsModule, // for firestore
     MatRadioModule,
     MatCheckboxModule,
