@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Event } from '../models/event.model';
 
 @Injectable({
@@ -9,7 +10,7 @@ export class EventService {
   private dbPath = '/events';
   eventsRef: AngularFirestoreCollection<Event>;
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private storage: AngularFireStorage) {
     this.eventsRef = db.collection(this.dbPath);
    }
 
@@ -17,8 +18,23 @@ export class EventService {
     return this.eventsRef;
   }
 
-  create(event: Event): any {
-    return this.eventsRef.add({ ...event });
+  async create(event: Event, imageFile: File): Promise<any> {
+    const eventDocRef = this.eventsRef.add({ ...event });
+
+    if (imageFile) {
+      const eventId = (await eventDocRef).id;
+
+      const storageRef = this.storage.ref(`eventImages/${eventId}`);
+      const uploadTask = this.storage.upload(`eventImages/${eventId}`, imageFile);
+
+      await uploadTask.task;
+
+      const downloadURL = await storageRef.getDownloadURL().toPromise();
+
+      this.eventsRef.doc(eventId).update({ img: downloadURL });
+    }
+
+    return eventDocRef;
   }
 
   update(id: string, data: any): Promise<void> {
@@ -31,6 +47,18 @@ export class EventService {
 
   getOne(id: string): AngularFirestoreDocument<Event> {
     return this.eventsRef.doc(id);
+  }
+
+  private uploadImage(eventId: string, imageFile: File): void {
+    const storageRef = this.storage.ref(`eventImages/${eventId}`);
+    storageRef.put(imageFile).then(snapshot => {
+      console.log('Obrazek został przesłany do Firebase Storage.');
+    });
+  }
+
+  getImageURL(eventId: string): Promise<string> {
+    const storageRef = this.storage.ref(`eventImages/${eventId}`);
+    return storageRef.getDownloadURL().toPromise();
   }
 
 }

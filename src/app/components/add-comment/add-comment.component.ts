@@ -37,6 +37,9 @@ export class AddCommentComponent implements OnInit {
     // Przypisz identyfikator użytkownika do komentarza
     this.comment.userId = userId;
 
+    this.comment.date = new Date();
+    console.log(new Date());
+
     // Sprawdź czy komentarz nie jest samymi spacjami i entrami oraz czy nie przekracza limitu znaków
     if (
       this.comment.text &&

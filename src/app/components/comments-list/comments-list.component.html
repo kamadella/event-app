@@ -1,6 +1,7 @@
 <div *ngFor="let comment of comments; let i = index">
   <div class="comment">
-    <p><strong>{{ comment.userId ? getUserName(comment.userId) : 'Nieznany użytkownik' }}</strong></p>
+    <p><strong>{{ comment.userId ? getUserName(comment.userId) : 'Nieznany użytkownik' }}</strong>  Data: {{comment.date}}</p>
     Komentarz: {{comment.text}}
   </div>
+  <hr>
 </div>

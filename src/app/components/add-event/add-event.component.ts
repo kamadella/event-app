@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Event } from 'src/app/models/event.model';
 import { Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 import { Category } from 'src/app/models/category.model';
@@ -25,6 +24,9 @@ export class AddEventComponent implements OnInit {
   lat: number = 53.1322;
   lng: number = 23.1687;
 
+  selectedImageFile: File | null = null;
+
+
   constructor(private eventService: EventService, private categoryService: CategoryService, private router: Router, public fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -33,11 +35,11 @@ export class AddEventComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(2)]],
       description: [''],
       organizator: [''],
-      img: [''],
       date_start: [''],
       date_end: [''],
       category: [''],
       tickets: [''],
+      img: [''],
       lat: [''],         // New form control for latitude
       lng: [''],         // New form control for longitude
       place_name: [''],  // New form control for place_name
@@ -63,52 +65,35 @@ export class AddEventComponent implements OnInit {
         lng: longitude,
         place_name: place_name
       });
-      });
-
-    // Clear results container when search is cleared.
-    geocoder.on('clear', () => {
 
     });
+
   }
 
 
 
-  get name() {
-    return this.eventForm.get('name');
-  }
-  get description() {
-    return this.eventForm.get('description');
-  }
-  get organizator() {
-    return this.eventForm.get('organizator');
-  }
-  get img() {
-    return this.eventForm.get('img');
-  }
-  get date_start() {
-    return this.eventForm.get('date_start');
-  }
-  get date_end() {
-    return this.eventForm.get('date_end');
-  }
-  get category() {
-    return this.eventForm.get('category');
-  }
-  get tickets() {
-    return this.eventForm.get('tickets');
-  }
 
 
-  saveEvent(): void {
-    this.eventForm.patchValue({ published: false }); // Set published to false
-    if(confirm("Czy na pewno chcesz dodać nowe wydarzenie? ")){
-      this.eventService.create(this.eventForm.value).then(() => {
-        console.log('Created new item successfully!');
-      });
 
-      this.router.navigate(['/events']);
+  onImageSelected(event: any): void {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedImageFile = event.target.files[0];
     }
   }
+
+  saveEvent(): void {
+    this.eventForm.patchValue({ published: false });
+
+    if (confirm('Czy na pewno chcesz dodać nowe wydarzenie? ')) {
+      this.eventService
+        .create(this.eventForm.value, this.selectedImageFile!)
+        .then(() => {
+          console.log('Created new item successfully!');
+          this.router.navigate(['/events-list']);
+        });
+    }
+  }
+
 
 
 
