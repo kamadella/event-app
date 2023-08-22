@@ -52,6 +52,7 @@ import { UserNavbarComponent } from './layouts/user-navbar/user-navbar.component
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { TicketComponent } from './components/ticket/ticket.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
+import { MyTicketsComponent } from './components/my-tickets/my-tickets.component';
 
 
 @NgModule({
@@ -81,7 +82,8 @@ import { TicketListComponent } from './components/ticket-list/ticket-list.compon
     UserNavbarComponent,
     UserLayoutComponent,
     TicketComponent,
-    TicketListComponent
+    TicketListComponent,
+    MyTicketsComponent
   ],
   imports: [
     BrowserModule,
