@@ -25,4 +25,8 @@ export class CategoryService {
     return this.categoriesRef.doc(id);
   }
 
+  delete(id: string): Promise<void> {
+    return this.categoriesRef.doc(id).delete();
+  }
+
 }

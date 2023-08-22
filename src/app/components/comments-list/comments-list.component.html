@@ -1,6 +1,11 @@
 <div *ngFor="let comment of comments; let i = index">
   <div class="comment">
-    <p><strong>{{ comment.userId ? getUserName(comment.userId) : 'Nieznany użytkownik' }}</strong></p>
+    <p><strong>{{ comment.userId ? getUserName(comment.userId) : 'Nieznany użytkownik' }}</strong>  Data: {{formatTimestamp(comment.date) }}</p>
     Komentarz: {{comment.text}}
   </div>
+  <div *ngIf="isAdmin()">
+    <button type="button" class="btn btn-danger" (click)="deleteComment(comment)">X</button>
+  </div>
+  <hr>
 </div>
+

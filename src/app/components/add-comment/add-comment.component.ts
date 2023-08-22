@@ -22,7 +22,10 @@ export class AddCommentComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+
+  }
 
   isLoggedIn() {
     return this.authService.isLoggedIn;
@@ -36,6 +39,8 @@ export class AddCommentComponent implements OnInit {
 
     // Przypisz identyfikator użytkownika do komentarza
     this.comment.userId = userId;
+
+    this.comment.date = new Date();
 
     // Sprawdź czy komentarz nie jest samymi spacjami i entrami oraz czy nie przekracza limitu znaków
     if (

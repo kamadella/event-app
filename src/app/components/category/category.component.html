@@ -28,3 +28,15 @@
     <button class="btn btn-success" (click)="newCategory()">Dodaj kolejną kategorię</button>
   </div>
 </div>
+<hr>
+
+
+<div *ngFor="let category of categories">
+  <div>
+    {{category.name}}
+    <button type="button" class="btn btn-danger" (click)="deleteCategory(category)">X</button>
+
+  </div>
+
+  <hr>
+</div>

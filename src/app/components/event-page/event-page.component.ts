@@ -1,55 +1,64 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';;
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { AuthService } from '../../shared/services/auth.service';
-
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-event-page',
   templateUrl: './event-page.component.html',
-  styleUrls: ['./event-page.component.css']
+  styleUrls: ['./event-page.component.css'],
 })
 export class EventPageComponent implements OnInit {
-  eventId:string = "-1";
-  categoryId: string = "-1";
+  eventId: string = '-1';
+  categoryId: string = '-1';
   currentEvent: Event = {
     name: '',
     description: '',
     place_name: '',
     organizator: '',
     img: '',
-    date_start: new Date,
-    date_end: new Date,
+    date_start: new Date(),
+    date_end: new Date(),
     category: '',
-    tickets: 0
+    tickets: 0,
   };
   currentCategory: Category = {
-    name: ''
+    name: '',
   };
 
-
-  constructor(private route: ActivatedRoute, private eventService: EventService,private categoryService: CategoryService, private router: Router, private authService: AuthService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private eventService: EventService,
+    private categoryService: CategoryService,
+    private router: Router,
+    private authService: AuthService,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe( params=> this.eventId = params['id']);
+    this.route.params.subscribe((params) => (this.eventId = params['id']));
     this.getCurrentEvent(this.eventId);
-
   }
 
-  getCurrentCategory(id: string) : void{
-    this.categoryService.getOne(id).snapshotChanges().pipe(
-      map(c =>{
-        const categoryData = c.payload.data() as Category;
-        const categoryId = c.payload.id;
-        return { id: categoryId, ...categoryData };
-  })
-    ).subscribe(data => {
-      this.currentCategory = data;
-    });
+  getCurrentCategory(id: string): void {
+    this.categoryService
+      .getOne(id)
+      .snapshotChanges()
+      .pipe(
+        map((c) => {
+          const categoryData = c.payload.data() as Category;
+          const categoryId = c.payload.id;
+          return { id: categoryId, ...categoryData };
+        })
+      )
+      .subscribe((data) => {
+        this.currentCategory = data;
+      });
   }
 
   canActivateEvent(): boolean {
@@ -64,49 +73,60 @@ export class EventPageComponent implements OnInit {
     return isAdmin || isEventPublished;
   }
 
-
-  getCurrentEvent(id: string) : void{
-    this.eventService.getOne(id).snapshotChanges().pipe(
-      map(c =>{
-        const eventData = c.payload.data() as Event;
-        const eventId = c.payload.id;
-        return { id: eventId, ...eventData };
-  })
-    ).subscribe(data => {
-      this.currentEvent = data;
-      this.getCurrentCategory(this.currentEvent.category!);
-    });
+  getCurrentEvent(id: string): void {
+    this.eventService
+      .getOne(id)
+      .snapshotChanges()
+      .pipe(
+        map((c) => {
+          const eventData = c.payload.data() as Event;
+          const eventId = c.payload.id;
+          return { id: eventId, ...eventData };
+        })
+      )
+      .subscribe((data) => {
+        this.currentEvent = data;
+        this.getCurrentCategory(this.currentEvent.category!);
+      });
   }
 
   deleteEvent(): void {
-    if(confirm("Czy na pewno chcesz usunąć? ")){
+    if (confirm('Czy na pewno chcesz usunąć? ')) {
       if (this.currentEvent.id) {
-        this.eventService.delete(this.currentEvent.id)
+        this.eventService
+          .delete(this.currentEvent.id)
           .then(() => {
             //this.refreshList.emit();
           })
-          .catch(err => console.log(err));
+          .catch((err) => console.log(err));
       }
     }
-    this.router.navigate(['/events']);
+    this.location.back(); // Wróć na poprzednią kartę
   }
 
-
   publishEvent(status: boolean): void {
-    if(confirm("Czy na pewno chcesz opublikowąc to wydarzenie? ")){
-      if (this.currentEvent.id) {
-        this.eventService.update(this.currentEvent.id, { published: status })
-        .then(() => {
-          this.currentEvent.published = status;
-        })
-        .catch(err => console.log(err));
-      }
+    let messege = '';
+    if (status ===true){
+      messege = 'Czy na pewno chcesz opublikowac to wydarzenie? '
     }
-    this.router.navigate(['/events']);
+    else {
+      messege = 'Czy na pewno chcesz unulowac publikację tego wydarzenia? '
+    }
+
+    if (confirm(messege)) {
+      if (this.currentEvent.id) {
+        this.eventService
+          .update(this.currentEvent.id, { published: status })
+          .then(() => {
+            this.currentEvent.published = status;
+          })
+          .catch((err) => console.log(err));
+      }
+
+    }
   }
 
   isAdmin() {
     return this.authService.isAdmin;
   }
-
 }
