@@ -20,12 +20,26 @@
     <p>{{currentEvent.organizator}} </p>
     <div *ngIf = "currentEvent && currentEvent.tickets && currentEvent.tickets > 0" >
       <h2>Bilety</h2>
-      <p>{{currentEvent.tickets}} </p>
+      <p>{{currentEvent.ticketsLeft}} </p>
     </div>
 
 </div>
 
+<div *ngIf = "currentEvent && currentEvent.ticketsLeft && currentEvent.ticketsLeft > 0">
+  <button (click)="openTicket(currentEvent)" class="btn btn-primary">
+    Zarezerwuj bilet
+  </button>
+</div>
+
+
 <div *ngIf="isAdmin()">
+  <hr>
+  <div *ngIf = "currentEvent && currentEvent.tickets && currentEvent.tickets > 0">
+    <button  class="btn btn-primary" routerLink="/admin/event/tickets/{{currentEvent.id}}">
+      Zobacz bilety
+    </button>
+  </div>
+
   <button type="button" class="btn btn-danger" (click)="deleteEvent()">Usuń wydarzenie</button>
   <button
     class="btn btn-danger"
@@ -45,6 +59,8 @@
 </div>
 
 
+
+
 <div class="py-5 text-center">
   <h3>Komentarze</h3>
   <hr>
@@ -54,6 +70,8 @@
 <app-add-comment [eventId]="currentEvent.id"></app-add-comment>
 
 </div>
+
+
 
 <div *ngIf="!canActivateEvent()">
   <p>Nie masz uprawnień do przeglądania tego wydarzenia.</p>

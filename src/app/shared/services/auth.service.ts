@@ -23,7 +23,7 @@ export class AuthService {
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
-      if (user) {
+      if (user && !this.userData) {
         this.afs
           .doc(`users/${user.uid}`)
           .get()
@@ -118,6 +118,7 @@ export class AuthService {
   // W serwisie AuthService
   // Sprawdź, czy użytkownik ma określoną rolę
   get isAdmin(): boolean {
+
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null && user.role === 'admin';
   }

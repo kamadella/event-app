@@ -22,10 +22,7 @@ export class AddCommentComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
-
-
-  }
+  ngOnInit(): void { }
 
   isLoggedIn() {
     return this.authService.isLoggedIn;

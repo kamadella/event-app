@@ -1,0 +1,21 @@
+.displayTable{
+  max-width: 500px;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.email {
+  flex: 1 0 140px;
+}
+
+.password {
+  flex: 1 0 140px;
+}
+
+.submit {
+  flex: 1 0 50px;
+}

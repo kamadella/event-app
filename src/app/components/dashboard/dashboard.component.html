@@ -59,3 +59,48 @@
     </main>
   </div>
 </div>
+
+<div>
+  <hr class="my-4">
+  <button *ngIf="!showed" class="btn btn-success" (click)="showTickets()" >
+    Pokaż bilety
+  </button>
+  <button *ngIf="showed" class="btn btn-success" (click)="showTickets()" >
+    Ukryj bilety
+  </button>
+</div>
+
+<div *ngIf="showed && tickets">
+  <div *ngIf="tickets.length > 0">
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nr biletu</th>
+          <th scope="col">Imię</th>
+          <th scope="col">Nazwisko</th>
+          <th scope="col">Wydarzenie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of tickets, let i=index">
+          <th scope="row">{{i+1}}</th>
+          <td> {{ticket.id}}</td>
+          <td> {{ticket.name}}</td>
+          <td> {{ticket.surname}}</td>
+          <td>
+            <button  type="submit" class="btn btn-primary" routerLink="/event/{{ticket.eventId}}">
+              Pokaż wydarzenie
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="tickets.length <= 0">
+    <p>brak zarezerwowanych biletów</p>
+  </div>
+
+</div>

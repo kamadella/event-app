@@ -11,5 +11,6 @@ export class Event {
   date_end?: Date;
   category?: string;
   tickets?: number;
+  ticketsLeft?: number;
   published?: boolean;
 }

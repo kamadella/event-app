@@ -2,33 +2,29 @@
   <div class="displayTableCell">
     <div class="authBlock">
       <h3>Logowanie</h3>
-      <div class="formGroup">
-        <input
-          type="text"
-          class="formControl"
-          placeholder="Username"
-          #userName
-          required
-        />
+      <div class = "form">
+          <input
+            type="text"
+            class="email"
+            placeholder="Username"
+            #userName
+            required
+          />
+          <input
+            type="password"
+            class="password"
+            placeholder="Password"
+            #userPassword
+            required
+          />
+          <input
+            type="button"
+            class="btn btn-primary submit"
+            value="Log in"
+            (click)="authService.SignIn(userName.value, userPassword.value)"
+          />
       </div>
-      <div class="formGroup">
-        <input
-          type="password"
-          class="formControl"
-          placeholder="Password"
-          #userPassword
-          required
-        />
-      </div>
-      <!-- Calling SignIn Api from AuthService -->
-      <div class="formGroup">
-        <input
-          type="button"
-          class="btn btn-primary"
-          value="Log in"
-          (click)="authService.SignIn(userName.value, userPassword.value)"
-        />
-      </div>
+
       <div class="formGroup">
         <span class="or"><span class="orInner">lub</span></span>
       </div>
