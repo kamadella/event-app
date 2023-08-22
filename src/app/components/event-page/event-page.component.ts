@@ -105,7 +105,15 @@ export class EventPageComponent implements OnInit {
   }
 
   publishEvent(status: boolean): void {
-    if (confirm('Czy na pewno chcesz opublikowąc to wydarzenie? ')) {
+    let messege = '';
+    if (status ===true){
+      messege = 'Czy na pewno chcesz opublikowac to wydarzenie? '
+    }
+    else {
+      messege = 'Czy na pewno chcesz unulowac publikację tego wydarzenia? '
+    }
+
+    if (confirm(messege)) {
       if (this.currentEvent.id) {
         this.eventService
           .update(this.currentEvent.id, { published: status })
@@ -114,8 +122,8 @@ export class EventPageComponent implements OnInit {
           })
           .catch((err) => console.log(err));
       }
+
     }
-    this.router.navigate(['/events']);
   }
 
   isAdmin() {

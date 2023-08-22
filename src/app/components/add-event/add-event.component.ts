@@ -84,6 +84,8 @@ export class AddEventComponent implements OnInit {
   saveEvent(): void {
     this.eventForm.patchValue({ published: false });
 
+    console.log(this.eventForm.value.date_start);
+
     if (confirm('Czy na pewno chcesz dodać nowe wydarzenie? ')) {
       this.eventService
         .create(this.eventForm.value, this.selectedImageFile!)
@@ -92,6 +94,7 @@ export class AddEventComponent implements OnInit {
           this.router.navigate(['/events-list']);
         });
     }
+
   }
 
 
