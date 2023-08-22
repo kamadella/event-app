@@ -1,0 +1,39 @@
+<div *ngIf="currentEvent">
+
+  <h1>{{currentEvent.name}} </h1>
+  <h3>Gdzie i kiedy</h3>
+  <p> Data: {{currentEvent.date_start | date: "dd/MM/yy" }} - {{currentEvent.date_end | date: "dd/MM/yy"}} </p>
+  <div *ngIf = "currentEvent && currentEvent.tickets && currentEvent.tickets > 0" >
+    <h3>Zostało do rezezrwacji:</h3>
+    <p>{{currentEvent.ticketsLeft}} bilety</p>
+  </div>
+</div>
+<button type="button" class="btn btn-primary" routerLink="/event/{{currentEvent.id}}">Wróć do wydarzenia</button>
+
+<H2>Zarezerwowane bilety</H2>
+
+<div *ngIf="tickets && tickets.length > 0">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nr biletu</th>
+        <th scope="col">Imię</th>
+        <th scope="col">Nazwisko</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ticket of tickets, let i=index">
+        <th scope="row">{{i+1}}</th>
+        <td> {{ticket.id}}</td>
+        <td> {{ticket.name}}</td>
+        <td> {{ticket.surname}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="tickets && tickets.length <= 0">
+  <p>brak zarezerwowanych biletów</p>
+</div>

@@ -1,0 +1,48 @@
+<H2>Zarezerwuj bilet</H2>
+<form [formGroup]="ticketForm" (ngSubmit)="saveTicket()" novalidate>
+  <div class="submit-form g-5 d-flex justify-content-center">
+    <div class="col-md-7">
+      <div class="row g-3">
+
+        <div class="form-group col-sm-12">
+          <label for="title">Imię</label>
+          <input
+            placeholder="Imię..."
+            type="text"
+            class="form-control"
+            id="name"
+            required
+            formControlName="name"
+          />
+        </div>
+
+        <div class="form-group col-sm-12">
+          <label for="title">Nazwisko</label>
+          <input
+            placeholder="Nazwisko..."
+            type="text"
+            class="form-control"
+            id="surname"
+            required
+            formControlName="surname"
+          />
+        </div>
+
+        <div class="form-group col-sm-12">
+          <label for="title">Ilośc biletów</label>
+          <input
+            placeholder="Ilośc biletów..."
+            type="number"
+            class="form-control"
+            id="number"
+            required
+            formControlName="number"
+          />
+        </div>
+
+<hr class="my-4">
+<button mat-dialog-close type="submit" class="btn btn-success" [disabled]="!ticketForm.valid">
+  Zarezerwuj
+</button>
+</div>
+</div>

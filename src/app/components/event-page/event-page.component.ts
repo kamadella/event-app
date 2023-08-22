@@ -7,6 +7,8 @@ import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { Location } from '@angular/common';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { TicketComponent } from '../ticket/ticket.component';
 
 @Component({
   selector: 'app-event-page',
@@ -37,7 +39,8 @@ export class EventPageComponent implements OnInit {
     private categoryService: CategoryService,
     private router: Router,
     private authService: AuthService,
-    private location: Location
+    private location: Location,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -128,5 +131,13 @@ export class EventPageComponent implements OnInit {
 
   isAdmin() {
     return this.authService.isAdmin;
+  }
+
+  openTicket(e: Event) {
+    const dialogRef = this.dialog.open(TicketComponent, {data: e,});
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }

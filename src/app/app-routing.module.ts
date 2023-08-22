@@ -17,6 +17,7 @@ import { AuthGuard } from './shared/guard/auth.guard';
 import { AdminGuard } from './shared/guard/admin.guard';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 
 
 const routes: Routes = [
@@ -37,12 +38,13 @@ const routes: Routes = [
     },
 
     {
-      path: 'admin', component: AdminLayoutComponent,
+      path: 'admin', component: UserLayoutComponent,
       children: [
         { path: '', redirectTo: '/events', pathMatch: 'full'},
         { path: 'category', component: CategoryComponent, canActivate: [AdminGuard] },
         { path: 'events', component: AdminEventsToPublishComponent, canActivate: [AdminGuard] },
         { path: 'event/edit/:id', component: EditEventComponent, canActivate: [AdminGuard] },
+        { path: 'event/tickets/:id', component: TicketListComponent, canActivate: [AdminGuard] },
       ]
     },
 ];

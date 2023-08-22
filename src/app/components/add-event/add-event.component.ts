@@ -39,11 +39,13 @@ export class AddEventComponent implements OnInit {
       date_end: [''],
       category: [''],
       tickets: [''],
+      ticketsLeft: [''],
       img: [''],
       lat: [''],         // New form control for latitude
       lng: [''],         // New form control for longitude
       place_name: [''],  // New form control for place_name
       published: [''],
+
     });
 
 
@@ -82,9 +84,16 @@ export class AddEventComponent implements OnInit {
   }
 
   saveEvent(): void {
-    this.eventForm.patchValue({ published: false });
+    this.eventForm.value.published = false;
 
-    console.log(this.eventForm.value.date_start);
+    if (this.eventForm.value.tickets == ''){
+      this.eventForm.value.tickets = 0;
+    }
+
+    console.log(this.eventForm.value.tickets);
+
+
+    this.eventForm.value.ticketsLeft = this.eventForm.value.tickets;
 
     if (confirm('Czy na pewno chcesz dodać nowe wydarzenie? ')) {
       this.eventService

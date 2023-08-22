@@ -14,7 +14,6 @@ import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
 import { JsonPipe } from '@angular/common';
@@ -51,12 +50,13 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { AdminNavbarComponent } from './layouts/admin-navbar/admin-navbar.component';
 import { UserNavbarComponent } from './layouts/user-navbar/user-navbar.component';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
+import { TicketComponent } from './components/ticket/ticket.component';
+import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
     HomeComponent,
     CalendarComponent,
     EventPageComponent,
@@ -79,7 +79,9 @@ import { UserLayoutComponent } from './layouts/user-layout/user-layout.component
     AdminLayoutComponent,
     AdminNavbarComponent,
     UserNavbarComponent,
-    UserLayoutComponent
+    UserLayoutComponent,
+    TicketComponent,
+    TicketListComponent
   ],
   imports: [
     BrowserModule,
