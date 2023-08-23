@@ -39,8 +39,15 @@
   </button>
 </ng-template>
 
+<hr>
 
+<button *ngIf="!mapVisible"  class="btn btn-primary" (click)="openMap()">
+  Pokaż na mapie
+</button>
+<div *ngIf="mapVisible">
+  <app-map  [centerEvent]="currentEvent"></app-map>
 
+</div>
 
 
 <div *ngIf="isAdmin()">

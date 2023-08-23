@@ -1,5 +1,5 @@
 import { environment } from '../../environments/environment';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { EventService } from 'src/app/services/event.service';
@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { MapDialogContentComponent } from './map-dialog-content/map-dialog-content.component';
-
 
 @Component({
   selector: 'app-map',
@@ -20,6 +19,8 @@ export class MapComponent implements OnInit {
   lat: number = 53.1322;
   lng: number = 23.1687;
   events?: Event[];
+  @Input() centerEvent: Event | undefined; // Nowy input
+
 
   constructor(private eventService: EventService, public dialog: MatDialog) { }
 
@@ -39,9 +40,20 @@ export class MapComponent implements OnInit {
       })
       );
 
+      if (this.centerEvent) {
+        this.centerMapOnEvent(this.centerEvent);
+      }
+
   }
 
-
+  centerMapOnEvent(event: Event): void {
+    if (this.map) {
+      this.map.flyTo({
+        center: [event.lng!, event.lat!],
+        zoom: 13
+      });
+    }
+  }
 
   retrieveMarkers(): void {
     this.events?.filter(e => e.lng !== undefined && e.lat !== undefined)
