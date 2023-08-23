@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   currentEventDate: Date = new Date();
   expiredTickets: Ticket[] = [];
   isTicketValidityChecked: boolean = false; // zmienna flagowa
+  selectedProfileImage: File | null = null; // Pole przechowujące wybrany obrazek
 
 
   constructor(
@@ -27,7 +28,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.displayName = this.authService.userData.displayName || '';
+    this.displayName = '';
     this.retrieveTickets();
   }
 
@@ -91,5 +92,26 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
+
+    // Metoda wywoływana po wybraniu obrazka przez użytkownika
+    onFileSelected(event: any): void {
+      this.selectedProfileImage = event.target.files[0];
+    }
+
+    // Metoda do zmiany obrazka profilowego
+    changeProfileImage(): void {
+      if (this.selectedProfileImage) {
+        this.authService.updateProfileImage(this.selectedProfileImage)
+          .then((downloadURL) => {
+            console.log('Obrazek profilowy został zaktualizowany.');
+            console.log('Nowy URL obrazka:', downloadURL);
+          })
+          .catch((error: any ) => {
+            console.error('Wystąpił błąd podczas aktualizacji obrazka profilowego:', error);
+          });
+      } else {
+        console.warn('Nie wybrano obrazka profilowego.');
+      }
+    }
 
 }

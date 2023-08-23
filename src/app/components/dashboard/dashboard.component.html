@@ -28,8 +28,40 @@
         <div class="row" *ngIf="authService.userData as user">
           <div class="col-md-12">
             <div class="media">
-              <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}"
-                alt="{{user.displayName}}">
+              <!-- Wyświetlanie obrazka profilowego użytkownika -->
+              <div class="user-profile-image" *ngIf="user.photoURL; else defaultImage">
+                <img
+                  src = {{user.photoURL}}
+                  alt="User Profile Image"
+                  class="img-thumbnail"
+                  width="200px"
+                  height="200px"
+                />
+              </div>
+
+              <ng-template #defaultImage>
+                <img
+                  src="/assets/default-profile-image.jpg"
+                  alt="Default Profile Image"
+                  class="img-thumbnail"
+                  width="200px"
+                  height="200px"
+                />
+              </ng-template>
+              <!-- Przycisk do zmiany obrazka profilowego -->
+              <div class="form-group">
+                <label for="profileImage">Zmień obrazek profilowy:</label>
+                <input
+                  type="file"
+                  id="profileImage"
+                  accept="image/*"
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+
+              <div class="form-group">
+                <button class="btn btn-primary" (click)="changeProfileImage()">Zapisz zmiany</button>
+              </div>
               <div class="media-body">
                 <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
 

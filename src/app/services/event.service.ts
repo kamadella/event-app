@@ -61,4 +61,24 @@ export class EventService {
     return storageRef.getDownloadURL().toPromise();
   }
 
+  private deleteImage(imagePath: string): Promise<void> {
+    const storageRef = this.storage.ref(imagePath);
+    return storageRef.delete().toPromise();
+  }
+
+  deleteEventWithImage(eventId: string): Promise<void> {
+    const imagePath = `eventImages/${eventId}`;
+    // Usuń wydarzenie z bazą danych
+    const eventDeletePromise = this.delete(eventId);
+
+    // Usuń również obrazek z Firebase Storage
+    const imageDeletePromise = this.deleteImage(imagePath);
+
+    // Połącz obie obietnice w jedną i zwróć ją
+    return Promise.all([eventDeletePromise, imageDeletePromise]).then(() => {
+      console.log('Usunięto wydarzenie i obrazek');
+    });
+  }
+
+
 }

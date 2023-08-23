@@ -55,7 +55,7 @@ export class EventsArchiveComponent implements OnInit {
 
     });
 
-    geocoderFilter.addTo('#geocoderFilter');
+    geocoderFilter.addTo('#geocoderFilterArchieve');
 
     // Add geocoder result to container.
     geocoderFilter.on('result', (e) => {
