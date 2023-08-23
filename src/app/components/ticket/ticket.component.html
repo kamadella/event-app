@@ -37,7 +37,10 @@
             id="number"
             required
             formControlName="number"
+            [(ngModel)]="ticketForm.value.number"
+            (ngModelChange)="onReservedTicketsChange()"
           />
+          <p *ngIf="ticketsAvailabilityMessage">{{ ticketsAvailabilityMessage }}</p>
         </div>
 
 <hr class="my-4">

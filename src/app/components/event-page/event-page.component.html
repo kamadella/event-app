@@ -24,12 +24,23 @@
     </div>
 
 </div>
-
-<div *ngIf = "currentEvent && currentEvent.ticketsLeft && currentEvent.ticketsLeft > 0">
-  <button (click)="openTicket(currentEvent)" class="btn btn-primary">
+<ng-container *ngIf="isLoggedIn(); else loginPanel">
+  <div *ngIf="isActual()">
+    <div *ngIf = "currentEvent && currentEvent.ticketsLeft && currentEvent.ticketsLeft > 0">
+      <button (click)="openTicket(currentEvent)" class="btn btn-primary">
+        Zarezerwuj bilet
+      </button>
+    </div>
+  </div>
+</ng-container>
+<ng-template #loginPanel>
+  <button (click)="openDialog()" class="btn btn-primary">
     Zarezerwuj bilet
   </button>
-</div>
+</ng-template>
+
+
+
 
 
 <div *ngIf="isAdmin()">

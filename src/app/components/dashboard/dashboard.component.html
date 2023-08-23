@@ -103,4 +103,37 @@
     <p>brak zarezerwowanych biletów</p>
   </div>
 
+  <div *ngIf="expiredTickets && expiredTickets.length > 0">
+    <h3>Bilety z przeszłości</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nr biletu</th>
+          <th scope="col">Imię</th>
+          <th scope="col">Nazwisko</th>
+          <th scope="col">Wydarzenie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of expiredTickets, let i=index">
+          <th scope="row">{{i+1}}</th>
+          <td> {{ticket.id}}</td>
+          <td> {{ticket.name}}</td>
+          <td> {{ticket.surname}}</td>
+          <td>
+            <button  type="submit" class="btn btn-primary" routerLink="/event/{{ticket.eventId}}">
+              Pokaż wydarzenie
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
+
+
+
+
+
