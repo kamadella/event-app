@@ -75,7 +75,10 @@ export class MapComponent implements OnInit {
         )
       )
       ).subscribe(data => {
-        this.events = data.filter(event => event.published === true);
+        const currentDate = new Date();
+        this.events = data.filter(event =>
+          event.published === true && (event.date_end ? new Date(event.date_end) > currentDate : false)
+        );
         this.retrieveMarkers();
       });
   }
