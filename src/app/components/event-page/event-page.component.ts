@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
@@ -7,9 +7,11 @@ import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { Location } from '@angular/common';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TicketComponent } from '../ticket/ticket.component';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
+
+
 @Component({
   selector: 'app-event-page',
   templateUrl: './event-page.component.html',
@@ -95,15 +97,17 @@ export class EventPageComponent implements OnInit {
   deleteEvent(): void {
     if (confirm('Czy na pewno chcesz usunąć? ')) {
       if (this.currentEvent.id) {
+        // Wywołanie funkcji deleteEventWithImage
         this.eventService
-          .delete(this.currentEvent.id)
+          .deleteEventWithImage(this.currentEvent.id)
           .then(() => {
-            //this.refreshList.emit();
+            console.log('Usunięto wydarzenie i obrazek');
+            // Przekierowanie lub inne akcje po usunięciu
+            this.location.back(); // Wróć na poprzednią kartę
           })
           .catch((err) => console.log(err));
       }
     }
-    this.location.back(); // Wróć na poprzednią kartę
   }
 
   publishEvent(status: boolean): void {

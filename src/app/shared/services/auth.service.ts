@@ -6,6 +6,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { AngularFireStorage } from '@angular/fire/compat/storage'; // Import AngularFireStorage
 
 
 @Injectable({
@@ -18,7 +19,8 @@ export class AuthService {
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
-    public ngZone: NgZone // NgZone service to remove outside scope warning
+    public ngZone: NgZone, // NgZone service to remove outside scope warning
+    private storage: AngularFireStorage // Wstrzyknięcie AngularFireStorage
   ) {
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
@@ -52,12 +54,26 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log("signIN " + result.user?.displayName);
-        this.SetUserData(result.user);
-        this.afAuth.authState.subscribe((user) => {
-          if (user) {
-            this.router.navigate(['events/list']);
-          }
+        // Pobranie danych o użytkowniku, w tym informacji o roli
+        this.afs.doc(`users/${result.user!.uid}`).get().subscribe((userData) => {
+          const userWithRole = {
+            uid: result.user!.uid,
+            email: result.user!.email,
+            displayName: result.user!.displayName,
+            photoURL: result.user!.photoURL,
+            emailVerified: result.user!.emailVerified,
+            role: userData.get('role'), // Pobranie roli z bazy danych
+          };
+
+          this.userData = userWithRole;
+          localStorage.setItem('user', JSON.stringify(this.userData));
+          JSON.parse(localStorage.getItem('user')!);
+
+
+          console.log( result.user!.displayName);
+          console.log( result.user!.photoURL);
+
+          this.router.navigate(['events/list']);
         });
       })
       .catch((error) => {
@@ -137,7 +153,6 @@ export class AuthService {
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
     };
-    console.log( "SetUserData " +user.displayName);
     return userRef.set(userData, {
       merge: true,
     });
@@ -172,7 +187,6 @@ export class AuthService {
           // Aktualizacja danych użytkownika w local storage
           this.userData.displayName = newDisplayName;
           localStorage.setItem('user', JSON.stringify(this.userData));
-
           // Aktualizacja nazwy użytkownika w bazie danych Firestore
           return this.afs.doc(`users/${result!.uid}`).update({ displayName: newDisplayName });
         });
@@ -180,6 +194,39 @@ export class AuthService {
     } else {
       return Promise.reject('Nie można znaleźć zalogowanego użytkownika.');
     }
+  }
+
+  updateProfileImage(newImageFile: File) {
+    const user = this.afAuth.currentUser;
+
+    if (user) {
+      return user.then((result) => {
+        return this.uploadImageToStorage(result!.uid, newImageFile).then((downloadURL) => {
+          return result!.updateProfile({ photoURL: downloadURL }).then(() => {
+            // Aktualizacja danych użytkownika w local storage
+            this.userData.photoURL = downloadURL;
+            localStorage.setItem('user', JSON.stringify(this.userData));
+
+            // Nie jest już potrzebna aktualizacja URL obrazka w bazie danych Firestore,
+            // ponieważ Firebase Authentication już przechowuje URL obrazka profilowego.
+            // Możesz go pobrać bezpośrednio z obiektu użytkownika.
+
+            return downloadURL;
+          });
+        });
+      });
+    } else {
+      return Promise.reject('Nie można znaleźć zalogowanego użytkownika.');
+    }
+  }
+
+  private uploadImageToStorage(userId: string, imageFile: File): Promise<string> {
+    const storageRef = this.storage.ref(`userProfileImages/${userId}`);
+    const uploadTask = storageRef.put(imageFile);
+
+    return uploadTask.task.then(() => {
+      return storageRef.getDownloadURL().toPromise();
+    });
   }
 
 }
