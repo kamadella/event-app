@@ -2,10 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Comment } from 'src/app/models/comment.model';
 import { CommentService } from 'src/app/services/comment.service';
 import { AuthService } from '../../shared/services/auth.service';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { AddCommentDialogComponent } from './add-comment-dialog/add-comment-dialog.component';
-
+import { MatDialog } from '@angular/material/dialog';
+import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 @Component({
   selector: 'app-add-comment',
   templateUrl: './add-comment.component.html',
@@ -56,10 +54,9 @@ export class AddCommentComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(AddCommentDialogComponent);
+    const dialogRef = this.dialog.open(LoginDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
     });
   }
 }

@@ -18,15 +18,16 @@ import { AdminGuard } from './shared/guard/admin.guard';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
+import { EventsArchiveComponent } from './components/events-archive/events-archive.component';
 
 
 const routes: Routes = [
     {
       path: '', component: UserLayoutComponent,
       children: [
-        { path: '', redirectTo: '/events-list', pathMatch: 'full'},
+        { path: '', redirectTo: '/events/list', pathMatch: 'full'},
         { path: 'event/:id', component: EventPageComponent },
-        { path: 'events-list', component: EventsListComponent },
+        { path: 'events/list', component: EventsListComponent },
         { path: 'add-event', component: AddEventComponent, canActivate: [AuthGuard] },
         { path: 'map', component: MapComponent },
         { path: 'sign-in', component: SignInComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
         { path: 'forgot-password', component: ForgotPasswordComponent },
         { path: 'verify-email-address', component: VerifyEmailComponent },
         { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+        { path: 'events/archive', component: EventsArchiveComponent },
       ]
     },
 

@@ -8,12 +8,14 @@ import * as mapboxgl from 'mapbox-gl';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { environment } from '../../../environments/environment';
 
+
 @Component({
-  selector: 'app-events-list',
-  templateUrl: './events-list.component.html',
-  styleUrls: ['./events-list.component.css']
+  selector: 'app-events-archive',
+  templateUrl: './events-archive.component.html',
+  styleUrls: ['./events-archive.component.css']
 })
-export class EventsListComponent implements OnInit {
+export class EventsArchiveComponent implements OnInit {
+
   categories!: Category[];
   events?: Event[];
   currentEvent?: Event;
@@ -79,7 +81,7 @@ export class EventsListComponent implements OnInit {
     ).subscribe(data => {
       const currentDate = new Date();
       this.events = data.filter(event =>
-        event.published === true && (event.date_end ? new Date(event.date_end) > currentDate : false)
+        event.published === true && (event.date_end ? new Date(event.date_end) < currentDate : false)
       );
 
       this.filteredEventList = this.events;

@@ -9,11 +9,10 @@ import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { environment } from '../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-
 @Component({
   selector: 'app-add-event',
   templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.css']
+  styleUrls: ['./add-event.component.css'],
 })
 export class AddEventComponent implements OnInit {
   eventForm!: FormGroup;
@@ -26,8 +25,12 @@ export class AddEventComponent implements OnInit {
 
   selectedImageFile: File | null = null;
 
-
-  constructor(private eventService: EventService, private categoryService: CategoryService, private router: Router, public fb: FormBuilder) { }
+  constructor(
+    private eventService: EventService,
+    private categoryService: CategoryService,
+    private router: Router,
+    public fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.retrieveCategory();
@@ -41,17 +44,15 @@ export class AddEventComponent implements OnInit {
       tickets: [''],
       ticketsLeft: [''],
       img: [''],
-      lat: [''],         // New form control for latitude
-      lng: [''],         // New form control for longitude
-      place_name: [''],  // New form control for place_name
+      lat: [''], // New form control for latitude
+      lng: [''], // New form control for longitude
+      place_name: [''], // New form control for place_name
       published: [''],
-
     });
-
 
     const geocoder = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
-      mapboxgl: mapboxgl
+      mapboxgl: mapboxgl,
     });
 
     geocoder.addTo('#geocoder');
@@ -65,17 +66,10 @@ export class AddEventComponent implements OnInit {
       this.eventForm.patchValue({
         lat: latitude,
         lng: longitude,
-        place_name: place_name
+        place_name: place_name,
       });
-
     });
-
   }
-
-
-
-
-
 
   onImageSelected(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
@@ -86,12 +80,11 @@ export class AddEventComponent implements OnInit {
   saveEvent(): void {
     this.eventForm.value.published = false;
 
-    if (this.eventForm.value.tickets == ''){
+    if (this.eventForm.value.tickets == '') {
       this.eventForm.value.tickets = 0;
     }
 
     console.log(this.eventForm.value.tickets);
-
 
     this.eventForm.value.ticketsLeft = this.eventForm.value.tickets;
 
@@ -103,23 +96,22 @@ export class AddEventComponent implements OnInit {
           this.router.navigate(['/events-list']);
         });
     }
-
   }
-
-
-
 
   retrieveCategory(): void {
-    this.categoryService.getAll().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+    this.categoryService
+      .getAll()
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
         )
       )
-    ).subscribe(data => {
-      this.categories = data;
-    });
+      .subscribe((data) => {
+        this.categories = data;
+      });
   }
-
-
 }

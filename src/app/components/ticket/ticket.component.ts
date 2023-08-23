@@ -12,6 +12,8 @@ import { EventService } from 'src/app/services/event.service';
 })
 export class TicketComponent implements OnInit {
   ticketForm!: FormGroup;
+  ticketsAvailabilityMessage: string = '';
+
 
   constructor(@Inject(MAT_DIALOG_DATA) public event: any,
   private ticketService: TicketService,
@@ -30,6 +32,15 @@ export class TicketComponent implements OnInit {
     });
   }
 
+  onReservedTicketsChange(): void {
+    const reservedTickets = this.ticketForm.value.number;
+        // Tutaj wykonaj sprawdzenie dostępności biletów i ustaw odpowiednią wiadomość
+        if (this.event.ticketsLeft < reservedTickets) {
+          this.ticketsAvailabilityMessage = 'Nie ma wystarczającej ilości biletów.';
+        } else {
+          this.ticketsAvailabilityMessage = '';
+        }
+  }
 
 
   saveTicket(): void {
@@ -41,14 +52,17 @@ export class TicketComponent implements OnInit {
     // Przypisz identyfikator wydarzenia do biletu
     this.ticketForm.value.eventId = this.event.id;
 
-
-    if (confirm('Czy na pewno chcesz zarezerwować bilety?')) {
-      this.ticketService
-        .create(this.ticketForm.value)
-        .then(() => {
-          console.log('Rezerwacja się powiodła');
-          this.updateEvent(this.ticketForm.value.number);
-        });
+    if (this.event.ticketsLeft >= this.ticketForm.value.number) {
+      if (confirm('Czy na pewno chcesz zarezerwować bilety?')) {
+        this.ticketService
+          .create(this.ticketForm.value)
+          .then(() => {
+            console.log('Rezerwacja się powiodła');
+            this.updateEvent(this.ticketForm.value.number);
+          });
+      }
+    } else {
+      alert('Brak wystarczającej ilości dostępnych miejsc.');
     }
   }
 

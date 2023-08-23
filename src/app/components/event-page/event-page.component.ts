@@ -9,7 +9,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { Location } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TicketComponent } from '../ticket/ticket.component';
-
+import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 @Component({
   selector: 'app-event-page',
   templateUrl: './event-page.component.html',
@@ -37,7 +37,6 @@ export class EventPageComponent implements OnInit {
     private route: ActivatedRoute,
     private eventService: EventService,
     private categoryService: CategoryService,
-    private router: Router,
     private authService: AuthService,
     private location: Location,
     public dialog: MatDialog
@@ -135,6 +134,24 @@ export class EventPageComponent implements OnInit {
 
   openTicket(e: Event) {
     const dialogRef = this.dialog.open(TicketComponent, {data: e,});
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  isActual() : boolean {
+    const currentDate = new Date();
+    return this.currentEvent.date_end ? new Date(this.currentEvent.date_end) > currentDate : false
+
+  }
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn;
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(LoginDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);

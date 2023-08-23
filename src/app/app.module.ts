@@ -45,7 +45,6 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AddCommentDialogComponent } from './components/add-comment/add-comment-dialog/add-comment-dialog.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AdminNavbarComponent } from './layouts/admin-navbar/admin-navbar.component';
 import { UserNavbarComponent } from './layouts/user-navbar/user-navbar.component';
@@ -53,6 +52,9 @@ import { UserLayoutComponent } from './layouts/user-layout/user-layout.component
 import { TicketComponent } from './components/ticket/ticket.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { MyTicketsComponent } from './components/my-tickets/my-tickets.component';
+import { EventsArchiveComponent } from './components/events-archive/events-archive.component';
+import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
+import { FooterComponent } from './layouts/footer/footer.component';
 
 
 @NgModule({
@@ -76,14 +78,16 @@ import { MyTicketsComponent } from './components/my-tickets/my-tickets.component
     ForgotPasswordComponent,
     VerifyEmailComponent,
     DashboardComponent,
-    AddCommentDialogComponent,
     AdminLayoutComponent,
     AdminNavbarComponent,
     UserNavbarComponent,
     UserLayoutComponent,
     TicketComponent,
     TicketListComponent,
-    MyTicketsComponent
+    MyTicketsComponent,
+    EventsArchiveComponent,
+    LoginDialogComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
