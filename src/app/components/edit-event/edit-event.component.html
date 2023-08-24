@@ -1,131 +1,195 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
-
+<link
+  rel="stylesheet"
+  href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+  type="text/css"
+/>
 
 <div class="py-5 text-center">
   <h2>Edytuj wydarzenie</h2>
-  <hr>
+  <hr />
 </div>
 
-
-
 <form [formGroup]="eventForm" (ngSubmit)="updateEvent()" novalidate>
-<div class="submit-form g-5 d-flex justify-content-center">
-  <div class="col-md-7">
-    <div class="row g-3">
+  <div class="submit-form g-5 d-flex justify-content-center">
+    <div class="col-md-7">
+      <div class="row g-3">
+        <div class="form-group col-sm-12">
+          <label for="title">Nazwa</label>
+          <input
+            placeholder="nazwa wydarzenia..."
+            type="text"
+            class="form-control"
+            id="name"
+            required
+            formControlName="name"
+            name="title"
+            value="{{ currentEvent.name }}"
+          />
+          <div
+            *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+            class="invalid-feedback"
+          >
+            Nazwa musi zawierać minimum 3 znaki
+          </div>
+        </div>
 
-      <div class="form-group col-sm-12">
-        <label for="title">Nazwa</label>
-        <input
-          placeholder="nazwa wydarzenia..."
-          type="text"
-          class="form-control"
-          id="name"
+        <div class="form-group col-sm-12">
+          <label for="description">Opis</label>
+          <textarea
+            placeholder="opis..."
+            class="form-control"
+            id="description"
+            required
+            formControlName="description"
+            value="{{ currentEvent.description }}"
+          ></textarea>
+          <div
+            *ngIf="
+              description?.invalid &&
+              (description?.dirty || description?.touched)
+            "
+            class="invalid-feedback"
+          >
+            Opis musi zawierać minimum 10 znaków
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+          <label for="Lokalizacja">Lokalizacja</label>
+          <p>{{ previousLocalization.place_name }}</p>
+          <div id="geocoder"></div>
+        </div>
+
+        <div class="form-group col-sm-12">
+          <label for="organizator">Organizator</label>
+          <input
+            placeholder="organizator..."
+            class="form-control"
+            id="organizator"
+            required
+            formControlName="organizator"
+            value="{{ currentEvent.organizator }}"
+          />
+          <div
+            *ngIf="
+              organizator?.invalid &&
+              (organizator?.dirty || organizator?.touched)
+            "
+            class="invalid-feedback"
+          >
+            Organizator musi mieć dlugość conajmniej 3 znaków
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+          <label for="img">Zdjęcie wydarzenia</label>
+          <div *ngIf="previousImage" class="mt-2">
+            Poprzednie zdjęcie:
+            <img
+              width="200px"
+              height="200px"
+              [src]="previousImage"
+              alt="Previous Image"
+            />
+          </div>
+          <input
+            type="file"
+            class="form-control"
+            id="img"
+            (change)="onImageSelected($event)"
+            accept="image/*"
+          />
+
+        </div>
+
+        <div class="form-group col-6">
+          <label for="date_start">Data rozpoczęcia</label>
+          <input
+            class="form-control"
+            type="datetime-local"
+            id="date_start"
+            required
+            formControlName="date_start"
+            value="{{ currentEvent.date_start }}"
+          />
+          <div
+            *ngIf="
+              date_start?.invalid && (date_start?.dirty || date_start?.touched)
+            "
+            class="invalid-feedback"
+          >
+            Podano nieprawidłową datę początkową
+          </div>
+        </div>
+
+        <div class="form-group col-6">
+          <label for="date_end">Data zakończenia</label>
+          <input
+            class="form-control"
+            type="datetime-local"
+            id="date_end"
+            required
+            formControlName="date_end"
+            value="{{ currentEvent.date_end }}"
+          />
+          <div *ngIf="date_end?.dirty || date_end?.touched">
+            <div *ngIf="date_end?.invalid" class="invalid-feedback">
+              Podano nieprawidłową datę końcową
+            </div>
+            <div
+              *ngIf="date_end?.value < date_start?.value"
+              class="invalid-feedback"
+            >
+              Data końcowa powinna być większa od początkowej 😉
+            </div>
+          </div>
+        </div>
+
+        <mat-radio-group
+          class="example-radio-group"
+          formControlName="category"
           required
-          formControlName="name"
-          name="title"
-          value={{currentEvent.name}}
-        />
+        >
+          <mat-radio-button
+            class="form-check form-check-inline"
+            *ngFor="let category of categories"
+            [value]="category.id"
+          >
+            {{ category.name }}
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <div class="form-group col-12">
+          <label for="tickets">Ilość biletów</label>
+          <input
+            type="number"
+            class="form-control"
+            value="0"
+            id="tickets"
+            formControlName="tickets"
+            value="{{ currentEvent.tickets }}"
+          />
+        </div>
       </div>
-
-      <div class="form-group col-sm-12">
-        <label for="description">Opis</label>
-        <textarea
-          placeholder="opis..."
-          class="form-control"
-          id="description"
-          required
-          formControlName="description"
-          name="description"
-          value={{currentEvent.description}}
-        ></textarea>
-      </div>
-
-      <div class="form-group col-sm-12">
-        <label for="Lokalizacja">Lokalizacja</label>
-        <p>{{previousLocalization.place_name}}</p>
-        <div id="geocoder"></div>
-      </div>
-
-
-      <div class="form-group col-sm-12">
-        <label for="organizator">Organizator</label>
-        <input
-          placeholder="organizator..."
-          class="form-control"
-          id="organizator"
-          required
-          formControlName="organizator"
-          name="organizator"
-          value={{currentEvent.organizator}}
-        />
-      </div>
-
-      <div class="form-group col-sm-12">
-        <label for="img">Url zdjecia</label>
-        <input
-          placeholder="img..."
-          class="form-control"
-          id="img"
-          required
-          formControlName="img"
-          name="img"
-          value={{currentEvent.img}}
-        />
-      </div>
-
-      <div class="form-group col-6">
-        <label for="date_start">Data rozpoczęcia</label>
-        <input
-          class="form-control"
-          type="datetime-local"
-          id="date_start"
-          required
-          formControlName="date_start"
-          name="date_start"
-          value={{currentEvent.date_start}}
-        />
-      </div>
-
-      <div class="form-group col-6">
-        <label for="date_end">Data zakończenia</label>
-        <input
-          class="form-control"
-          type="datetime-local"
-          id="date_end"
-          required
-          formControlName="date_end"
-          name="date_end"
-          value={{currentEvent.date_end}}
-        />
-      </div>
-
-
-      <mat-radio-group class="example-radio-group" formControlName="category">
-        <mat-radio-button class="form-check form-check-inline" *ngFor="let category of categories" [value]="category.id">
-          {{category.name}}
-        </mat-radio-button>
-      </mat-radio-group>
-
-      <div class="form-group col-12">
-        <label for="tickets">Ilość biletów</label>
-        <input
-          type="number"
-          class="form-control"
-          value="0"
-          id="tickets"
-          formControlName="tickets"
-          name="tickets"
-          value={{currentEvent.tickets}}
-        />
-      </div>
-
-    </div>
-    <hr class="my-4">
-    <button type="submit" class="btn btn-success" [disabled]="!eventForm.valid">
-      Aktualizuj
+      <hr class="my-4" />
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="
+          !eventForm.valid ||
+          date_end?.value <= date_start?.value ||
+          !eventForm.get('place_name')?.value
+        "
+      >
+        Aktualizuj
+      </button>
+      <button
+      class="btn btn-info"
+      routerLink="/event/{{currentEvent.id}}"
+    >
+      Wróć do wydarznia
     </button>
-   </div>
+    </div>
   </div>
-
-
+</form>

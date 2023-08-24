@@ -13,4 +13,5 @@ export class Event {
   tickets?: number;
   ticketsLeft?: number;
   published?: boolean;
+  createdAt?: Date;
 }

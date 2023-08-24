@@ -3,15 +3,21 @@
     <div class="row g-3">
       <div class="form-group col-sm-12">
         <label for="title">Nowy Komentarz</label>
-        <input
+        <textarea
           placeholder="..."
           type="text"
           class="form-control"
           id="name"
           required
           [(ngModel)]="comment.text"
-          name="title"
-        />
+          #commentText="ngModel"
+          minlength="5"
+          maxlength="300"
+          ></textarea>
+        <div *ngIf="commentText.invalid && (commentText.dirty || commentText.touched)" class="invalid-feedback">
+          Komentarz musi zawierać od 5 do 500 znaków
+        </div>
+
       </div>
     </div>
   </div>

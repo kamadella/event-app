@@ -94,8 +94,21 @@ export class DashboardComponent implements OnInit {
   }
 
     // Metoda wywoływana po wybraniu obrazka przez użytkownika
-    onFileSelected(event: any): void {
-      this.selectedProfileImage = event.target.files[0];
+    onImageSelected(event: any): void {
+      if (event.target.files && event.target.files.length > 0) {
+        const selectedImage = event.target.files[0];
+        const imageSizeLimit = 3 * 1024 * 1024; // Przykładowy limit wielkości obrazka (3 MB)
+
+        if (selectedImage.size > imageSizeLimit) {
+          alert('Zdjęcie jest za duże. Maksymalny rozmiar to 3MB.');
+
+          this.selectedProfileImage = null; // Wyczyść wybrany plik
+          event.target.value = null; // Wyczyść pole input typu plik
+
+        } else {
+          this.selectedProfileImage = selectedImage;
+        }
+      }
     }
 
     // Metoda do zmiany obrazka profilowego

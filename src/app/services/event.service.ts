@@ -37,8 +37,28 @@ export class EventService {
     return eventDocRef;
   }
 
+
   update(id: string, data: any): Promise<void> {
     return this.eventsRef.doc(id).update(data);
+  }
+
+
+  async updateIMG(id: string, data: any, imageFile: File | null): Promise<void> {
+    const eventRef = this.eventsRef.doc(id);
+
+    if (imageFile) {
+      // Wysyłanie nowego obrazka
+      const storageRef = this.storage.ref(`eventImages/${id}`);
+      const uploadTask = this.storage.upload(`eventImages/${id}`, imageFile);
+      await uploadTask.task;
+
+      const downloadURL = await storageRef.getDownloadURL().toPromise();
+
+      data.img = downloadURL;
+    }
+
+    // Aktualizacja pozostałych danych wydarzenia
+    await eventRef.update(data);
   }
 
   delete(id: string): Promise<void> {

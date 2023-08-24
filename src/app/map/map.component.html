@@ -1,7 +1,7 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
-
+<div class="map-container">
 <div class='sidebar'>
   <div class='heading'>
     <h1>Wydarzenia</h1>
@@ -11,8 +11,8 @@
       <a
         class="title"
         [id]="'link-' + event.id"
-        (click)="flyToStore(event)"
-        (click)="createPopUp(event)"
+        (click)="flyToStore(event)">
+
       >
         {{ event.name }}
       </a>
@@ -24,4 +24,7 @@
 
 
 </div>
-<div class="map" id="map" ></div>
+  <div class="map" id="map"></div>
+</div>
+
+

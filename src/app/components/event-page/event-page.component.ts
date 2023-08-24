@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { TicketComponent } from '../ticket/ticket.component';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
-
+import { MapComponent } from 'src/app/map/map.component';
 
 @Component({
   selector: 'app-event-page',
@@ -34,6 +34,8 @@ export class EventPageComponent implements OnInit {
   currentCategory: Category = {
     name: '',
   };
+  mapVisible: boolean = false;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -160,5 +162,9 @@ export class EventPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  openMap(): void {
+    this.mapVisible = true;
   }
 }
