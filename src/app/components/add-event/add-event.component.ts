@@ -48,6 +48,7 @@ export class AddEventComponent implements OnInit {
       lng: [''], // New form control for longitude
       place_name: ['', [Validators.required]], // New form control for place_name
       published: [''],
+      createdAt: ['']
     });
 
     const geocoder = new MapboxGeocoder({
@@ -125,18 +126,21 @@ export class AddEventComponent implements OnInit {
       this.eventForm.value.tickets = 0;
     }
 
-    console.log(this.eventForm.value.tickets);
+    console.log(this.eventForm.value.date_end);
+
 
     this.eventForm.value.ticketsLeft = this.eventForm.value.tickets;
+    this.eventForm.value.createdAt = new Date();
 
     if (confirm('Czy na pewno chcesz dodać nowe wydarzenie? ')) {
       this.eventService
         .create(this.eventForm.value, this.selectedImageFile!)
         .then(() => {
           console.log('Created new item successfully!');
-          this.router.navigate(['/events-list']);
+          this.router.navigate(['/events/list']);
         });
     }
+
   }
 
   retrieveCategory(): void {
@@ -154,5 +158,13 @@ export class AddEventComponent implements OnInit {
       .subscribe((data) => {
         this.categories = data;
       });
+  }
+
+
+    isDateEndInvalid(): boolean {
+    const today = new Date();
+
+    const dateEnd = this.eventForm.get('date_end')?.value;
+    return new Date(dateEnd) < today;
   }
 }

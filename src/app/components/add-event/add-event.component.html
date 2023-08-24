@@ -121,6 +121,9 @@
             <div *ngIf="date_end?.value<date_start?.value" class="invalid-feedback">
               Data końcowa powinna być większa od początkowej 😉
             </div>
+            <div *ngIf="isDateEndInvalid()" class="invalid-feedback">
+              Data zakończenia nie może być z przeszlości
+            </div>
           </div>
         </div>
 
@@ -153,7 +156,7 @@
       <button
         type="submit"
         class="btn btn-success"
-        [disabled]="!eventForm.valid || date_end?.value <= date_start?.value || !eventForm.get('place_name')?.value"
+        [disabled]="!eventForm.valid || date_end?.value <= date_start?.value || !eventForm.get('place_name')?.value || isDateEndInvalid()"
       >
         Dodaj
       </button>

@@ -69,12 +69,9 @@ export class MapComponent implements OnInit {
   }
 
   openDialog(e: Event) {
-    console.log(`openDialog()`);
-
     const dialogRef = this.dialog.open(MapDialogContentComponent, {data: e,});
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
     });
   }
 

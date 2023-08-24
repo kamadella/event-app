@@ -45,8 +45,9 @@
   Pokaż na mapie
 </button>
 <div *ngIf="mapVisible">
-  <app-map  [centerEvent]="currentEvent"></app-map>
-
+  <div class="map_container">
+    <app-map  [centerEvent]="currentEvent"></app-map>
+  </div>
 </div>
 
 

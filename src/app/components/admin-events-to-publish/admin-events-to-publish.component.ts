@@ -36,10 +36,29 @@ export class AdminEventsToPublishComponent implements OnInit {
         changes.map(c =>
           ({ id: c.payload.doc.id, ...c.payload.doc.data() })
         )
+      ),
+      map(data =>
+        data.filter(e => e.published === false)
+      ),
+      map(filteredEvents =>
+        filteredEvents.sort((a, b) => {
+          const dateA: any = a.createdAt ? a.createdAt : null;
+          const dateB: any = b.createdAt ? b.createdAt : null;
+
+          if (dateA && dateB) {
+            return dateA - dateB;
+          } else if (dateA) {
+            return -1; // Przenieś elementy z niezdefiniowaną datą na początek
+          } else if (dateB) {
+            return 1; // Przenieś elementy z niezdefiniowaną datą na początek
+          } else {
+            return 0;
+          }
+        })
       )
-    ).subscribe(data => {
-      this.events = data.filter(e => e.published === false);
-    });
+    ).subscribe(sortedEvents => {
+      this.events = sortedEvents;
+    })
   }
 
   retrieveCategories(): void {

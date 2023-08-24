@@ -77,13 +77,26 @@ export class EventsArchiveComponent implements OnInit {
         changes.map(c =>
           ({ id: c.payload.doc.id, ...c.payload.doc.data() })
         )
-      )
-    ).subscribe(data => {
-      const currentDate = new Date();
-      this.events = data.filter(event =>
-        event.published === true && (event.date_end ? new Date(event.date_end) < currentDate : false)
-      );
+      ),
+      map(data => {
+        const currentDate = new Date();
+        const filteredEvents = data.filter(event =>
+          event.published === true && (event.date_end ? new Date(event.date_end) < currentDate : false)
+        );
+        //sortowanie po dacie rozpoczęcia
+        return filteredEvents.sort((a, b) => {
+          const dateA = a.date_start ? new Date(a.date_start) : null;
+          const dateB = b.date_start ? new Date(b.date_start) : null;
 
+          if (!dateA && !dateB) return 0;
+          if (!dateA) return 1;
+          if (!dateB) return -1;
+
+          return  dateB.getTime() - dateA.getTime();
+        });
+      })
+    ).subscribe(sortedEvents => {
+      this.events = sortedEvents;
       this.filteredEventList = this.events;
     });
   }

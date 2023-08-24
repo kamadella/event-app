@@ -49,13 +49,14 @@
                 />
               </ng-template>
               <!-- Przycisk do zmiany obrazka profilowego -->
-              <div class="form-group">
+              <div class="form-group col-sm-12">
                 <label for="profileImage">Zmień obrazek profilowy:</label>
                 <input
                   type="file"
+                  class="form-control"
                   id="profileImage"
                   accept="image/*"
-                  (change)="onFileSelected($event)"
+                  (change)="onImageSelected($event)"
                 />
               </div>
 

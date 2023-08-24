@@ -166,6 +166,5 @@ export class EventPageComponent implements OnInit {
 
   openMap(): void {
     this.mapVisible = true;
-
   }
 }

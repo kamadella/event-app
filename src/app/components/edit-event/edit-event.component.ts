@@ -94,9 +94,6 @@ export class EditEventComponent implements OnInit {
         place_name: this.previousLocalization.place_name,
       });
     });
-
-    console.log(this.eventForm.value);
-    console.log(this.eventForm.value.name);
   }
 
   get name() {
