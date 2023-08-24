@@ -1,126 +1,163 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
-
+<link
+  rel="stylesheet"
+  href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+  type="text/css"
+/>
 
 <div class="py-5 text-center">
   <h2>Dodaj nowe wydarzenie</h2>
-  <hr>
+  <hr />
 </div>
 
-
-
 <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" novalidate>
-<div class="submit-form g-5 d-flex justify-content-center">
-  <div class="col-md-7">
-    <div class="row g-3">
+  <div class="submit-form g-5 d-flex justify-content-center">
+    <div class="col-md-7">
+      <div class="row g-3">
+        <div class="form-group col-sm-12">
+          <label for="title">Nazwa</label>
+          <input
+            placeholder="nazwa wydarzenia..."
+            type="text"
+            class="form-control"
+            id="name"
+            required
+            formControlName="name"
+          />
+          <div
+            *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+            class="invalid-feedback"
+          >
+            Nazwa musi zawierać minimum 3 znaki
+          </div>
+        </div>
 
-      <div class="form-group col-sm-12">
-        <label for="title">Nazwa</label>
-        <input
-          placeholder="nazwa wydarzenia..."
-          type="text"
-          class="form-control"
-          id="name"
+        <div class="form-group col-sm-12">
+          <label for="description">Opis</label>
+          <textarea
+            placeholder="opis..."
+            class="form-control"
+            id="description"
+            required
+            formControlName="description"
+          ></textarea>
+          <div
+            *ngIf="
+              description?.invalid &&
+              (description?.dirty || description?.touched)
+            "
+            class="invalid-feedback"
+          >
+            Opis musi zawierać minimum 10 znaków
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+          <label for="Lokalizacja" required>Lokalizacja</label>
+          <div id="geocoder"></div>
+        </div>
+
+        <div class="form-group col-sm-12">
+          <label for="organizator">Organizator</label>
+          <input
+            placeholder="organizator..."
+            class="form-control"
+            id="organizator"
+            required
+            formControlName="organizator"
+          />
+          <div
+            *ngIf="
+              organizator?.invalid &&
+              (organizator?.dirty || organizator?.touched)
+            "
+            class="invalid-feedback"
+          >
+            Organizator musi mieć dlugość conajmniej 3 znaków
+          </div>
+        </div>
+
+        <!-- Dodaj input do przesyłania obrazka -->
+        <div class="form-group col-sm-12">
+          <label for="img">Zdjęcie wydarzenia</label>
+          <input
+            type="file"
+            class="form-control"
+            id="img"
+            (change)="onImageSelected($event)"
+            accept="image/*"
+            formControlName="img"
+            required
+          />
+        </div>
+
+        <div class="form-group col-6">
+          <label for="date_start">Data rozpoczęcia</label>
+          <input
+            class="form-control"
+            type="datetime-local"
+            id="date_start"
+            required
+            formControlName="date_start"
+          />
+          <div *ngIf="date_start?.invalid && (date_start?.dirty || date_start?.touched)" class="invalid-feedback">
+            Podano nieprawidłową datę początkową
+          </div>
+        </div>
+
+        <div class="form-group col-6">
+          <label for="date_end">Data zakończenia</label>
+          <input
+            class="form-control"
+            type="datetime-local"
+            id="date_end"
+            required
+            formControlName="date_end"
+          />
+          <div *ngIf="(date_end?.dirty || date_end?.touched)">
+            <div *ngIf="date_end?.invalid" class="invalid-feedback">
+              Podano nieprawidłową datę końcową
+            </div>
+            <div *ngIf="date_end?.value<date_start?.value" class="invalid-feedback">
+              Data końcowa powinna być większa od początkowej 😉
+            </div>
+          </div>
+        </div>
+
+        <mat-radio-group
+          class="example-radio-group"
+          formControlName="category"
           required
-          formControlName="name"
-          name="title"
-        />
+        >
+          <mat-radio-button
+            class="form-check form-check-inline"
+            *ngFor="let category of categories"
+            [value]="category.id"
+          >
+            {{ category.name }}
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <div class="form-group col-12">
+          <label for="tickets">Ilość biletów</label>
+          <input
+            type="number"
+            class="form-control"
+            value="0"
+            id="tickets"
+            formControlName="tickets"
+          />
+        </div>
       </div>
+      <hr class="my-4" />
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="!eventForm.valid || date_end?.value <= date_start?.value || !eventForm.get('place_name')?.value"
+      >
+        Dodaj
+      </button>
 
-      <div class="form-group col-sm-12">
-        <label for="description">Opis</label>
-        <textarea
-          placeholder="opis..."
-          class="form-control"
-          id="description"
-          required
-          formControlName="description"
-          name="description"
-        ></textarea>
-      </div>
-
-      <div class="form-group col-sm-12">
-        <label for="Lokalizacja">Lokalizacja</label>
-        <div id="geocoder"></div>
-      </div>
-
-
-      <div class="form-group col-sm-12">
-        <label for="organizator">Organizator</label>
-        <input
-          placeholder="organizator..."
-          class="form-control"
-          id="organizator"
-          required
-          formControlName="organizator"
-          name="organizator"
-        />
-      </div>
-
-              <!-- Dodaj input do przesyłania obrazka -->
-              <div class="form-group col-sm-12">
-                <label for="img">Zdjęcie wydarzenia</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  id="img"
-                  (change)="onImageSelected($event)"
-                  accept="image/*"
-                  name="img"
-                  formControlName="img"
-                />
-              </div>
-
-
-      <div class="form-group col-6">
-        <label for="date_start">Data rozpoczęcia</label>
-        <input
-          class="form-control"
-          type="datetime-local"
-          id="date_start"
-          required
-          formControlName="date_start"
-          name="date_start"
-        />
-      </div>
-
-      <div class="form-group col-6">
-        <label for="date_end">Data zakończenia</label>
-        <input
-          class="form-control"
-          type="datetime-local"
-          id="date_end"
-          required
-          formControlName="date_end"
-          name="date_end"
-        />
-      </div>
-
-
-      <mat-radio-group class="example-radio-group" formControlName="category">
-        <mat-radio-button class="form-check form-check-inline" *ngFor="let category of categories" [value]="category.id">
-          {{category.name}}
-        </mat-radio-button>
-      </mat-radio-group>
-
-      <div class="form-group col-12">
-        <label for="tickets">Ilość biletów</label>
-        <input
-          type="number"
-          class="form-control"
-          value="0"
-          id="tickets"
-          formControlName="tickets"
-          name="tickets"
-        />
-      </div>
-
-    </div>
-    <hr class="my-4">
-    <button type="submit" class="btn btn-success" [disabled]="!eventForm.valid">
-      Dodaj
-    </button>
     </div>
   </div>
-
-
+</form>

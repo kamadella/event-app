@@ -9,23 +9,24 @@ import * as mapboxgl from 'mapbox-gl';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { environment } from '../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-event',
   templateUrl: './edit-event.component.html',
-  styleUrls: ['./edit-event.component.css']
+  styleUrls: ['./edit-event.component.css'],
 })
 export class EditEventComponent implements OnInit {
   eventForm!: FormGroup;
 
-  eventId:string = "-1";
+  eventId: string = '-1';
   currentEvent: Event = {};
   previousLocalization = {
     lat: 0,
     lng: 0,
     place_name: '',
   };
+  previousImage: string = ''; // Nazwa lub ścieżka poprzedniego zdjęcia
   currentCategory: Category = {};
   categories?: Category[];
 
@@ -34,34 +35,41 @@ export class EditEventComponent implements OnInit {
   lat: number = 53.1322;
   lng: number = 23.1687;
 
-  constructor(private route: ActivatedRoute,private eventService: EventService, private categoryService: CategoryService, private router: Router, public fb: FormBuilder) { }
+  selectedImageFile: File | null = null;
+
+  constructor(
+    private route: ActivatedRoute,
+    private eventService: EventService,
+    private categoryService: CategoryService,
+    private router: Router,
+    public fb: FormBuilder,
+    private location: Location,
+  ) {}
 
   ngOnInit(): void {
     this.eventForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      description: [''],
-      organizator: [''],
-      img: [''],
-      date_start: [''],
-      date_end: [''],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      organizator: ['', [Validators.required, Validators.minLength(3)]],
+      date_start: ['', [Validators.required]],
+      date_end: ['', [Validators.required]],
       category: [''],
       tickets: [''],
-      lat: [''],         // New form control for latitude
-      lng: [''],         // New form control for longitude
-      place_name: [''],  // New form control for place_name
+      ticketsLeft: [''],
+      img: [''],
+      lat: [''], // New form control for latitude
+      lng: [''], // New form control for longitude
+      place_name: ['', [Validators.required]], // New form control for place_name
       published: [''],
     });
 
-    this.route.params.subscribe( params=> this.eventId = params['id']);
+    this.route.params.subscribe((params) => (this.eventId = params['id']));
     this.getCurrentEvent(this.eventId);
     this.retrieveCategory();
 
-
-
-
     const geocoder = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
-      mapboxgl: mapboxgl
+      mapboxgl: mapboxgl,
     });
     geocoder.addTo('#geocoder');
 
@@ -74,25 +82,22 @@ export class EditEventComponent implements OnInit {
       this.eventForm.patchValue({
         lat: latitude,
         lng: longitude,
-        place_name: place_name
+        place_name: place_name,
       });
-      });
+    });
 
     // Clear results container when search is cleared.
     geocoder.on('clear', () => {
       this.eventForm.patchValue({
         lat: this.previousLocalization.lat,
         lng: this.previousLocalization.lng,
-        place_name: this.previousLocalization.place_name
+        place_name: this.previousLocalization.place_name,
       });
     });
 
-    console.log( this.eventForm.value);
-    console.log( this.eventForm.value.name);
-
-
+    console.log(this.eventForm.value);
+    console.log(this.eventForm.value.name);
   }
-
 
   get name() {
     return this.eventForm.get('name');
@@ -103,90 +108,124 @@ export class EditEventComponent implements OnInit {
   get organizator() {
     return this.eventForm.get('organizator');
   }
-  get img() {
-    return this.eventForm.get('img');
-  }
   get date_start() {
     return this.eventForm.get('date_start');
   }
   get date_end() {
     return this.eventForm.get('date_end');
   }
-  get category() {
-    return this.eventForm.get('category');
-  }
-  get tickets() {
-    return this.eventForm.get('tickets');
+  get place_name() {
+    return this.eventForm.get('place_name');
   }
 
-  getCurrentCategory(id: string) : void{
-    this.categoryService.getOne(id).snapshotChanges().pipe(
-      map(c =>{
-        const categoryData = c.payload.data() as Category;
-        const categoryId = c.payload.id;
-        return { id: categoryId, ...categoryData };
-  })
-    ).subscribe(data => {
-      this.currentCategory = data;
-    });
-  }
-
-
-  getCurrentEvent(id: string) : void{
-    this.eventService.getOne(id).snapshotChanges().pipe(
-      map(c =>{
-        const eventData = c.payload.data() as Event;
-        const eventId = c.payload.id;
-        return { id: eventId, ...eventData };
-  })
-    ).subscribe(data => {
-      this.currentEvent = data;
-
-      this.previousLocalization.lat = data.lat!;
-      this.previousLocalization.lng = data.lng!;
-      this.previousLocalization.place_name = data.place_name!;
-
-      this.eventForm.patchValue({
-        name: data.name,
-        description: data.description,
-        organizator:data.organizator,
-        img: data.img,
-        date_start:data.date_start,
-        date_end: data.date_end,
-        category: data.category,
-        tickets: data.tickets,
-        lat: data.lat,
-        lng: data.lng,
-        place_name: data.place_name
+  getCurrentCategory(id: string): void {
+    this.categoryService
+      .getOne(id)
+      .snapshotChanges()
+      .pipe(
+        map((c) => {
+          const categoryData = c.payload.data() as Category;
+          const categoryId = c.payload.id;
+          return { id: categoryId, ...categoryData };
+        })
+      )
+      .subscribe((data) => {
+        this.currentCategory = data;
       });
-
-      this.getCurrentCategory(this.currentEvent.category!);
-    });
   }
 
+  getCurrentEvent(id: string): void {
+    this.eventService
+      .getOne(id)
+      .snapshotChanges()
+      .pipe(
+        map((c) => {
+          const eventData = c.payload.data() as Event;
+          const eventId = c.payload.id;
+          return { id: eventId, ...eventData };
+        })
+      )
+      .subscribe((data) => {
+        this.currentEvent = data;
+        this.previousImage = data.img!;
+        this.previousLocalization.lat = data.lat!;
+        this.previousLocalization.lng = data.lng!;
+        this.previousLocalization.place_name = data.place_name!;
+
+        this.eventForm.patchValue({
+          name: data.name,
+          description: data.description,
+          organizator: data.organizator,
+          img: data.img,
+          date_start: data.date_start,
+          date_end: data.date_end,
+          category: data.category,
+          tickets: data.tickets,
+          lat: data.lat,
+          lng: data.lng,
+          place_name: data.place_name,
+        });
+
+        this.getCurrentCategory(this.currentEvent.category!);
+      });
+  }
 
   retrieveCategory(): void {
-    this.categoryService.getAll().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+    this.categoryService
+      .getAll()
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
         )
       )
-    ).subscribe(data => {
-      this.categories = data;
-    });
+      .subscribe((data) => {
+        this.categories = data;
+      });
   }
 
   updateEvent(): void {
-    this.eventForm.patchValue({ published: false }); // Set published to false
+    this.eventForm.patchValue({ published: false }); // Ustaw published na false
 
     if (this.currentEvent.id) {
-      this.eventService.update(this.currentEvent.id, this.eventForm.value)
-        .catch(err => console.log(err));
+      this.eventService
+        .updateIMG(
+          this.currentEvent.id,
+          this.eventForm.value,
+          this.selectedImageFile
+        )
+        .then(() => {
+          console.log('Wydarzenie zaktualizowane pomyślnie!');
+          this.location.back(); // Wróć na poprzednią kartę
+        })
+        .catch((err) => console.log(err));
     }
-    this.router.navigate(['/admin/events']);
-
   }
 
+  onImageSelected(event: any): void {
+    if (event.target.files && event.target.files.length > 0) {
+      const selectedImageFile = event.target.files[0];
+      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+
+      if (selectedImageFile.size > maxSizeInBytes) {
+        alert('Zdjęcie jest za duże. Maksymalny rozmiar to 5MB.');
+
+        // Wyczyść pole input, jeśli przekroczono limit
+        const imgFormControl = this.eventForm.get('img');
+        if (imgFormControl) {
+          // Sprawdź, czy imgFormControl nie jest null
+          imgFormControl.setValue(null);
+          imgFormControl.markAsTouched();
+        }
+
+        return;
+      }
+
+      this.selectedImageFile = selectedImageFile;
+    }
+  }
 
 }

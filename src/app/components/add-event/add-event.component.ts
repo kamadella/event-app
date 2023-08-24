@@ -35,18 +35,18 @@ export class AddEventComponent implements OnInit {
   ngOnInit(): void {
     this.retrieveCategory();
     this.eventForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      description: [''],
-      organizator: [''],
-      date_start: [''],
-      date_end: [''],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      organizator: ['', [Validators.required, Validators.minLength(3)]],
+      date_start: ['', [Validators.required]],
+      date_end: ['', [Validators.required]],
       category: [''],
       tickets: [''],
       ticketsLeft: [''],
-      img: [''],
+      img: ['', [Validators.required]],
       lat: [''], // New form control for latitude
       lng: [''], // New form control for longitude
-      place_name: [''], // New form control for place_name
+      place_name: ['', [Validators.required]], // New form control for place_name
       published: [''],
     });
 
@@ -71,9 +71,50 @@ export class AddEventComponent implements OnInit {
     });
   }
 
+  get name() {
+    return this.eventForm.get('name');
+  }
+
+  get description() {
+    return this.eventForm.get('description');
+  }
+
+  get organizator() {
+    return this.eventForm.get('organizator');
+  }
+
+  get date_start() {
+    return this.eventForm.get('date_start');
+  }
+
+  get date_end() {
+    return this.eventForm.get('date_end');
+  }
+
+  get place_name() {
+    return this.eventForm.get('place_name');
+  }
+
   onImageSelected(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
-      this.selectedImageFile = event.target.files[0];
+      const selectedImageFile = event.target.files[0];
+      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+
+      if (selectedImageFile.size > maxSizeInBytes) {
+        alert('Zdjęcie jest za duże. Maksymalny rozmiar to 5MB.');
+
+        // Wyczyść pole input, jeśli przekroczono limit
+        const imgFormControl = this.eventForm.get('img');
+        if (imgFormControl) {
+          // Sprawdź, czy imgFormControl nie jest null
+          imgFormControl.setValue(null);
+          imgFormControl.markAsTouched();
+        }
+
+        return;
+      }
+
+      this.selectedImageFile = selectedImageFile;
     }
   }
 
