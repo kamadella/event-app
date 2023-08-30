@@ -1,0 +1,13 @@
+
+
+
+.mat-form-field {
+  background-color: #fff;
+  border-radius: 6px;
+}
+
+
+.mat-form-field-appearance-outline.mat-focused.mat-primary .mat-form-field-outline-thick {
+  border-color: #ff9900; /* Inny kolor dla wersji primary */
+}
+

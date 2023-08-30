@@ -1,11 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
 .invalid-feedback{
   color:red;
   font-weight: bold;
   display: inline;
 }
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Roboto", sans-serif; }
+
+
+
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
