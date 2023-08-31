@@ -55,6 +55,8 @@ import { MyTicketsComponent } from './components/my-tickets/my-tickets.component
 import { EventsArchiveComponent } from './components/events-archive/events-archive.component';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 import { FooterComponent } from './layouts/footer/footer.component';
+import { SearchFilterComponent } from './components/events-list/search-filter/search-filter.component';
+import { SearchFilterArchiveComponent } from './components/events-archive/search-filter-archive/search-filter-archive.component';
 
 
 @NgModule({
@@ -87,7 +89,9 @@ import { FooterComponent } from './layouts/footer/footer.component';
     MyTicketsComponent,
     EventsArchiveComponent,
     LoginDialogComponent,
-    FooterComponent
+    FooterComponent,
+    SearchFilterComponent,
+    SearchFilterArchiveComponent
   ],
   imports: [
     BrowserModule,
