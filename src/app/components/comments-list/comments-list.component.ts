@@ -71,6 +71,12 @@ export class CommentsListComponent implements OnInit {
     return user ? user.displayName : 'Nieznany użytkownik';
   }
 
+  getPhotoURL(userId: string): string {
+    // Pobierz nazwę użytkownika na podstawie jego identyfikatora
+    const user = this.users[userId];
+    return user ? user.photoURL : 'brak img';
+  }
+
   deleteComment(currentComment: Comment): void {
     if (confirm('Czy na pewno chcesz usunąć? ')) {
       if (currentComment.id) {

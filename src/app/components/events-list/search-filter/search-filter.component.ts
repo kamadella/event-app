@@ -28,6 +28,7 @@ export class SearchFilterComponent implements OnInit {
   lat: number = 53.1322;
   lng: number = 23.1687;
 
+
   constructor(private categoryService: CategoryService) {}
 
   ngOnInit(): void {
@@ -118,4 +119,5 @@ export class SearchFilterComponent implements OnInit {
       this.selectedCategories.push(index);
     }
   }
+
 }

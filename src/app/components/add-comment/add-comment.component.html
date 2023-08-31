@@ -1,13 +1,13 @@
-<div class="submit-form g-5 d-flex justify-content-center">
-  <div class="col-md-7">
-    <div class="row g-3">
-      <div class="form-group col-sm-12">
-        <label for="title">Nowy Komentarz</label>
-        <textarea
-          placeholder="..."
+<div class="submit-form text-center">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-8 col-12 mb-4">
+
+          <textarea
           type="text"
           class="form-control"
           id="name"
+          rows="3"
+          placeholder="Dołacz do dyskusji i zostaw komentarz!"
           required
           [(ngModel)]="comment.text"
           #commentText="ngModel"
@@ -19,19 +19,18 @@
         </div>
 
       </div>
+
+      <div class="col-md-4 col-12">
+        <ng-container *ngIf="isLoggedIn(); else loginPanel">
+        <button (click)="saveComment()" class="btn btn-success p-3">
+          Dodaj komentarz
+        </button>
+      </ng-container>
+      <ng-template #loginPanel>
+        <button (click)="openDialog()" class="btn btn-outline-success  p-3">
+          Dodaj komentarz
+        </button>
+      </ng-template>
     </div>
   </div>
-  <hr class="my-4" />
-  <ng-container *ngIf="isLoggedIn(); else loginPanel">
-    <hr class="my-4" />
-    <button (click)="saveComment()" class="btn btn-success">
-      Dodaj komentarz
-    </button>
-  </ng-container>
-  <ng-template #loginPanel>
-    <hr class="my-4" />
-    <button (click)="openDialog()" class="btn btn-primary">
-      Dodaj komentarz
-    </button>
-  </ng-template>
 </div>

@@ -1,97 +1,152 @@
+<!-- Page Content-->
+<section class="py-5">
+  <div class="container px-5 my-3">
+    <div *ngIf="canActivateEvent()">
+      <div *ngIf="currentEvent">
+        <div class="d-flex justify-content-center align-items-center">
+          <div class="ratio ratio-16x9 event-img">
+            <img
+              class="rounded shadow"
+              src="{{ currentEvent.img }}"
+              alt="event img"
+            />
+          </div>
+        </div>
 
-<div *ngIf="canActivateEvent()">
-<div *ngIf="currentEvent">
+        <div class="row gx-5 my-5">
+          <div class="col-xl-8">
+            <header class="mb-4">
+              <!-- Post categories-->
+              <a class="badge bg-secondary text-decoration-none link-light">{{
+                currentCategory.name
+              }}</a>
+              <!-- Post meta content-->
+              <div class="text-muted fst-italic mb-2">
+                {{ currentEvent.date_start | date : "dd/MM/yy" }}
+              </div>
+              <!-- Post title-->
+              <h1 class="fw-bolder mb-1">{{ currentEvent.name }}</h1>
+            </header>
+            <section class="mb-5">
+              <p class="fs-5 mb-4">{{ currentEvent.description }}</p>
+              <h3 class="fw-bolder mb-4 mt-5">Lokalizacja</h3>
+              <p class="fs-5 mb-4">{{ currentEvent.place_name }}</p>
+              <div>
+                <button
+                  *ngIf="!mapVisible"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="openMap()"
+                >
+                  Pokaż na mapie
+                </button>
+                <div *ngIf="mapVisible">
+                  <div class="map_container">
+                    <app-map [centerEvent]="currentEvent"></app-map>
+                  </div>
+                </div>
+              </div>
+              <h3 class="fw-bolder mb-4 mt-5">Data</h3>
+              <p class="fs-5 mb-4">
+                {{ currentEvent.date_start | date : "dd/MM/yy" }} -
+                {{ currentEvent.date_end | date : "dd/MM/yy" }}
+              </p>
+              <h3 class="fw-bolder mb-4 mt-5">Organizator</h3>
+              <p class="fs-5 mb-4">{{ currentEvent.organizator }}</p>
+            </section>
+          </div>
+          <div class="col-xl-4">
+            <div class="card border-0 bg-light mt-xl-5">
+              <div class="card-body p-4 py-lg-5">
+                <div class="d-flex align-items-center justify-content-center">
+                  <ng-container *ngIf="isLoggedIn(); else loginPanel">
+                    <div *ngIf="isActual()">
+                      <div
+                        *ngIf="
+                          currentEvent &&
+                          currentEvent.ticketsLeft &&
+                          currentEvent.ticketsLeft > 0
+                        "
+                      >
+                        <p class="fs-5 mb-4 text-center">
+                          Pozostalo biletów: {{ currentEvent.ticketsLeft }}
+                        </p>
 
-  <div>
-    <img src={{currentEvent.img}} alt="event img" width="600" height="300">
-  </div>
-<div>
+                        <button
+                          (click)="openTicket(currentEvent)"
+                          class="btn btn-lg btn-primary px-5 py-2"
+                        >
+                          Zarezerwuj bilet
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #loginPanel>
+                    <button (click)="openDialog()" class="btn btn-primary">
+                      Zarezerwuj bilet
+                    </button>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section class="my-5">
+        <div *ngIf="isAdmin()">
+          <hr />
+          <div
+            *ngIf="
+              currentEvent && currentEvent.tickets && currentEvent.tickets > 0
+            "
+          >
+            <button
+              class="btn btn-primary"
+              routerLink="/admin/event/tickets/{{ currentEvent.id }}"
+            >
+              Zobacz bilety
+            </button>
+          </div>
 
-</div>
-    <p> Kategoria: {{currentCategory.name}} </p>
+          <button type="button" class="btn btn-danger" (click)="deleteEvent()">
+            Usuń wydarzenie
+          </button>
+          <button
+            class="btn btn-danger"
+            *ngIf="currentEvent.published"
+            (click)="publishEvent(false)"
+          >
+            UnPublish
+          </button>
+          <button
+            *ngIf="!currentEvent.published"
+            class="btn btn-success"
+            (click)="publishEvent(true)"
+          >
+            Publish
+          </button>
 
-    <h1>{{currentEvent.name}} </h1>
-    <h2>Gdzie i kiedy</h2>
-    <p> Data: {{currentEvent.date_start | date: "dd/MM/yy" }} - {{currentEvent.date_end | date: "dd/MM/yy"}} </p>
-    <p> Lokalizacja: {{currentEvent.place_name}} </p>
-    <h2>Opis wydarzenia</h2>
-    <p>{{currentEvent.description}} </p>
-    <h2>Organizator</h2>
-    <p>{{currentEvent.organizator}} </p>
-    <div *ngIf = "currentEvent && currentEvent.tickets && currentEvent.tickets > 0" >
-      <h2>Bilety</h2>
-      <p>{{currentEvent.ticketsLeft}} </p>
+          <button
+            type="button"
+            class="btn btn-primary"
+            routerLink="/admin/event/edit/{{ currentEvent.id }}"
+          >
+            Edytuj
+          </button>
+        </div>
+      </section>
+      <section class="my-5">
+        <div class="card bg-light p-5">
+          <h3>Komentarze</h3>
+          <hr />
+
+          <app-comments-list [eventId]="currentEvent.id"></app-comments-list>
+          <app-add-comment [eventId]="currentEvent.id"></app-add-comment>
+        </div>
+      </section>
     </div>
 
-</div>
-<ng-container *ngIf="isLoggedIn(); else loginPanel">
-  <div *ngIf="isActual()">
-    <div *ngIf = "currentEvent && currentEvent.ticketsLeft && currentEvent.ticketsLeft > 0">
-      <button (click)="openTicket(currentEvent)" class="btn btn-primary">
-        Zarezerwuj bilet
-      </button>
+    <div *ngIf="!canActivateEvent()">
+      <p>Nie masz uprawnień do przeglądania tego wydarzenia.</p>
     </div>
   </div>
-</ng-container>
-<ng-template #loginPanel>
-  <button (click)="openDialog()" class="btn btn-primary">
-    Zarezerwuj bilet
-  </button>
-</ng-template>
-
-<hr>
-
-<button *ngIf="!mapVisible"  class="btn btn-primary" (click)="openMap()">
-  Pokaż na mapie
-</button>
-<div *ngIf="mapVisible">
-  <div class="map_container">
-    <app-map  [centerEvent]="currentEvent"></app-map>
-  </div>
-</div>
-
-
-<div *ngIf="isAdmin()">
-  <hr>
-  <div *ngIf = "currentEvent && currentEvent.tickets && currentEvent.tickets > 0">
-    <button  class="btn btn-primary" routerLink="/admin/event/tickets/{{currentEvent.id}}">
-      Zobacz bilety
-    </button>
-  </div>
-
-  <button type="button" class="btn btn-danger" (click)="deleteEvent()">Usuń wydarzenie</button>
-  <button
-    class="btn btn-danger"
-    *ngIf="currentEvent.published"
-    (click)="publishEvent(false)"
-    >
-    UnPublish
-  </button>
-  <button
-    *ngIf="!currentEvent.published"
-    class="btn btn-success"
-    (click)="publishEvent(true)">
-    Publish
-  </button>
-
-  <button type="button" class="btn btn-primary" routerLink="/admin/event/edit/{{currentEvent.id}}">Edytuj</button>
-</div>
-
-
-
-
-<div class="py-5 text-center">
-  <h3>Komentarze</h3>
-  <hr>
-</div>
-
-<app-comments-list [eventId]="currentEvent.id"></app-comments-list>
-<app-add-comment [eventId]="currentEvent.id"></app-add-comment>
-
-</div>
-
-
-
-<div *ngIf="!canActivateEvent()">
-  <p>Nie masz uprawnień do przeglądania tego wydarzenia.</p>
-</div>
+</section>
