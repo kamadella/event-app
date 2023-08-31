@@ -1,43 +1,52 @@
-<div class="displayTable">
-  <div class="displayTableCell">
-    <div class="authBlock">
-      <h3>Logowanie</h3>
-      <div class = "form">
-          <input
-            type="text"
-            class="email"
-            placeholder="Username"
-            #userName
-            required
-          />
-          <input
-            type="password"
-            class="password"
-            placeholder="Password"
-            #userPassword
-            required
-          />
-          <input
-            type="button"
-            class="btn btn-primary submit"
-            value="Log in"
-            (click)="authService.SignIn(userName.value, userPassword.value)"
-          />
-      </div>
+<section class="text-center d-flex my-5">
+  <div class="form-signin shadow p-3 bg-body rounded my-5">
+    <form>
+      <img
+        class="mb-4"
+        src="/docs/5.0/assets/brand/bootstrap-logo.svg"
+        alt=""
+        width="72"
+        height="57"
+      />
+      <h1 class="h3 mb-4 fw-normal">Zaloguj się</h1>
 
-      <div class="formGroup">
-        <span class="or"><span class="orInner">lub</span></span>
+      <div class="form-floating">
+        <input
+          #userName
+          required
+          type="email"
+          class="form-control"
+          id="floatingInput"
+          placeholder="name@example.com"
+        />
+        <label for="floatingInput">Email</label>
       </div>
-      <div class="forgotPassword">
-        <span routerLink="/forgot-password">Zapomniałeś hasła?</span>
+      <div class="form-floating">
+        <input
+          type="password"
+          #userPassword
+          required
+          class="form-control"
+          id="floatingPassword"
+          placeholder="Haslo"
+        />
+        <label for="floatingPassword">Hasło</label>
       </div>
-    </div>
-    <div class="redirectToLogin">
-      <span>nie masz konta
-        <span class="redirect" routerLink="/register-user">
-          Zarejestruj się
+      <input
+        type="button"
+        class="w-100 btn btn-lg btn-primary mt-3"
+        value="Zaloguj się"
+        (click)="authService.SignIn(userName.value, userPassword.value)"
+      />
+      <div class="form-group d-md-flex flex-row-reverse mt-2">
+        <small><a routerLink="/forgot-password">Zapomniałem hasła</a></small>
+      </div>
+      <div class="mt-5 mb-3 text-muted">
+        <span
+          >nie masz konta?
+          <a routerLink="/register-user"> Zarejestruj się </a>
         </span>
-      </span>
-    </div>
+      </div>
+    </form>
   </div>
-</div>
+</section>
