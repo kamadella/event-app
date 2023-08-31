@@ -93,7 +93,8 @@ export class AuthService {
 
         // Ustawienie nazwy użytkownika (displayName)
         return result.user?.updateProfile({
-          displayName: displayName
+          displayName: displayName,
+          photoURL: 'https://firebasestorage.googleapis.com/v0/b/event-app-4eaf2.appspot.com/o/userProfileImages%2Fdefault_img.jpg?alt=media&token=fc0e9ead-7c55-4121-9790-8e4823a0aa10'
         }).then(() => {
           this.SetUserData(result.user);
           this.UpdateUserRole(result.user!.uid, 'user');

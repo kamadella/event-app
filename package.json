@@ -26,7 +26,7 @@
     "@ng-bootstrap/ng-bootstrap": "^13.0.0",
     "@popperjs/core": "^2.10.2",
     "@types/mapbox-gl": "^2.7.12",
-    "bootstrap": "^5.2.0",
+    "bootstrap": "^5.3.1",
     "date-fns": "^2.30.0",
     "firebase": "^9.23.0",
     "mapbox-gl": "^2.15.0",
