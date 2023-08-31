@@ -11,10 +11,5 @@
 ::ng-deep .mat-form-field.mat-focused {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Blue glow po kliknięciu */
   border-color: #80bdff; /* Kolor obramowania po kliknięciu */
-
-  .mat-form-field-label {
-      color: #495057;
-  }
-
 }
 
