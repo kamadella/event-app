@@ -40,7 +40,7 @@ export class CommentsListComponent implements OnInit {
         const timestampA = a.date;
         const timestampB = b.date;
         if (timestampA && timestampB) {
-          return timestampA < timestampB ? -1 : (timestampA > timestampB ? 1 : 0);
+          return timestampA > timestampB ? -1 : (timestampA < timestampB ? 1 : 0);
         }
         return 0;
       });
@@ -74,7 +74,7 @@ export class CommentsListComponent implements OnInit {
   getPhotoURL(userId: string): string {
     // Pobierz nazwę użytkownika na podstawie jego identyfikatora
     const user = this.users[userId];
-    return user ? user.photoURL : 'brak img';
+    return user ? user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/event-app-4eaf2.appspot.com/o/userProfileImages%2Fdefault_img.jpg?alt=media&token=fc0e9ead-7c55-4121-9790-8e4823a0aa10';
   }
 
   deleteComment(currentComment: Comment): void {
