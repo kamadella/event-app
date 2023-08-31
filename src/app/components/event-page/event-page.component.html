@@ -41,7 +41,10 @@
                 </button>
                 <div *ngIf="mapVisible">
                   <div class="map_container">
-                    <app-map [centerEvent]="currentEvent"></app-map>
+                    <app-map
+                      [centerEvent]="currentEvent"
+                      [hideSideBar]="true"
+                    ></app-map>
                   </div>
                 </div>
               </div>
@@ -54,19 +57,16 @@
               <p class="fs-5 mb-4">{{ currentEvent.organizator }}</p>
             </section>
           </div>
-          <div class="col-xl-4">
+          <div
+            class="col-xl-4"
+            *ngIf="currentEvent.ticketsLeft && currentEvent.ticketsLeft > 0"
+          >
             <div class="card border-0 bg-light mt-xl-5">
               <div class="card-body p-4 py-lg-5">
                 <div class="d-flex align-items-center justify-content-center">
                   <ng-container *ngIf="isLoggedIn(); else loginPanel">
                     <div *ngIf="isActual()">
-                      <div
-                        *ngIf="
-                          currentEvent &&
-                          currentEvent.ticketsLeft &&
-                          currentEvent.ticketsLeft > 0
-                        "
-                      >
+                      <div>
                         <p class="fs-5 mb-4 text-center">
                           Pozostalo biletów: {{ currentEvent.ticketsLeft }}
                         </p>
