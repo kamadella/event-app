@@ -57,6 +57,7 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
 import { FooterComponent } from './layouts/footer/footer.component';
 import { SearchFilterComponent } from './components/events-list/search-filter/search-filter.component';
 import { SearchFilterArchiveComponent } from './components/events-archive/search-filter-archive/search-filter-archive.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 
 @NgModule({
@@ -91,7 +92,8 @@ import { SearchFilterArchiveComponent } from './components/events-archive/search
     LoginDialogComponent,
     FooterComponent,
     SearchFilterComponent,
-    SearchFilterArchiveComponent
+    SearchFilterArchiveComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

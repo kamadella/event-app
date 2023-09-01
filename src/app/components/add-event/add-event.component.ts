@@ -80,6 +80,10 @@ export class AddEventComponent implements OnInit {
     return this.eventForm.get('description');
   }
 
+  get tickets() {
+    return this.eventForm.get('tickets');
+  }
+
   get organizator() {
     return this.eventForm.get('organizator');
   }

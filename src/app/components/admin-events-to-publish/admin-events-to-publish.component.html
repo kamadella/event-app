@@ -1,11 +1,26 @@
-<div class="py-5 text-center">
-  <h2>Lista wydarzeń do opublikowania</h2>
-  <hr>
-</div>
+<!-- Events list section-->
+<section class="py-5">
+  <div class="container px-5 my-3">
+    <div class="text-center">
+      <h2>Lista wydarzeń do opublikowania</h2>
+      <hr />
+    </div>
 
-<div class="grid">
-  <app-event-card class="item" *ngFor="let event of events; let i = index" [event]="event" [categories]="categories"></app-event-card>
-</div>
+    <div class="grid">
+      <!-- Wyświetl karty wydarzeń, jeśli events nie jest puste -->
+      <ng-container *ngIf="events && events.length > 0; else noEvents">
+        <app-event-card
+          class="item"
+          *ngFor="let event of events; let i = index"
+          [event]="event"
+          [categories]="categories"
+        ></app-event-card>
+      </ng-container>
 
-
-
+      <!-- Wyświetl informację o braku wydarzeń, jeśli events jest puste -->
+      <ng-template #noEvents>
+        <div class="no-events-message">Brak wydarzeń do akceptacji.</div>
+      </ng-template>
+    </div>
+  </div>
+</section>

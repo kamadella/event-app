@@ -11,35 +11,39 @@
 </div>
 
 <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" novalidate>
-  <div class="submit-form g-5 d-flex justify-content-center">
-    <div class="col-md-7">
+  <div class="submit-form g-5 d-flex justify-content-center container">
+    <div class="col-md-8">
       <div class="row g-3">
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="title">Nazwa</label>
           <input
-            placeholder="nazwa wydarzenia..."
+            placeholder="Przykładowa nazwa"
             type="text"
             class="form-control"
             id="name"
             required
             formControlName="name"
+            minlength="3"
+            maxlength="20"
           />
           <div
             *ngIf="name?.invalid && (name?.dirty || name?.touched)"
             class="invalid-feedback"
           >
-            Nazwa musi zawierać minimum 3 znaki
+            Nazwa musi zawierać od 3 do 20 znaków
           </div>
         </div>
 
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="description">Opis</label>
           <textarea
-            placeholder="opis..."
+            placeholder="dokładny opis wydarzenia"
             class="form-control"
             id="description"
             required
             formControlName="description"
+            minlength="10"
+            maxlength="1500"
           ></textarea>
           <div
             *ngIf="
@@ -48,23 +52,26 @@
             "
             class="invalid-feedback"
           >
-            Opis musi zawierać minimum 10 znaków
+            Opis musi zawierać canajmniej 10 znaków
+
           </div>
         </div>
 
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="Lokalizacja" required>Lokalizacja</label>
           <div id="geocoder"></div>
         </div>
 
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="organizator">Organizator</label>
           <input
-            placeholder="organizator..."
+            placeholder="Prezydent miasta"
             class="form-control"
             id="organizator"
             required
             formControlName="organizator"
+            minlength="5"
+            maxlength="20"
           />
           <div
             *ngIf="
@@ -73,12 +80,12 @@
             "
             class="invalid-feedback"
           >
-            Organizator musi mieć dlugość conajmniej 3 znaków
+            Organizator musi zawierać od 5 do 20 znaków
           </div>
         </div>
 
         <!-- Dodaj input do przesyłania obrazka -->
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="img">Zdjęcie wydarzenia</label>
           <input
             type="file"
@@ -91,7 +98,7 @@
           />
         </div>
 
-        <div class="form-group col-6">
+        <div class="form-group col-6 my-2">
           <label for="date_start">Data rozpoczęcia</label>
           <input
             class="form-control"
@@ -105,7 +112,7 @@
           </div>
         </div>
 
-        <div class="form-group col-6">
+        <div class="form-group col-6 my-2">
           <label for="date_end">Data zakończenia</label>
           <input
             class="form-control"
@@ -126,8 +133,9 @@
             </div>
           </div>
         </div>
-
+        <label for="category">Kategorie</label>
         <mat-radio-group
+
           class="example-radio-group"
           formControlName="category"
           required
@@ -141,6 +149,7 @@
           </mat-radio-button>
         </mat-radio-group>
 
+        <h5 class="mt-5">W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę biletów możliwych do rezerwacji:</h5>
         <div class="form-group col-12">
           <label for="tickets">Ilość biletów</label>
           <input
@@ -149,13 +158,18 @@
             value="0"
             id="tickets"
             formControlName="tickets"
+            min="0"
           />
+          <div *ngIf="tickets?.value < 0 ||  tickets?.invalid &&
+          (tickets?.dirty || tickets?.touched)" class="invalid-feedback">
+            nie można dodawać ujemnych biletów
+          </div>
         </div>
       </div>
       <hr class="my-4" />
       <button
         type="submit"
-        class="btn btn-success"
+        class="btn btn-success mb-5"
         [disabled]="!eventForm.valid || date_end?.value <= date_start?.value || !eventForm.get('place_name')?.value || isDateEndInvalid()"
       >
         Dodaj

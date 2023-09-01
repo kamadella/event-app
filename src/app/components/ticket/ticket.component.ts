@@ -25,11 +25,23 @@ export class TicketComponent implements OnInit {
   ngOnInit(): void {
     this.ticketForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
-      surname: [''],
+      surname: ['', [Validators.required, Validators.minLength(2)]],
       number: [''],
       userId: [''],
       eventId: [''],
     });
+  }
+
+
+  get number() {
+    return this.ticketForm.get('number');
+  }
+
+  get name() {
+    return this.ticketForm.get('name');
+  }
+  get surname() {
+    return this.ticketForm.get('surname');
   }
 
   onReservedTicketsChange(): void {
