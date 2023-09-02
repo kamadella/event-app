@@ -5,7 +5,7 @@
   type="text/css"
 />
 
-<div class="py-5 text-center">
+<div class="py-5 text-center container">
   <h2>Dodaj nowe wydarzenie</h2>
   <hr />
 </div>
@@ -30,8 +30,8 @@
             *ngIf="name?.invalid && (name?.dirty || name?.touched)"
             class="invalid-feedback"
           >
-            Nazwa musi zawierać od 3 do 20 znaków
-          </div>
+          <p>Nazwa musi zawierać od 3 do 20 znaków</p>
+        </div>
         </div>
 
         <div class="form-group col-sm-12 my-2">
@@ -52,7 +52,7 @@
             "
             class="invalid-feedback"
           >
-            Opis musi zawierać canajmniej 10 znaków
+          <p>Opis musi zawierać canajmniej 10 znaków</p>
 
           </div>
         </div>
@@ -71,7 +71,7 @@
             required
             formControlName="organizator"
             minlength="5"
-            maxlength="20"
+            maxlength="30"
           />
           <div
             *ngIf="
@@ -80,8 +80,8 @@
             "
             class="invalid-feedback"
           >
-            Organizator musi zawierać od 5 do 20 znaków
-          </div>
+          <p>Organizator musi zawierać od 5 do 30 znaków</p>
+        </div>
         </div>
 
         <!-- Dodaj input do przesyłania obrazka -->
@@ -108,7 +108,7 @@
             formControlName="date_start"
           />
           <div *ngIf="date_start?.invalid && (date_start?.dirty || date_start?.touched)" class="invalid-feedback">
-            Podano nieprawidłową datę początkową
+            <p>Podano nieprawidłową datę początkową</p>
           </div>
         </div>
 
@@ -123,13 +123,13 @@
           />
           <div *ngIf="(date_end?.dirty || date_end?.touched)">
             <div *ngIf="date_end?.invalid" class="invalid-feedback">
-              Podano nieprawidłową datę końcową
+              <p>Podano nieprawidłową datę końcową</p>
             </div>
             <div *ngIf="date_end?.value<date_start?.value" class="invalid-feedback">
-              Data końcowa powinna być większa od początkowej 😉
+              <p>Data końcowa powinna być większa od początkowej 😉</p>
             </div>
             <div *ngIf="isDateEndInvalid()" class="invalid-feedback">
-              Data zakończenia nie może być z przeszlości
+              <p>Data zakończenia nie może być z przeszlości</p>
             </div>
           </div>
         </div>

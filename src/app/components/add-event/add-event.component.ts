@@ -165,7 +165,7 @@ export class AddEventComponent implements OnInit {
   }
 
 
-    isDateEndInvalid(): boolean {
+  isDateEndInvalid(): boolean {
     const today = new Date();
 
     const dateEnd = this.eventForm.get('date_end')?.value;

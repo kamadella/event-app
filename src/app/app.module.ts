@@ -51,13 +51,14 @@ import { UserNavbarComponent } from './layouts/user-navbar/user-navbar.component
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { TicketComponent } from './components/ticket/ticket.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
-import { MyTicketsComponent } from './components/my-tickets/my-tickets.component';
 import { EventsArchiveComponent } from './components/events-archive/events-archive.component';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { SearchFilterComponent } from './components/events-list/search-filter/search-filter.component';
 import { SearchFilterArchiveComponent } from './components/events-archive/search-filter-archive/search-filter-archive.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { ProfileIMGDialogComponent } from './components/dashboard/profile-img-dialog/profile-img-dialog.component';
+import { DisplayNameDialogComponent } from './components/dashboard/display-name-dialog/display-name-dialog.component';
 
 
 @NgModule({
@@ -87,13 +88,14 @@ import { ContactComponent } from './components/contact/contact.component';
     UserLayoutComponent,
     TicketComponent,
     TicketListComponent,
-    MyTicketsComponent,
     EventsArchiveComponent,
     LoginDialogComponent,
     FooterComponent,
     SearchFilterComponent,
     SearchFilterArchiveComponent,
-    ContactComponent
+    ContactComponent,
+    ProfileIMGDialogComponent,
+    DisplayNameDialogComponent
   ],
   imports: [
     BrowserModule,

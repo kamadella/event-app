@@ -1,6 +1,7 @@
 .bg-c-lite-green {
   background: linear-gradient(to right, #ee5a6f, #f29263);
   border-radius: 5px;
+  padding: auto;
 }
 
 

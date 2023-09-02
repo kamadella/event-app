@@ -54,16 +54,16 @@
             formControlName="number"
             [(ngModel)]="ticketForm.value.number"
             (ngModelChange)="onReservedTicketsChange()"
-            min="0"
+            min="1"
             max = "{{event.ticketsLeft}}"
           />
           <div *ngIf="number?.invalid &&
           (number?.dirty || number?.touched)" class="invalid-feedback">
-            Musisz podac liczbę
+            <p>Musisz podac liczbę</p>
           </div>
           <div *ngIf="ticketsAvailabilityMessage" class="invalid-feedback">{{ ticketsAvailabilityMessage }}</div>
           <div *ngIf="number?.value < 0" class="invalid-feedback">
-            nie można dodawać ujemnych biletów
+            <p>nie można dodawać ujemnych biletów</p>
           </div>
         </div>
 
