@@ -26,6 +26,7 @@ export class EditEventComponent implements OnInit {
     lng: 0,
     place_name: '',
   };
+  reservedTickets: number = 0;
   previousImage: string = ''; // Nazwa lub ścieżka poprzedniego zdjęcia
   currentCategory: Category = {};
   categories?: Category[];
@@ -114,6 +115,9 @@ export class EditEventComponent implements OnInit {
   get place_name() {
     return this.eventForm.get('place_name');
   }
+  get tickets() {
+    return this.eventForm.get('tickets');
+  }
 
   getCurrentCategory(id: string): void {
     this.categoryService
@@ -148,6 +152,7 @@ export class EditEventComponent implements OnInit {
         this.previousLocalization.lat = data.lat!;
         this.previousLocalization.lng = data.lng!;
         this.previousLocalization.place_name = data.place_name!;
+        this.reservedTickets = data.tickets! - data.ticketsLeft!;
 
         this.eventForm.patchValue({
           name: data.name,
@@ -185,7 +190,11 @@ export class EditEventComponent implements OnInit {
   }
 
   updateEvent(): void {
-    this.eventForm.patchValue({ published: false }); // Ustaw published na false
+    const newTicketsLeft = this.eventForm.value.tickets - this.reservedTickets;
+    this.eventForm.patchValue({
+      published: false,
+      ticketsLeft: newTicketsLeft
+    }); // Ustaw published na false
 
     if (this.currentEvent.id) {
       this.eventService
@@ -223,6 +232,13 @@ export class EditEventComponent implements OnInit {
 
       this.selectedImageFile = selectedImageFile;
     }
+  }
+
+  isDateEndInvalid(): boolean {
+    const today = new Date();
+
+    const dateEnd = this.eventForm.get('date_end')?.value;
+    return new Date(dateEnd) < today;
   }
 
 }

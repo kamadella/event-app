@@ -11,10 +11,10 @@
 </div>
 
 <form [formGroup]="eventForm" (ngSubmit)="updateEvent()" novalidate>
-  <div class="submit-form g-5 d-flex justify-content-center">
-    <div class="col-md-7">
+  <div class="submit-form g-5 d-flex justify-content-center container">
+    <div class="col-md-8">
       <div class="row g-3">
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="title">Nazwa</label>
           <input
             placeholder="nazwa wydarzenia..."
@@ -25,16 +25,18 @@
             formControlName="name"
             name="title"
             value="{{ currentEvent.name }}"
+            minlength="3"
+            maxlength="20"
           />
           <div
             *ngIf="name?.invalid && (name?.dirty || name?.touched)"
             class="invalid-feedback"
           >
-            Nazwa musi zawierać minimum 3 znaki
+            <p>Nazwa musi zawierać od 3 do 20 znaków</p>
           </div>
         </div>
 
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="description">Opis</label>
           <textarea
             placeholder="opis..."
@@ -43,6 +45,8 @@
             required
             formControlName="description"
             value="{{ currentEvent.description }}"
+            minlength="10"
+            maxlength="1500"
           ></textarea>
           <div
             *ngIf="
@@ -51,17 +55,17 @@
             "
             class="invalid-feedback"
           >
-            Opis musi zawierać minimum 10 znaków
+            <p>Opis musi zawierać canajmniej 10 znaków</p>
           </div>
         </div>
 
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="Lokalizacja">Lokalizacja</label>
           <p>{{ previousLocalization.place_name }}</p>
           <div id="geocoder"></div>
         </div>
 
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="organizator">Organizator</label>
           <input
             placeholder="organizator..."
@@ -70,6 +74,8 @@
             required
             formControlName="organizator"
             value="{{ currentEvent.organizator }}"
+            minlength="5"
+            maxlength="30"
           />
           <div
             *ngIf="
@@ -78,24 +84,25 @@
             "
             class="invalid-feedback"
           >
-            Organizator musi mieć dlugość conajmniej 3 znaków
+            <p>Organizator musi zawierać od 5 do 30 znaków</p>
           </div>
         </div>
 
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 my-2">
           <label for="img">Zdjęcie wydarzenia</label>
           <div *ngIf="previousImage" class="mt-2">
-            Poprzednie zdjęcie:
+            <p>Poprzednie zdjęcie:</p>
             <img
               width="200px"
               height="200px"
               [src]="previousImage"
               alt="Previous Image"
+              class="img-thumbnail"
             />
           </div>
           <input
             type="file"
-            class="form-control"
+            class="form-control "
             id="img"
             (change)="onImageSelected($event)"
             accept="image/*"
@@ -103,7 +110,7 @@
 
         </div>
 
-        <div class="form-group col-6">
+        <div class="form-group col-6 my-2">
           <label for="date_start">Data rozpoczęcia</label>
           <input
             class="form-control"
@@ -119,11 +126,11 @@
             "
             class="invalid-feedback"
           >
-            Podano nieprawidłową datę początkową
+            <p>Podano nieprawidłową datę początkową</p>
           </div>
         </div>
 
-        <div class="form-group col-6">
+        <div class="form-group col-6 my-2">
           <label for="date_end">Data zakończenia</label>
           <input
             class="form-control"
@@ -135,17 +142,21 @@
           />
           <div *ngIf="date_end?.dirty || date_end?.touched">
             <div *ngIf="date_end?.invalid" class="invalid-feedback">
-              Podano nieprawidłową datę końcową
+              <p>Podano nieprawidłową datę końcową</p>
             </div>
             <div
               *ngIf="date_end?.value < date_start?.value"
               class="invalid-feedback"
             >
-              Data końcowa powinna być większa od początkowej 😉
+              <p>Data końcowa powinna być większa od początkowej 😉</p>
+            </div>
+            <div *ngIf="isDateEndInvalid()" class="invalid-feedback">
+              <p>Data zakończenia nie może być z przeszlości</p>
             </div>
           </div>
         </div>
 
+        <label for="category">Kategorie</label>
         <mat-radio-group
           class="example-radio-group"
           formControlName="category"
@@ -160,6 +171,7 @@
           </mat-radio-button>
         </mat-radio-group>
 
+        <h5 class="mt-5">W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę biletów możliwych do rezerwacji:</h5>
         <div class="form-group col-12">
           <label for="tickets">Ilość biletów</label>
           <input
@@ -169,13 +181,18 @@
             id="tickets"
             formControlName="tickets"
             value="{{ currentEvent.tickets }}"
+            min={{currentEvent.ticketsLeft}}
           />
+          <div *ngIf="tickets?.value < 0 ||  tickets?.invalid &&
+          (tickets?.dirty || tickets?.touched)" class="invalid-feedback">
+            <p>nie można dodawać ujemnych biletów</p>
+          </div>
         </div>
       </div>
       <hr class="my-4" />
       <button
         type="submit"
-        class="btn btn-success"
+        class="btn btn-success mb-5"
         [disabled]="
           !eventForm.valid ||
           date_end?.value <= date_start?.value ||
@@ -185,7 +202,7 @@
         Aktualizuj
       </button>
       <button
-      class="btn btn-info"
+      class="btn btn-outline-primary mb-5"
       routerLink="/event/{{currentEvent.id}}"
     >
       Wróć do wydarznia

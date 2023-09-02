@@ -1,39 +1,58 @@
-<div *ngIf="currentEvent">
+<section class="container">
 
-  <h1>{{currentEvent.name}} </h1>
-  <h3>Gdzie i kiedy</h3>
-  <p> Data: {{currentEvent.date_start | date: "dd/MM/yy" }} - {{currentEvent.date_end | date: "dd/MM/yy"}} </p>
-  <div *ngIf = "currentEvent && currentEvent.tickets && currentEvent.tickets > 0" >
-    <h3>Zostało do rezezrwacji:</h3>
-    <p>{{currentEvent.ticketsLeft}} bilety</p>
+  <div *ngIf="currentEvent" class="my-5">
+
+    <header class="mb-4">
+      <!-- Post meta content-->
+      <div class="text-muted fst-italic mb-2">
+        {{ currentEvent.date_start | date : "dd/MM/yy" }}
+      </div>
+      <!-- Post title-->
+      <h1 class="fw-bolder mb-1">{{ currentEvent.name }}</h1>
+    </header>
+    <section>
+      <div *ngIf = "currentEvent && currentEvent.tickets && currentEvent.tickets > 0" >
+        <h3  class="fw-bolder mb-4 mt-5" >Ilosc biletów do rezerwacji:</h3>
+        <p class="fs-5 mb-4">{{currentEvent.tickets}}</p>
+        <h3  class="fw-bolder mb-4 mt-5" >Zostało biletów:</h3>
+        <p class="fs-5 mb-4">{{currentEvent.ticketsLeft}}</p>
+      </div>
+    </section>
+
+    <button type="button" class="btn btn-outline-primary" routerLink="/event/{{currentEvent.id}}">Wróć do wydarzenia</button>
   </div>
-</div>
-<button type="button" class="btn btn-primary" routerLink="/event/{{currentEvent.id}}">Wróć do wydarzenia</button>
+  <div class="text-center">
+    <h2>Zarezerwowane bilety</h2>
+    <hr />
+  </div>
+  <div *ngIf="tickets && tickets.length > 0">
+  <div  class="table-responsive my-5">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nr biletu</th>
+          <th scope="col">Imię</th>
+          <th scope="col">Nazwisko</th>
+          <th scope="col">Ilosć biletów</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of tickets, let i=index">
+          <th scope="row">{{i+1}}</th>
+          <td> {{ticket.id}}</td>
+          <td> {{ticket.name}}</td>
+          <td> {{ticket.surname}}</td>
+          <td> {{ticket.number}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<H2>Zarezerwowane bilety</H2>
+  </div>
 
-<div *ngIf="tickets && tickets.length > 0">
+  <div *ngIf="tickets && tickets.length <= 0" class="my-5">
+    <p>brak zarezerwowanych biletów</p>
+  </div>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nr biletu</th>
-        <th scope="col">Imię</th>
-        <th scope="col">Nazwisko</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let ticket of tickets, let i=index">
-        <th scope="row">{{i+1}}</th>
-        <td> {{ticket.id}}</td>
-        <td> {{ticket.name}}</td>
-        <td> {{ticket.surname}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div *ngIf="tickets && tickets.length <= 0">
-  <p>brak zarezerwowanych biletów</p>
-</div>
+</section>

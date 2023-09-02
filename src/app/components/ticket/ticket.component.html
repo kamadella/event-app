@@ -13,8 +13,16 @@
             id="name"
             required
             formControlName="name"
+            maxlength="50"
           />
+          <div
+          *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+          class="invalid-feedback"
+        >
+          Podaj poprawne imię
         </div>
+        </div>
+
 
         <div class="form-group col-sm-12">
           <label for="title">Nazwisko</label>
@@ -25,7 +33,14 @@
             id="surname"
             required
             formControlName="surname"
+            maxlength="50"
           />
+          <div
+          *ngIf="surname?.invalid && (surname?.dirty || surname?.touched)"
+          class="invalid-feedback"
+        >
+          Podaj poprawne nazwisko
+        </div>
         </div>
 
         <div class="form-group col-sm-12">
@@ -39,8 +54,17 @@
             formControlName="number"
             [(ngModel)]="ticketForm.value.number"
             (ngModelChange)="onReservedTicketsChange()"
+            min="1"
+            max = "{{event.ticketsLeft}}"
           />
-          <p *ngIf="ticketsAvailabilityMessage">{{ ticketsAvailabilityMessage }}</p>
+          <div *ngIf="number?.invalid &&
+          (number?.dirty || number?.touched)" class="invalid-feedback">
+            <p>Musisz podac liczbę</p>
+          </div>
+          <div *ngIf="ticketsAvailabilityMessage" class="invalid-feedback">{{ ticketsAvailabilityMessage }}</div>
+          <div *ngIf="number?.value < 0" class="invalid-feedback">
+            <p>nie można dodawać ujemnych biletów</p>
+          </div>
         </div>
 
 <hr class="my-4">

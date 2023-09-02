@@ -11,13 +11,8 @@
           required
           [(ngModel)]="comment.text"
           #commentText="ngModel"
-          minlength="5"
           maxlength="300"
           ></textarea>
-        <div *ngIf="commentText.invalid && (commentText.dirty || commentText.touched)" class="invalid-feedback">
-          Komentarz musi zawierać od 5 do 500 znaków
-        </div>
-
       </div>
 
       <div class="col-md-2 ">

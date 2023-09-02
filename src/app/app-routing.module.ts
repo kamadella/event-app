@@ -19,6 +19,7 @@ import { UserLayoutComponent } from './layouts/user-layout/user-layout.component
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { EventsArchiveComponent } from './components/events-archive/events-archive.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 
 const routes: Routes = [
@@ -36,6 +37,7 @@ const routes: Routes = [
         { path: 'verify-email-address', component: VerifyEmailComponent },
         { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
         { path: 'events/archive', component: EventsArchiveComponent },
+        { path: 'contact', component: ContactComponent },
       ]
     },
 

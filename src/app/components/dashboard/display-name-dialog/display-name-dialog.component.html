@@ -1,0 +1,23 @@
+<div >
+  <p>Podaj nową nazwę użytkownika:</p>
+  <input
+    placeholder="nazwa"
+    type="text"
+    class="form-control"
+    id="name"
+    required
+    [(ngModel)]="displayName"
+    name="displayName"
+  />
+</div>
+<div >
+  <button class="btn btn-outline-danger mt-3" (click)="onNoClick()">Anuluj</button>
+  <button
+    class="btn btn-outline-success mt-3"
+    [mat-dialog-close]="displayName"
+    cdkFocusInitial
+    *ngIf="displayName"
+  >
+    Zapisz
+  </button>
+</div>

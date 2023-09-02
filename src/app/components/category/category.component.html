@@ -1,47 +1,70 @@
-<div class="py-5 text-center">
-  <h2>Dodaj nową kategorię</h2>
-  <hr>
-</div>
-<div class="submit-form g-5 d-flex justify-content-center">
-  <div *ngIf="!submitted" class="col-md-7">
-    <div class="row g-3">
-
-      <div class="form-group col-sm-12">
-      <label for="title">Nazwa</label>
-      <input
-        placeholder="nazwa kategorii..."
-        type="text"
-        class="form-control"
-        id="name"
-        required
-        [(ngModel)]="category.name"
-        #categoryText="ngModel"
-        minlength="3"
-        maxlength="20"
-      />
-      <div *ngIf="categoryText.invalid && (categoryText.dirty || categoryText.touched)" class="invalid-feedback">
-        Kategoria musi zawierać od 3 do 20 znaków
+<!-- Events list section-->
+<section class="py-5">
+  <div class="container px-5 my-3">
+    <section>
+      <div class="text-center">
+        <h2>Dodaj nową kategorię</h2>
+        <hr />
       </div>
+      <div class="submit-form g-5 d-flex justify-content-center my-5">
+        <div *ngIf="!submitted" class="col-md-7">
+          <div class="row g-3">
+            <div class="form-group col-sm-12">
+              <label for="title">Nazwa</label>
+              <input
+                placeholder="nazwa kategorii..."
+                type="text"
+                class="form-control"
+                id="name"
+                required
+                [(ngModel)]="category.name"
+                #categoryText="ngModel"
+                minlength="3"
+                maxlength="20"
+              />
+              <div
+                *ngIf="
+                  categoryText.invalid &&
+                  (categoryText.dirty || categoryText.touched)
+                "
+                class="invalid-feedback"
+              >
+                Kategoria musi zawierać od 3 do 20 znaków
+              </div>
+            </div>
+          </div>
+          <hr class="my-4" />
+          <button (click)="saveCategory()" class="btn btn-success">
+            Zapisz
+          </button>
+        </div>
+
+        <div *ngIf="submitted">
+          <h4>Zapisałeś nową kategorie!</h4>
+          <button class="btn btn-success" (click)="newCategory()">
+            Dodaj kolejną kategorię
+          </button>
+        </div>
       </div>
+    </section>
+
+    <section>
+      <div class="text-center">
+        <h2>Lista kategorii</h2>
+        <hr />
+      </div>
+      <ul class="list-group" *ngFor="let category of categories">
+        <li class="list-group-item">
+          <button
+            type="button"
+            class="btn btn-danger mx-3"
+            (click)="deleteCategory(category)"
+          >
+            X
+          </button>
+          {{ category.name }}
+        </li>
+      </ul>
+    </section>
   </div>
-  <hr class="my-4">
-    <button (click)="saveCategory()" class="btn btn-success">Zapisz</button>
-  </div>
-
-  <div *ngIf="submitted">
-    <h4>Zapisałeś nową kategorie!</h4>
-    <button class="btn btn-success" (click)="newCategory()">Dodaj kolejną kategorię</button>
-  </div>
-</div>
-<hr>
-
-
-<div *ngFor="let category of categories">
-  <div>
-    {{category.name}}
-    <button type="button" class="btn btn-danger" (click)="deleteCategory(category)">X</button>
-
-  </div>
-
-  <hr>
-</div>
+</section>

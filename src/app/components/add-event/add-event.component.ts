@@ -80,6 +80,10 @@ export class AddEventComponent implements OnInit {
     return this.eventForm.get('description');
   }
 
+  get tickets() {
+    return this.eventForm.get('tickets');
+  }
+
   get organizator() {
     return this.eventForm.get('organizator');
   }
@@ -161,7 +165,7 @@ export class AddEventComponent implements OnInit {
   }
 
 
-    isDateEndInvalid(): boolean {
+  isDateEndInvalid(): boolean {
     const today = new Date();
 
     const dateEnd = this.eventForm.get('date_end')?.value;

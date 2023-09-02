@@ -1,172 +1,192 @@
-<!-- Sidebar navigation -->
-<div class="container-fluid">
-  <div class="row">
-    <nav class="col-md-2 d-md-block bg-light sidebar">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active">
-              <i class="fas fa-user"></i>User Profile
-            </a>
-          </li>
-          <!-- Calling SignOut() Api from AuthService -->
-          <li class="nav-item">
-            <a class="nav-link" (click)="authService.SignOut()">
-              <i class="fas fa-sign-out-alt"></i>Log out
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <!-- Main content -->
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-      <div class="inner-adjust">
-        <div class="pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">User Profile</h1>
-        </div>
-        <!-- Show user data when logged in -->
-        <div class="row" *ngIf="authService.userData as user">
-          <div class="col-md-12">
-            <div class="media">
-              <!-- Wyświetlanie obrazka profilowego użytkownika -->
-              <div class="user-profile-image" *ngIf="user.photoURL; else defaultImage">
+<section>
+  <div
+    class="page-content page-container"
+    id="page-content"
+    *ngIf="authService.userData as user"
+  >
+    <div class="container">
+      <div class="shadow-sm my-5 rounded">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="text-center text-white bg-c-lite-green py-5">
+              <div class="mb-4" *ngIf="user.photoURL; else defaultImage">
                 <img
-                  src = {{user.photoURL}}
-                  alt="User Profile Image"
+                  src="{{ user.photoURL }}"
                   class="img-thumbnail"
-                  width="200px"
-                  height="200px"
+                  alt="User-Profile-Image"
+                  width="150px"
+                  height="150px"
                 />
               </div>
-
               <ng-template #defaultImage>
                 <img
-                  src="/assets/default-profile-image.jpg"
-                  alt="Default Profile Image"
+                  src="https://firebasestorage.googleapis.com/v0/b/event-app-4eaf2.appspot.com/o/userProfileImages%2Fdefault_img.jpg?alt=media&token=fc0e9ead-7c55-4121-9790-8e4823a0aa10"
                   class="img-thumbnail"
-                  width="200px"
-                  height="200px"
+                  alt="User-Profile-Image"
                 />
               </ng-template>
-              <!-- Przycisk do zmiany obrazka profilowego -->
-              <div class="form-group col-sm-12">
-                <label for="profileImage">Zmień obrazek profilowy:</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  id="profileImage"
-                  accept="image/*"
-                  (change)="onImageSelected($event)"
-                />
-              </div>
-
-              <div class="form-group">
-                <button class="btn btn-primary" (click)="changeProfileImage()">Zapisz zmiany</button>
-              </div>
-              <div class="media-body">
-                <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
-
-                <div class="form-group col-sm-12">
-                  <label for="displayName">Nazwa użytkownika</label>
-                  <input
-                    placeholder="podaj nową nazwę..."
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    required
-                    [(ngModel)]="displayName"
-                    name="displayName"
-                  />
+              <h6 class="text-white">
+                <strong>{{
+                  user.displayName ? user.displayName : "User"
+                }}</strong>
+              </h6>
+              <p>{{ user.role }}</p>
+              <i
+                class="mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"
+              ></i>
+            </div>
+          </div>
+          <div class="col-sm-8">
+            <div class="p-3">
+              <h6 class="mb-2 b-b-default fw-bold">Informacje</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <p class="mb-3 fw-bold">Email</p>
+                  <h6 class="text-muted">{{ user.email }}</h6>
                 </div>
-                <button (click)="updateDisplayName()" class="btn btn-success">Zapisz</button>
-
-                <p>User ID: <strong>{{user.uid}}</strong></p>
-                <p>Email: <strong>{{user.email}}</strong></p>
-                <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
-                <p>User type: <strong>{{user.role}}</strong></p>
+                <div class="col-sm-6">
+                  <p class="mb-3 fw-bold">Hasło</p>
+                  <h6 class="text-muted">*********</h6>
+                </div>
+              </div>
+              <h6 class="my-3 b-b-default fw-bold">Ustawienia</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <p class="mb-4 fw-bold">Edytuj konto</p>
+                  <div class="mb-2">
+                    <button
+                      class="btn btn-sm btn-primary"
+                      (click)="openChangeProfilePictureDialog()"
+                    >
+                      Zmień zdjecie profilowe
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-sm btn-primary"
+                      (click)="openDialog()"
+                    >
+                      Zmień nazwę
+                    </button>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <p class="mb-4 fw-bold">Wyloguj się</p>
+                  <button
+                    class="btn btn-outline-dark"
+                    (click)="authService.SignOut()"
+                  >
+                    Wyloguj się
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   </div>
-</div>
+</section>
 
-<div>
-  <hr class="my-4">
-  <button *ngIf="!showed" class="btn btn-success" (click)="showTickets()" >
-    Pokaż bilety
-  </button>
-  <button *ngIf="showed" class="btn btn-success" (click)="showTickets()" >
-    Ukryj bilety
-  </button>
-</div>
+<section class="py-5">
+  <div class="container px-5 my-3">
+    <div *ngIf="tickets">
+      <div *ngIf="tickets.length > 0">
+        <div class="text-center">
+          <h2>Moje bilety</h2>
+          <hr />
+        </div>
+        <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nr biletu</th>
+              <th scope="col">Imię</th>
+              <th scope="col">Nazwisko</th>
+              <th scope="col">Ilość biletów</th>
+              <th scope="col">Wydarzenie</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ticket of tickets; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ ticket.id }}</td>
+              <td>{{ ticket.name }}</td>
+              <td>{{ ticket.surname }}</td>
+              <td>{{ ticket.number }}</td>
+              <td>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  routerLink="/event/{{ ticket.eventId }}"
+                >
+                  Pokaż wydarzenie
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
 
-<div *ngIf="showed && tickets">
-  <div *ngIf="tickets.length > 0">
+      <div *ngIf="tickets.length <= 0">
+        <p class="text-center" >brak zarezerwowanych biletów</p>
+      </div>
+    </div>
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Nr biletu</th>
-          <th scope="col">Imię</th>
-          <th scope="col">Nazwisko</th>
-          <th scope="col">Wydarzenie</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let ticket of tickets, let i=index">
-          <th scope="row">{{i+1}}</th>
-          <td> {{ticket.id}}</td>
-          <td> {{ticket.name}}</td>
-          <td> {{ticket.surname}}</td>
-          <td>
-            <button  type="submit" class="btn btn-primary" routerLink="/event/{{ticket.eventId}}">
-              Pokaż wydarzenie
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="container px-5 my-5">
+      <div
+        *ngIf="expiredTickets && expiredTickets.length > 0"
+        class="text-center"
+      >
+        <button *ngIf="!showed" class="btn btn-success" (click)="showTickets()">
+          Pokaż bilety
+        </button>
+        <button *ngIf="showed" class="btn btn-success" (click)="showTickets()">
+          Ukryj bilety
+        </button>
+      </div>
+
+      <div *ngIf="showed && expiredTickets && expiredTickets.length > 0">
+        <div class="text-center">
+          <h2>Bilety z przeszłości</h2>
+          <hr />
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nr biletu</th>
+                <th scope="col">Imię</th>
+                <th scope="col">Nazwisko</th>
+                <th scope="col">Ilość biletów</th>
+                <th scope="col">Wydarzenie</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ticket of expiredTickets; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ ticket.id }}</td>
+                <td>{{ ticket.name }}</td>
+                <td>{{ ticket.surname }}</td>
+                <td>{{ ticket.number }}</td>
+                <td>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    routerLink="/event/{{ ticket.eventId }}"
+                  >
+                    Pokaż wydarzenie
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
   </div>
-
-  <div *ngIf="tickets.length <= 0">
-    <p>brak zarezerwowanych biletów</p>
-  </div>
-
-  <div *ngIf="expiredTickets && expiredTickets.length > 0">
-    <h3>Bilety z przeszłości</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Nr biletu</th>
-          <th scope="col">Imię</th>
-          <th scope="col">Nazwisko</th>
-          <th scope="col">Wydarzenie</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let ticket of expiredTickets, let i=index">
-          <th scope="row">{{i+1}}</th>
-          <td> {{ticket.id}}</td>
-          <td> {{ticket.name}}</td>
-          <td> {{ticket.surname}}</td>
-          <td>
-            <button  type="submit" class="btn btn-primary" routerLink="/event/{{ticket.eventId}}">
-              Pokaż wydarzenie
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-</div>
-
-
-
-
-
+</section>

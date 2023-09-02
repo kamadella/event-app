@@ -1,25 +1,32 @@
-
-
-<app-search-filter (filterChanged)="handleFilterChange($event)"></app-search-filter>
-
+<app-search-filter
+  (filterChanged)="handleFilterChange($event)"
+></app-search-filter>
 
 <!-- Events list section-->
 <section class="py-5">
-  <div class="container px-5 my-3 ">
+  <div class="container px-5 my-3">
     <div class="text-center">
       <h2>Lista wydarzeń</h2>
-      <hr>
+      <hr />
     </div>
 
     <div class="grid">
-      <app-event-card class="card h-100 shadow border-0" *ngFor="let event of filteredEventList; let i = index" [event]="event" [categories]="categories"></app-event-card>
+      <app-event-card
+        class="card h-100 shadow border-0"
+        *ngFor="let event of filteredEventList; let i = index"
+        [event]="event"
+        [categories]="categories"
+      ></app-event-card>
     </div>
   </div>
 </section>
 
 <div class="container text-center px-5 my-5">
-  <button class="btn btn-outline-primary" type="button" routerLink="/events/archive" >Wydarzenia z przeszłości</button>
+  <button
+    class="btn btn-outline-primary"
+    type="button"
+    routerLink="/events/archive"
+  >
+    Wydarzenia z przeszłości
+  </button>
 </div>
-
-
-

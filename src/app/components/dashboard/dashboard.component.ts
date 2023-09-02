@@ -5,7 +5,9 @@ import { map } from 'rxjs/operators';
 import { Ticket } from 'src/app/models/ticket.model';
 import { EventService } from 'src/app/services/event.service';
 import { Event } from 'src/app/models/event.model';
-
+import {MatDialog} from '@angular/material/dialog';
+import { DisplayNameDialogComponent } from './display-name-dialog/display-name-dialog.component';
+import { ProfileIMGDialogComponent } from './profile-img-dialog/profile-img-dialog.component';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -24,7 +26,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private ticketService: TicketService,
-    private eventService: EventService
+    private eventService: EventService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -93,24 +96,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-    // Metoda wywoływana po wybraniu obrazka przez użytkownika
-    onImageSelected(event: any): void {
-      if (event.target.files && event.target.files.length > 0) {
-        const selectedImage = event.target.files[0];
-        const imageSizeLimit = 3 * 1024 * 1024; // Przykładowy limit wielkości obrazka (3 MB)
-
-        if (selectedImage.size > imageSizeLimit) {
-          alert('Zdjęcie jest za duże. Maksymalny rozmiar to 3MB.');
-
-          this.selectedProfileImage = null; // Wyczyść wybrany plik
-          event.target.value = null; // Wyczyść pole input typu plik
-
-        } else {
-          this.selectedProfileImage = selectedImage;
-        }
-      }
-    }
-
     // Metoda do zmiany obrazka profilowego
     changeProfileImage(): void {
       if (this.selectedProfileImage) {
@@ -127,4 +112,30 @@ export class DashboardComponent implements OnInit {
       }
     }
 
+    openDialog(): void {
+      const dialogRef = this.dialog.open(DisplayNameDialogComponent, {
+        width: '400px', // Adjust the width as needed
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+        this.displayName = result;
+        this.updateDisplayName();
+        }
+      });
+    }
+
+
+    openChangeProfilePictureDialog(): void {
+      const dialogRef = this.dialog.open(ProfileIMGDialogComponent, {
+        width: '400px', // Adjust the width as needed
+      });
+
+      dialogRef.afterClosed().subscribe((result: File | null) => {
+        if (result) {
+          this.selectedProfileImage = result;
+          this.changeProfileImage();
+        }
+      });
+    }
 }
