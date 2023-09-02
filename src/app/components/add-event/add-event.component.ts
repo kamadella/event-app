@@ -8,6 +8,8 @@ import * as mapboxgl from 'mapbox-gl';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { environment } from '../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Ng2ImgMaxService } from 'ng2-img-max';
+
 
 @Component({
   selector: 'app-add-event',
@@ -29,7 +31,8 @@ export class AddEventComponent implements OnInit {
     private eventService: EventService,
     private categoryService: CategoryService,
     private router: Router,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    private ng2ImgMaxService: Ng2ImgMaxService
   ) {}
 
   ngOnInit(): void {
@@ -104,7 +107,7 @@ export class AddEventComponent implements OnInit {
     if (event.target.files && event.target.files.length > 0) {
       const selectedImageFile = event.target.files[0];
       const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-
+/*
       if (selectedImageFile.size > maxSizeInBytes) {
         alert('Zdjęcie jest za duże. Maksymalny rozmiar to 5MB.');
 
@@ -118,8 +121,15 @@ export class AddEventComponent implements OnInit {
 
         return;
       }
-
+*/
       this.selectedImageFile = selectedImageFile;
+      this.ng2ImgMaxService
+      .resizeImage(selectedImageFile, 900, 506) // 16x9 ratio for 900 width
+      .subscribe((result) => {
+        this.selectedImageFile = new File([result], selectedImageFile.name, { type: result.type });
+        console.log("skalowanie obrazu");
+
+      });
     }
   }
 

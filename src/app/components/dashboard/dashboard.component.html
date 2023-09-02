@@ -9,10 +9,10 @@
         <div class="row">
           <div class="col-sm-4">
             <div class="text-center text-white bg-c-lite-green py-5">
-              <div class="mb-4" *ngIf="user.photoURL; else defaultImage">
+              <div class="mb-3" *ngIf="user.photoURL; else defaultImage">
                 <img
                   src="{{ user.photoURL }}"
-                  class="img-thumbnail"
+                  class="fit-cover rounded-circle shadow mb-5 bg-body rounded"
                   alt="User-Profile-Image"
                   width="150px"
                   height="150px"
@@ -21,8 +21,10 @@
               <ng-template #defaultImage>
                 <img
                   src="https://firebasestorage.googleapis.com/v0/b/event-app-4eaf2.appspot.com/o/userProfileImages%2Fdefault_img.jpg?alt=media&token=fc0e9ead-7c55-4121-9790-8e4823a0aa10"
-                  class="img-thumbnail"
+                  class="fit-cover rounded-circle shadow mb-5 bg-body rounded"
                   alt="User-Profile-Image"
+                  width="150px"
+                  height="150px"
                 />
               </ng-template>
               <h6 class="text-white">
@@ -58,7 +60,10 @@
                       class="btn btn-sm btn-primary"
                       (click)="openChangeProfilePictureDialog()"
                     >
-                      Zmień zdjecie profilowe
+                    <i class="bi bi-pencil me-2"></i>
+
+                    Zmień zdjecie profilowe
+
                     </button>
                   </div>
                   <div>
@@ -66,7 +71,10 @@
                       class="btn btn-sm btn-primary"
                       (click)="openDialog()"
                     >
+                    <i class="bi bi-pencil me-2"></i>
+
                       Zmień nazwę
+
                     </button>
                   </div>
                 </div>

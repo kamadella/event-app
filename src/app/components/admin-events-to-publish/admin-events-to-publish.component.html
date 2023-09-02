@@ -6,21 +6,19 @@
       <hr />
     </div>
 
-    <div class="grid">
+    <div class="grid" *ngIf="events && events.length > 0">
       <!-- Wyświetl karty wydarzeń, jeśli events nie jest puste -->
-      <ng-container *ngIf="events && events.length > 0; else noEvents">
         <app-event-card
-          class="item"
+          class="card h-100 shadow border-0"
           *ngFor="let event of events; let i = index"
           [event]="event"
           [categories]="categories"
         ></app-event-card>
-      </ng-container>
 
-      <!-- Wyświetl informację o braku wydarzeń, jeśli events jest puste -->
-      <ng-template #noEvents>
-        <div class="no-events-message">Brak wydarzeń do akceptacji.</div>
-      </ng-template>
     </div>
+          <!-- Wyświetl informację o braku wydarzeń, jeśli events jest puste -->
+          <div *ngIf="events && events.length <= 0">
+            <div class="no-events-message">Brak wydarzeń do akceptacji.</div>
+          </div>
   </div>
 </section>

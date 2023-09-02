@@ -1,20 +1,34 @@
 <div *ngFor="let comment of comments; let i = index" class="d-flex mt-4">
-  <div *ngIf="isAdmin()" >
-    <button type="button" class="btn btn-sm btn-danger" (click)="deleteComment(comment)">x</button>
+  <div *ngIf="isAdmin()">
+    <button
+      type="button"
+      class="btn btn-sm btn-danger"
+      (click)="deleteComment(comment)"
+    >
+      x
+    </button>
   </div>
-  <div class="  ms-3 d-none d-md-block">
-    <img class="rounded-circle" [src]="getPhotoURL(comment.userId!)"  width="50px" height="50px" alt="Profile img"/>
+  <div class="ms-3 d-none d-md-block">
+    <img
+      class="rounded-circle fit-cover"
+      [src]="getPhotoURL(comment.userId!)"
+      width="50px"
+      height="50px"
+      alt="Profile img"
+    />
   </div>
-  <div class=" ms-3">
+  <div class="ms-3">
     <div>
-      <b> {{ comment.userId ? getUserName(comment.userId) : 'Nieznany użytkownik' }} </b>
-      <small>{{formatTimestamp(comment.date) }}</small>
+      <b>
+        {{
+          comment.userId ? getUserName(comment.userId) : "Nieznany użytkownik"
+        }}
+      </b>
+      <small>{{ formatTimestamp(comment.date) }}</small>
     </div>
 
-    {{comment.text}}
+    {{ comment.text }}
   </div>
 
-
-  <hr>
+  <hr />
 </div>
-
