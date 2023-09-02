@@ -50,8 +50,8 @@
               </div>
               <h3 class="fw-bolder mb-4 mt-5">Data</h3>
               <p class="fs-5 mb-4">
-                {{ currentEvent.date_start | date : "dd/MM/yy" }} -
-                {{ currentEvent.date_end | date : "dd/MM/yy" }}
+                {{ currentEvent.date_start | date:'yyyy/MM/dd HH:mm'}} -
+                {{ currentEvent.date_end | date:'yyyy/MM/dd HH:mm' }}
               </p>
               <h3 class="fw-bolder mb-4 mt-5">Organizator</h3>
               <p class="fs-5 mb-4">{{ currentEvent.organizator }}</p>

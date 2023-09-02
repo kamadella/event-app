@@ -24,13 +24,13 @@
             required
             formControlName="name"
             minlength="3"
-            maxlength="20"
+            maxlength="50"
           />
           <div
             *ngIf="name?.invalid && (name?.dirty || name?.touched)"
             class="invalid-feedback"
           >
-          <p>Nazwa musi zawierać od 3 do 20 znaków</p>
+          <p>Nazwa musi zawierać od 3 do 50 znaków</p>
         </div>
         </div>
 
@@ -71,7 +71,7 @@
             required
             formControlName="organizator"
             minlength="5"
-            maxlength="30"
+            maxlength="50"
           />
           <div
             *ngIf="
@@ -80,7 +80,7 @@
             "
             class="invalid-feedback"
           >
-          <p>Organizator musi zawierać od 5 do 30 znaków</p>
+          <p>Organizator musi zawierać od 5 do 50 znaków</p>
         </div>
         </div>
 
