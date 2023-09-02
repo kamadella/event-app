@@ -9,6 +9,13 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Roboto", sans-serif; }
 
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+
+
 .geocoder .mapboxgl-ctrl-geocoder {
   width: 100%!important;
   min-width: 100%!important;
@@ -51,4 +58,10 @@ body { margin: 0; font-family: Roboto, "Roboto", sans-serif; }
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+
+
+.fit-cover {
+  object-fit: cover;
 }
