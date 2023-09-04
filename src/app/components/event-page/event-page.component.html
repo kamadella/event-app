@@ -40,10 +40,10 @@
                   Pokaż na mapie
                 </button>
                 <div *ngIf="mapVisible">
-                  <div class="map_container">
+                  <div *ngIf="currentEvent">
                     <app-map
                       [centerEvent]="currentEvent"
-                      [hideSideBar]="true"
+                      [hideSideBar]="mapVisible"
                     ></app-map>
                   </div>
                 </div>
@@ -94,7 +94,7 @@
       <section class="my-5">
         <div *ngIf="isAdmin()">
           <hr />
-          <div
+          <div class="mt-5 mb-3"
             *ngIf="
               currentEvent && currentEvent.tickets && currentEvent.tickets > 0
             "
@@ -107,11 +107,11 @@
             </button>
           </div>
 
-          <button type="button" class="btn btn-danger" (click)="deleteEvent()">
+          <button type="button" class="btn btn-danger me-2" (click)="deleteEvent()">
             Usuń wydarzenie
           </button>
           <button
-            class="btn btn-danger"
+            class="btn btn-danger me-2"
             *ngIf="currentEvent.published"
             (click)="publishEvent(false)"
           >
@@ -119,7 +119,7 @@
           </button>
           <button
             *ngIf="!currentEvent.published"
-            class="btn btn-success"
+            class="btn btn-success me-2"
             (click)="publishEvent(true)"
           >
             Publish

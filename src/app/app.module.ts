@@ -59,6 +59,7 @@ import { SearchFilterArchiveComponent } from './components/events-archive/search
 import { ContactComponent } from './components/contact/contact.component';
 import { ProfileIMGDialogComponent } from './components/dashboard/profile-img-dialog/profile-img-dialog.component';
 import { DisplayNameDialogComponent } from './components/dashboard/display-name-dialog/display-name-dialog.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -95,7 +96,8 @@ import { DisplayNameDialogComponent } from './components/dashboard/display-name-
     SearchFilterArchiveComponent,
     ContactComponent,
     ProfileIMGDialogComponent,
-    DisplayNameDialogComponent
+    DisplayNameDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -7,10 +7,11 @@ import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { Location } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { TicketComponent } from '../ticket/ticket.component';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { MapComponent } from 'src/app/map/map.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-event-page',
@@ -97,19 +98,33 @@ export class EventPageComponent implements OnInit {
   }
 
   deleteEvent(): void {
-    if (confirm('Czy na pewno chcesz usunąć? ')) {
-      if (this.currentEvent.id) {
-        // Wywołanie funkcji deleteEventWithImage
-        this.eventService
-          .deleteEventWithImage(this.currentEvent.id)
-          .then(() => {
-            console.log('Usunięto wydarzenie i obrazek');
-            // Przekierowanie lub inne akcje po usunięciu
-            this.location.back(); // Wróć na poprzednią kartę
-          })
-          .catch((err) => console.log(err));
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px', // Dostosuj szerokość do swoich potrzeb
+      data: 'Czy na pewno chcesz usunąć?',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Użytkownik kliknął "OK" w potwierdzeniu
+        if (this.currentEvent.id) {
+          // Wywołanie funkcji deleteEventWithImage
+          this.eventService
+            .deleteEventWithImage(this.currentEvent.id)
+            .then(() => {
+              console.log('Usunięto wydarzenie i obrazek');
+              // Przekierowanie lub inne akcje po usunięciu
+              this.location.back(); // Wróć na poprzednią kartę
+            })
+            .catch((err) => console.log(err));
+        }
+      } else {
+        // Użytkownik kliknął "Anuluj" lub zamknął dialog
+        console.log('Cancelled event delete.');
       }
-    }
+    });
+
+
   }
 
   publishEvent(status: boolean): void {
@@ -121,17 +136,27 @@ export class EventPageComponent implements OnInit {
       messege = 'Czy na pewno chcesz unulowac publikację tego wydarzenia? '
     }
 
-    if (confirm(messege)) {
-      if (this.currentEvent.id) {
-        this.eventService
-          .update(this.currentEvent.id, { published: status })
-          .then(() => {
-            this.currentEvent.published = status;
-          })
-          .catch((err) => console.log(err));
-      }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px', // Dostosuj szerokość do swoich potrzeb
+      data: messege,
+    });
 
-    }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Użytkownik kliknął "OK" w potwierdzeniu
+        if (this.currentEvent.id) {
+          this.eventService
+            .update(this.currentEvent.id, { published: status })
+            .then(() => {
+              this.currentEvent.published = status;
+            })
+            .catch((err) => console.log(err));
+        }
+      } else {
+        // Użytkownik kliknął "Anuluj" lub zamknął dialog
+        console.log('Cancelled event publish.');
+      }
+    });
   }
 
   isAdmin() {
@@ -166,5 +191,6 @@ export class EventPageComponent implements OnInit {
 
   openMap(): void {
     this.mapVisible = true;
+    console.log('mapVisible set to true');
   }
 }

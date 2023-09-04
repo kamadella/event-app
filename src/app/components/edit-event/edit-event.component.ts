@@ -47,7 +47,6 @@ export class EditEventComponent implements OnInit {
     public fb: FormBuilder,
     private location: Location,
     private ng2ImgMaxService: Ng2ImgMaxService
-
   ) {}
 
   ngOnInit(): void {
@@ -196,7 +195,7 @@ export class EditEventComponent implements OnInit {
     const newTicketsLeft = this.eventForm.value.tickets - this.reservedTickets;
     this.eventForm.patchValue({
       published: false,
-      ticketsLeft: newTicketsLeft
+      ticketsLeft: newTicketsLeft,
     }); // Ustaw published na false
 
     if (this.currentEvent.id) {
@@ -217,30 +216,15 @@ export class EditEventComponent implements OnInit {
   onImageSelected(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
       const selectedImageFile = event.target.files[0];
-      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-/*
-      if (selectedImageFile.size > maxSizeInBytes) {
-        alert('Zdjęcie jest za duże. Maksymalny rozmiar to 5MB.');
-
-        // Wyczyść pole input, jeśli przekroczono limit
-        const imgFormControl = this.eventForm.get('img');
-        if (imgFormControl) {
-          // Sprawdź, czy imgFormControl nie jest null
-          imgFormControl.setValue(null);
-          imgFormControl.markAsTouched();
-        }
-
-        return;
-      }
-*/
       this.selectedImageFile = selectedImageFile;
       this.ng2ImgMaxService
-      .resizeImage(selectedImageFile, 900, 506) // 16x9 ratio for 900 width
-      .subscribe((result) => {
-        this.selectedImageFile = new File([result], selectedImageFile.name, { type: result.type });
-        console.log("skalowanie obrazu");
-
-      });
+        .resizeImage(selectedImageFile, 900, 506) // 16x9 ratio for 900 width
+        .subscribe((result) => {
+          this.selectedImageFile = new File([result], selectedImageFile.name, {
+            type: result.type,
+          });
+          console.log('skalowanie obrazu');
+        });
     }
   }
 
@@ -250,5 +234,4 @@ export class EditEventComponent implements OnInit {
     const dateEnd = this.eventForm.get('date_end')?.value;
     return new Date(dateEnd) < today;
   }
-
 }

@@ -1,21 +1,24 @@
-<div  >
+<div>
   <p>Zmień zdjęcie profilowe</p>
   <input
-  type="file"
-  class="form-control"
-  id="profileImage"
-  accept="image/*"
-  (change)="onImageSelected($event)"
-/>  <img
-    *ngIf="selectedProfileImage"
-    [src]="selectedProfileImage"
-    alt="Preview"
-    width="150"
-    height="150"
+    type="file"
+    class="form-control"
+    id="profileImage"
+    accept="image/*"
+    (change)="onImageSelected($event)"
   />
+  <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
+    <img [src]="imageURL" alt="Preview"
+    class="fit-cover rounded-circle shadow mb-5 bg-body rounded mt-3"
+    width="150px"
+    height="150px"
+    />
+  </div>
 </div>
 <div>
-  <button class="btn btn-outline-danger mt-3" (click)="onNoClick()">Anuluj</button>
+  <button class="btn btn-outline-danger mt-3" (click)="onNoClick()">
+    Anuluj
+  </button>
   <button
     class="btn btn-outline-success mt-3"
     [mat-dialog-close]="selectedProfileImage"

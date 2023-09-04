@@ -2,18 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { map } from 'rxjs/operators';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css']
+  styleUrls: ['./category.component.css'],
 })
 export class CategoryComponent implements OnInit {
   category: Category = new Category();
   categories!: Category[];
   submitted = false;
 
-  constructor(private categoryService: CategoryService) { }
+  constructor(
+    private categoryService: CategoryService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.retrieveCategories();
@@ -32,37 +37,46 @@ export class CategoryComponent implements OnInit {
   }
 
   retrieveCategories(): void {
-    this.categoryService.getAll().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+    this.categoryService
+      .getAll()
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
         )
       )
-    ).subscribe(data => {
-      this.categories = data;
-      // Sortowanie kategorii alfabetycznie
-      this.categories.sort((a, b) => {
-        if (a.name && b.name) {
-          return a.name.localeCompare(b.name);
-        }
-        return 0;
+      .subscribe((data) => {
+        this.categories = data;
+        // Sortowanie kategorii alfabetycznie
+        this.categories.sort((a, b) => {
+          if (a.name && b.name) {
+            return a.name.localeCompare(b.name);
+          }
+          return 0;
+        });
       });
-    });
   }
-
-
 
   deleteCategory(currentCategory: Category): void {
-    if (confirm('Czy na pewno chcesz usunąć? ')) {
-      if (currentCategory.id) {
-        this.categoryService
-          .delete(currentCategory.id)
-          .then(() => {
-            //this.refreshList.emit();
-          })
-          .catch((err) => console.log(err));
-      }
-    }
-  }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: 'Czy na pewno chcesz usunąć?',
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Użytkownik kliknął "OK" w potwierdzeniu
+        if (currentCategory.id) {
+          this.categoryService
+            .delete(currentCategory.id)
+            .catch((err) => console.log(err));
+        }
+      } else {
+        // Użytkownik kliknął "Anuluj" lub zamknął dialog
+        console.log('Cancelled category delete.');
+      }
+    });
+  }
 }

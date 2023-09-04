@@ -10,6 +10,7 @@ import { Ng2ImgMaxService } from 'ng2-img-max';
 })
 export class ProfileIMGDialogComponent {
   selectedProfileImage: File | null = null;
+  imageURL: string = '';
 
   constructor(
     public dialogRef: MatDialogRef<ProfileIMGDialogComponent>,
@@ -22,18 +23,8 @@ export class ProfileIMGDialogComponent {
       onImageSelected(event: any): void {
         if (event.target.files && event.target.files.length > 0) {
           const selectedImage = event.target.files[0];
-          const imageSizeLimit = 3 * 1024 * 1024; // Przykładowy limit wielkości obrazka (3 MB)
-/*
-          if (selectedImage.size > imageSizeLimit) {
-            alert('Zdjęcie jest za duże. Maksymalny rozmiar to 3MB.');
 
-            this.selectedProfileImage = null; // Wyczyść wybrany plik
-            event.target.value = null; // Wyczyść pole input typu plik
-
-          } else {
-            this.selectedProfileImage = selectedImage;
-          }
-*/
+          //zmiana rozmiaru zdjecia
           this.selectedProfileImage = selectedImage;
           this.ng2ImgMaxService
           .resizeImage(selectedImage, 200, 200) // 16x9 ratio for 900 width
@@ -42,11 +33,19 @@ export class ProfileIMGDialogComponent {
             console.log("skalowanie obrazu");
 
           });
+          //previev zdjecia
+          const reader = new FileReader();
+          reader.onload = () => {
+            this.imageURL = reader.result as string;
+          }
+          reader.readAsDataURL(selectedImage)
         }
       }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+
 
 }

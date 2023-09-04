@@ -5,7 +5,8 @@ import { Comment } from 'src/app/models/comment.model';
 import { User } from '../../shared/services/user';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from '../../shared/services/auth.service';
-
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-comments-list',
@@ -18,7 +19,7 @@ export class CommentsListComponent implements OnInit {
   users: { [userId: string]: User } = {}; // Obiekt do przechowywania danych użytkowników
 
 
-  constructor(private commentService: CommentService, private userService: UserService, private authService: AuthService) { }
+  constructor(private commentService: CommentService,    private dialog: MatDialog,  private userService: UserService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.retrieveComments();
@@ -78,16 +79,24 @@ export class CommentsListComponent implements OnInit {
   }
 
   deleteComment(currentComment: Comment): void {
-    if (confirm('Czy na pewno chcesz usunąć? ')) {
-      if (currentComment.id) {
-        this.commentService
-          .delete(currentComment.id)
-          .then(() => {
-            //this.refreshList.emit();
-          })
-          .catch((err) => console.log(err));
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px', // Dostosuj szerokość do swoich potrzeb
+      data: 'Czy na pewno chcesz usunąć?',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Użytkownik kliknął "OK" w potwierdzeniu
+        if (currentComment.id) {
+          this.commentService
+            .delete(currentComment.id)
+            .catch((err) => console.log(err));
+        }
+      } else {
+        // Użytkownik kliknął "Anuluj" lub zamknął dialog
+        console.log('Cancelled category delete.');
       }
-    }
+    });
   }
 
   isAdmin() {
