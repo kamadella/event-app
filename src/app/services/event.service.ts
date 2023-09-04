@@ -100,5 +100,10 @@ export class EventService {
     });
   }
 
+  getEventsByCategory(categoryId: string): AngularFirestoreCollection<Event> {
+    return this.db.collection(this.dbPath, (ref) => ref.where('category', '==', categoryId));
+  }
+
+
 
 }

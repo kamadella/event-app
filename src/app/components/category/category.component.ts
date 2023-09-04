@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
+import { EventService } from 'src/app/services/event.service';
 import { map } from 'rxjs/operators';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -17,6 +19,7 @@ export class CategoryComponent implements OnInit {
 
   constructor(
     private categoryService: CategoryService,
+    private eventService: EventService,
     private dialog: MatDialog
   ) {}
 
@@ -69,9 +72,24 @@ export class CategoryComponent implements OnInit {
       if (result) {
         // Użytkownik kliknął "OK" w potwierdzeniu
         if (currentCategory.id) {
-          this.categoryService
-            .delete(currentCategory.id)
-            .catch((err) => console.log(err));
+          // Pobierz wydarzenia przypisane do kategorii
+          const eventsCollection = this.eventService.getEventsByCategory(currentCategory.id);
+
+          eventsCollection.get().subscribe((result) => {
+            if (result.size === 0) {
+              // Brak przypisanych wydarzeń, możesz usunąć kategorię
+              if (currentCategory.id) {
+                this.categoryService
+                  .delete(currentCategory.id)
+                  .catch((err) => console.log(err));
+                }
+            } else {
+              this.dialog.open(AlertDialogComponent, {
+                width: '400px',
+                data: 'Nie można usunąć kategorii, istnieją przypisane do niej wydarzenia.',
+              });
+            }
+          });
         }
       } else {
         // Użytkownik kliknął "Anuluj" lub zamknął dialog
