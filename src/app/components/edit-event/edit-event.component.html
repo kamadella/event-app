@@ -181,7 +181,7 @@
             id="tickets"
             formControlName="tickets"
             value="{{ currentEvent.tickets }}"
-            min={{currentEvent.ticketsLeft}}
+            min={{reservedTickets}}
           />
           <div *ngIf="tickets?.value < 0 ||  tickets?.invalid &&
           (tickets?.dirty || tickets?.touched)" class="invalid-feedback">

@@ -6,7 +6,7 @@
         <h2>Dodaj nową kategorię</h2>
         <hr />
       </div>
-      <div class="submit-form g-5 d-flex justify-content-center my-5">
+      <div class="submit-form g-5 d-flex justify-content-center my-5 ">
         <div *ngIf="!submitted" class="col-md-7">
           <div class="row g-3">
             <div class="form-group col-sm-12">
@@ -41,9 +41,12 @@
 
         <div *ngIf="submitted">
           <h4>Zapisałeś nową kategorie!</h4>
-          <button class="btn btn-success" (click)="newCategory()">
-            Dodaj kolejną kategorię
-          </button>
+          <div class="text-center">
+            <button class="btn btn-success " (click)="newCategory()">
+              Dodaj kolejną kategorię
+            </button>
+          </div>
+
         </div>
       </div>
     </section>

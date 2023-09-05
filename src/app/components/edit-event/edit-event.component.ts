@@ -36,7 +36,6 @@ export class EditEventComponent implements OnInit {
   style = 'mapbox://styles/mapbox/streets-v11';
   lat: number = 53.1322;
   lng: number = 23.1687;
-
   selectedImageFile: File | null = null;
 
   constructor(

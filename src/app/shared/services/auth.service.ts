@@ -187,6 +187,7 @@ export class AuthService {
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
+      this.userData = null; // Ustawienie userData na null lub inny początkowy stan
       this.router.navigate(['sign-in']);
     });
   }

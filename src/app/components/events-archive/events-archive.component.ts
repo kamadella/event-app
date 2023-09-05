@@ -17,6 +17,7 @@ export class EventsArchiveComponent implements OnInit {
   categories!: Category[];
   events?: Event[];
   filteredEventList?: Event[] = [];
+  isSearchFilterVisible = false;
 
 
   constructor(
@@ -162,5 +163,8 @@ export class EventsArchiveComponent implements OnInit {
         isMatchingName
       );
     });
+  }
+  toggleSearchFilter() {
+    this.isSearchFilterVisible = !this.isSearchFilterVisible;
   }
 }

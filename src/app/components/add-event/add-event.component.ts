@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ng2ImgMaxService } from 'ng2-img-max';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-add-event',
@@ -27,6 +28,8 @@ export class AddEventComponent implements OnInit {
   lng: number = 23.1687;
 
   selectedImageFile: File | null = null;
+  addingEvent: boolean = false;
+
 
   constructor(
     private eventService: EventService,
@@ -129,8 +132,10 @@ export class AddEventComponent implements OnInit {
 
     this.eventForm.value.ticketsLeft = this.eventForm.value.tickets;
     this.eventForm.value.createdAt = new Date();
+    this.addingEvent = true;
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
       data: 'Czy na pewno chcesz dodać nowe wydarzenie?',
     });
 
@@ -140,12 +145,20 @@ export class AddEventComponent implements OnInit {
         this.eventService
           .create(this.eventForm.value, this.selectedImageFile!)
           .then(() => {
-            console.log('Created new item successfully!');
+            this.dialog.open(AlertDialogComponent, {
+              width: '400px',
+              data: 'udało ci sie dodac nowe wydarznie, poczekaj na potwierdzenie przez Admina',
+            });
             this.router.navigate(['/events/list']);
+          })
+          .finally(() => {
+            this.addingEvent = false; // Odblokowanie przycisku po zakończeniu procesu
           });
       } else {
         // Użytkownik kliknął "Anuluj" lub zamknął dialog
         console.log('Cancelled new item creation.');
+        this.addingEvent = false; // Odblokowanie przycisku po zakończeniu procesu
+
       }
     });
   }

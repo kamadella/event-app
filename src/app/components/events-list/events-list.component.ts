@@ -15,6 +15,7 @@ export class EventsListComponent implements OnInit {
   categories!: Category[];
   events?: Event[];
   filteredEventList?: Event[] = [];
+  isSearchFilterVisible = false;
 
   constructor(
     private eventService: EventService,
@@ -159,5 +160,9 @@ export class EventsListComponent implements OnInit {
         isMatchingName
       );
     });
+  }
+
+  toggleSearchFilter() {
+    this.isSearchFilterVisible = !this.isSearchFilterVisible;
   }
 }

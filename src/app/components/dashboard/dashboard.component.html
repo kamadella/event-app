@@ -33,24 +33,22 @@
                 }}</strong>
               </h4>
               <p>{{ user.role }}</p>
-              <p>{{ user.emailVerified }}</p>
-
             </div>
           </div>
           <div class="col-sm-8">
             <div class="p-3">
-              <h6 class="mb-2 b-b-default fw-bold">Informacje</h6>
+              <h5 class="mb-2 b-b-default fw-bold">Informacje</h5>
               <div class="row">
                 <div class="col-sm-6">
                   <p class="mb-3 fw-bold">Email</p>
-                  <h6 class="text-muted">{{ user.email }}</h6>
+                  <h6 class="text-muted mb-3">{{ user.email }}</h6>
                 </div>
                 <div class="col-sm-6">
                   <p class="mb-3 fw-bold">Hasło</p>
-                  <h6 class="text-muted">*********</h6>
+                  <h6 class="text-muted mb-3">*********</h6>
                 </div>
               </div>
-              <h6 class="my-3 b-b-default fw-bold">Ustawienia</h6>
+              <h5 class="mb-3 mt-5 b-b-default fw-bold">Ustawienia</h5>
               <div class="row">
                 <div class="col-sm-6">
                   <p class="mb-4 fw-bold">Edytuj konto</p>
@@ -65,12 +63,12 @@
 
                     </button>
                   </div>
-                  <div class="mb-2">
+                  <div class="mb-4">
                     <button
                       class="btn btn-sm btn-primary"
                       (click)="openDialog()"
                     >
-                    <i class="bi bi-pencil me-2"></i>
+                    <i class="bi bi-pencil me-2 "></i>
 
                       Zmień nazwę
 
@@ -138,6 +136,10 @@
       </div>
 
       <div *ngIf="tickets.length <= 0">
+        <div class="text-center">
+          <h2>Moje bilety</h2>
+          <hr />
+        </div>
         <p class="text-center" >brak zarezerwowanych biletów</p>
       </div>
     </div>
