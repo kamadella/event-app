@@ -61,7 +61,6 @@ import { DisplayNameDialogComponent } from './components/dashboard/display-name-
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -120,13 +119,9 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatNativeDateModule,
     MatInputModule,
     MatDialogModule,
-    MatExpansionModule,
-    BrowserModule,
-    MatDatepickerModule,
+    MatExpansionModule
   ],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

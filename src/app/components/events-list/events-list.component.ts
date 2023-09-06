@@ -124,9 +124,8 @@ export class EventsListComponent implements OnInit {
 
     this.filteredEventList = this.events!.filter((event) => {
       const isWithinDateRange =
-        event?.date_end &&
         event?.date_start &&
-        new Date(event.date_end) >= dateStartFilter &&
+        new Date(event.date_start) >= dateStartFilter &&
         new Date(event.date_start) <= dateEndFilter;
 
       const isMatchingCategory =

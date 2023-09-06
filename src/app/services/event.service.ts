@@ -76,6 +76,11 @@ export class EventService {
     });
   }
 
+  getImageURL(eventId: string): Promise<string> {
+    const storageRef = this.storage.ref(`eventImages/${eventId}`);
+    return storageRef.getDownloadURL().toPromise();
+  }
+
   private deleteImage(imagePath: string): Promise<void> {
     const storageRef = this.storage.ref(imagePath);
     return storageRef.delete().toPromise();
