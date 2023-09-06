@@ -14,8 +14,8 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class CategoryComponent implements OnInit {
   category: Category = new Category();
-  categories!: Category[];
-  submitted = false;
+  categories?: Category[];
+  submitted: boolean = false;
 
   constructor(
     private categoryService: CategoryService,
@@ -29,7 +29,6 @@ export class CategoryComponent implements OnInit {
 
   saveCategory(): void {
     this.categoryService.create(this.category).then(() => {
-      console.log('Created new item successfully!');
       this.submitted = true;
     });
   }

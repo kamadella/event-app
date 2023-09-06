@@ -29,4 +29,8 @@ export class TicketService {
   delete(id: string): Promise<void> {
     return this.ticketsRef.doc(id).delete();
   }
+
+  getTicketsByUser(userId: string): AngularFirestoreCollection<Ticket> {
+    return this.db.collection(this.dbPath, (ref) => ref.where('userId', '==', userId));
+  }
 }

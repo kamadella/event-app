@@ -66,7 +66,7 @@
                   <div class="mb-4">
                     <button
                       class="btn btn-sm btn-primary"
-                      (click)="openDialog()"
+                      (click)="openChangeDisplayNameDialog()"
                     >
                     <i class="bi bi-pencil me-2 "></i>
 
@@ -92,6 +92,11 @@
     </div>
   </div>
 </section>
+
+<div class="alert alert-danger alert-dismissible fade show container" role="alert" *ngIf="invalidDisplayName">
+  Niepoprawna nazwa użytkownika
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 
 <section class="py-5">
   <div class="container px-5 my-3">
