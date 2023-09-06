@@ -126,7 +126,7 @@ export class AddEventComponent implements OnInit {
   saveEvent(): void {
     this.eventForm.value.published = false;
 
-    if (this.eventForm.value.tickets == '' || this.eventForm.value.tickets == null) {
+    if (this.eventForm.value.tickets == '') {
       this.eventForm.value.tickets = 0;
     }
 
