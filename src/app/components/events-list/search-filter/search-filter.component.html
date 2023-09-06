@@ -44,11 +44,11 @@
         <div class="form-floating">
           <mat-form-field appearance="outline" class="date-range">
             <mat-label>Data</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
-              <input matStartDate [(ngModel)]="dateStartFilter" />
-              <input matEndDate [(ngModel)]="dateEndFilter" />
+            <mat-date-range-input [rangePicker]="picker" format="DD/MM/YYYY">
+              <input matStartDate [(ngModel)]="dateStartFilter" format="DD/MM/YYYY" />
+              <input matEndDate [(ngModel)]="dateEndFilter" format="DD/MM/YYYY"/>
             </mat-date-range-input>
-            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle
               matSuffix
               [for]="picker"
