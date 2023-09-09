@@ -20,7 +20,6 @@ export class AuthService {
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
-    public ngZone: NgZone, // NgZone service to remove outside scope warning
     private storage: AngularFireStorage, // Wstrzyknięcie AngularFireStorage
     private dialog: MatDialog
   ) {
@@ -28,81 +27,65 @@ export class AuthService {
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
       if (user && !this.userData) {
-        this.afs
-          .doc(`users/${user.uid}`)
-          .get()
-          .subscribe((userData) => {
-            const userWithRole = {
-              uid: user.uid,
-              email: user.email,
-              displayName: user.displayName,
-              photoURL: user.photoURL,
-              emailVerified: user.emailVerified,
-              role: userData.get('role'),
-            };
-            this.userData = userWithRole;
-            localStorage.setItem('user', JSON.stringify(this.userData));
-            JSON.parse(localStorage.getItem('user')!);
-          });
+        this.loadUserData(user);
       } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
+        this.clearUserData();
       }
     });
   }
 
-  // Sign in with email/password
-  SignIn(email: string, password: string) {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        // Pobranie danych o użytkowniku, w tym informacji o roli
-        this.afs
-          .doc(`users/${result.user!.uid}`)
-          .get()
-          .subscribe((userData) => {
-            const userWithRole = {
-              uid: result.user!.uid,
-              email: result.user!.email,
-              displayName: result.user!.displayName,
-              photoURL: result.user!.photoURL,
-              emailVerified: result.user!.emailVerified,
-              role: userData.get('role'), // Pobranie roli z bazy danych
-            };
-
-            // Dodaj warunek, aby sprawdzić, czy email jest zweryfikowany
-            if (userWithRole.emailVerified) {
-              this.userData = userWithRole;
-              localStorage.setItem('user', JSON.stringify(this.userData));
-              JSON.parse(localStorage.getItem('user')!);
-
-              console.log(result.user!.displayName);
-              console.log(result.user!.photoURL);
-
-              this.router.navigate(['events/list']);
-            } else {
-              // Jeśli email nie jest zweryfikowany, wyloguj użytkownika
-              this.SignOut();
-              this.dialog.open(AlertDialogComponent, {
-                width: '400px',
-                data: 'Twój email nie jest zweryfikowany. Sprawdź skrzynkę odbiorczą i zweryfikuj swój email, aby się zalogować.',
-              });
-            }
-          });
-      })
-      .catch((error) => {
-        window.alert(error.message);
+  private loadUserData(user: any) {
+    this.afs
+      .doc(`users/${user.uid}`)
+      .get()
+      .subscribe((userData) => {
+        const userWithRole = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          emailVerified: user.emailVerified,
+          role: userData.get('role'),
+        };
+        if (userWithRole.emailVerified) {
+          this.setUserData(userWithRole);
+          this.router.navigate(['events/list']);
+        } else {
+          this.signOut();
+          this.showAlertDialog('Twój email nie jest zweryfikowany. Sprawdź skrzynkę odbiorczą i zweryfikuj swój email, aby się zalogować.');
+        }
       });
   }
 
+  private setUserData(user: any) {
+    this.userData = user;
+    localStorage.setItem('user', JSON.stringify(this.userData));
+  }
+
+  private clearUserData() {
+    localStorage.setItem('user', 'null');
+  }
+
+  // Sign in with email/password
+  signIn(email: string, password: string) {
+    return this.afAuth
+    .signInWithEmailAndPassword(email, password)
+    .then((result) => {
+      this.loadUserData(result.user!);
+    })
+    .catch((error) => {
+      this.showAlertDialog(error.message);
+    });
+  }
+
   // Sign up with email/password
-  SignUp(email: string, password: string, displayName: string) {
+  signUp(email: string, password: string, displayName: string) {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
-        this.SendVerificationMail();
+        this.sendVerificationMail();
 
         // Ustawienie nazwy użytkownika (displayName)
         return result.user
@@ -112,43 +95,48 @@ export class AuthService {
               'https://firebasestorage.googleapis.com/v0/b/event-app-4eaf2.appspot.com/o/userProfileImages%2Fdefault_img.jpg?alt=media&token=fc0e9ead-7c55-4121-9790-8e4823a0aa10',
           })
           .then(() => {
-            this.SetUserData(result.user);
-            this.UpdateUserRole(result.user!.uid, 'user');
+            this.setUserData(result.user);
+            this.updateUserRole(result.user!.uid, 'user');
           });
       })
       .catch((error) => {
-        this.dialog.open(AlertDialogComponent, {
-          width: '400px',
-          data: error.message,
-        });
+        this.showAlertDialog(error.message);
       });
   }
 
+  updateUserRole(uid: string, role: string): Promise<void> {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    return userRef.update({ role: role });
+  }
+
   // Send email verfificaiton when new user sign up
-  SendVerificationMail() {
+  sendVerificationMail() {
     return this.afAuth.currentUser
       .then((u: any) => u.sendEmailVerification())
       .then(() => {
         this.router.navigate(['verify-email-address']);
+      }).catch((error)=> {
+        this.showAlertDialog(error.message);
       });
   }
 
   // Reset Forggot password
-  ForgotPassword(passwordResetEmail: string) {
+  forgotPassword(passwordResetEmail: string) {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        this.dialog.open(AlertDialogComponent, {
-          width: '400px',
-          data: 'Email z linkiem resetującym haslo zostal wysłany. Sprawdż swój mail',
-        });
+        this.showAlertDialog('Email z linkiem resetującym haslo zostal wysłany. Sprawdż swój mail');
       })
       .catch((error) => {
-        this.dialog.open(AlertDialogComponent, {
-          width: '400px',
-          data: error,
-        });
+        this.showAlertDialog(error.message);
       });
+  }
+
+  showAlertDialog(error: string){
+    this.dialog.open(AlertDialogComponent, {
+      width: '400px',
+      data: error,
+    });
   }
 
   // Returns true when user is looged in and email is verified
@@ -164,27 +152,11 @@ export class AuthService {
     return user !== null && user.role === 'admin';
   }
 
-  /* Setting up user data when sign in with username/password,
-  sign up with username/password and sign in with social auth
-  provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-  SetUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
-    );
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified,
-    };
-    return userRef.set(userData, {
-      merge: true,
-    });
-  }
+
+
 
   // Sign out
-  SignOut() {
+  signOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
       this.userData = null; // Ustawienie userData na null lub inny początkowy stan
@@ -192,10 +164,7 @@ export class AuthService {
     });
   }
 
-  UpdateUserRole(uid: string, role: string): Promise<void> {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    return userRef.update({ role: role });
-  }
+
 
   // Pobierz identyfikator użytkownika
   getUserId(): string {
