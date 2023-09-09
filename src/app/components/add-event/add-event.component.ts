@@ -52,13 +52,17 @@ export class AddEventComponent implements OnInit {
       tickets: [''],
       ticketsLeft: [''],
       img: ['', [Validators.required]],
-      lat: [''], // New form control for latitude
-      lng: [''], // New form control for longitude
-      place_name: ['', [Validators.required]], // New form control for place_name
+      lat: [''],
+      lng: [''],
+      place_name: ['', [Validators.required]],
       published: [''],
       createdAt: ['']
     });
 
+    this.initializeGeocoder();
+  }
+
+  initializeGeocoder() {
     const geocoder = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
       mapboxgl: mapboxgl,
@@ -147,7 +151,7 @@ export class AddEventComponent implements OnInit {
           .then(() => {
             this.dialog.open(AlertDialogComponent, {
               width: '400px',
-              data: 'udało ci sie dodac nowe wydarznie, poczekaj na potwierdzenie przez Admina',
+              data: 'udało ci sie dodać nowe wydarznie, poczekaj na potwierdzenie przez Admina',
             });
             this.router.navigate(['/events/list']);
           })
@@ -156,9 +160,7 @@ export class AddEventComponent implements OnInit {
           });
       } else {
         // Użytkownik kliknął "Anuluj" lub zamknął dialog
-        console.log('Cancelled new item creation.');
         this.addingEvent = false; // Odblokowanie przycisku po zakończeniu procesu
-
       }
     });
   }
@@ -183,7 +185,6 @@ export class AddEventComponent implements OnInit {
 
   isDateEndInvalid(): boolean {
     const today = new Date();
-
     const dateEnd = this.eventForm.get('date_end')?.value;
     return new Date(dateEnd) < today;
   }

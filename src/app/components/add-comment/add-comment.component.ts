@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Comment } from 'src/app/models/comment.model';
 import { CommentService } from 'src/app/services/comment.service';
 import { AuthService } from '../../shared/services/auth.service';
@@ -9,10 +9,10 @@ import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
   templateUrl: './add-comment.component.html',
   styleUrls: ['./add-comment.component.css'],
 })
-export class AddCommentComponent implements OnInit {
+export class AddCommentComponent  {
   @Input() eventId?: string;
-
   comment: Comment = new Comment();
+  invalidComment: boolean = false;
 
   constructor(
     private commentService: CommentService,
@@ -20,7 +20,6 @@ export class AddCommentComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
-  ngOnInit(): void { }
 
   isLoggedIn() {
     return this.authService.isLoggedIn;
@@ -43,20 +42,15 @@ export class AddCommentComponent implements OnInit {
       this.comment.text.trim() !== '' &&
       this.comment.text.length <= 500
     ) {
-      this.commentService.create(this.comment).then(() => {
-        console.log('Created new comment successfully!');
-      });
+      this.commentService.create(this.comment);
     } else {
-      console.log('Invalid comment');
+      this.invalidComment = true;
     }
 
     this.comment = new Comment();
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(LoginDialogComponent);
-
-    dialogRef.afterClosed().subscribe((result) => {
-    });
+  openLoginDialog() {
+    this.dialog.open(LoginDialogComponent);
   }
 }

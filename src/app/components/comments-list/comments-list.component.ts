@@ -7,63 +7,68 @@ import { UserService } from 'src/app/services/user.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-comments-list',
   templateUrl: './comments-list.component.html',
-  styleUrls: ['./comments-list.component.css']
+  styleUrls: ['./comments-list.component.css'],
 })
 export class CommentsListComponent implements OnInit {
-  @Input() eventId?: string;
+  eventId?: string;
   comments?: Comment[];
   users: { [userId: string]: User } = {}; // Obiekt do przechowywania danych użytkowników
 
+  constructor(
+    private commentService: CommentService,
+    private dialog: MatDialog,
+    private userService: UserService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
 
-  constructor(private commentService: CommentService,    private dialog: MatDialog,  private userService: UserService, private authService: AuthService) { }
+  ) {}
 
   ngOnInit(): void {
-    this.retrieveComments();
+    this.route.params.subscribe((params) => (this.eventId = params['id']));
+    this.retrieveCommentsByEvents();
   }
 
-
-
-  retrieveComments(): void {
-    this.commentService.getAll().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(data => {
-      this.comments = data
-      .filter(comment => comment.eventId === this.eventId)
-      .sort((a, b) => {
+  retrieveCommentsByEvents(): void {
+    this.commentService.getCommentsByEvent(this.eventId!).snapshotChanges().subscribe((changes) => {
+      this.comments = changes.map((c) => ({
+        id: c.payload.doc.id,
+        ...c.payload.doc.data(),
+      })).sort((a, b) => {
         const timestampA = a.date;
         const timestampB = b.date;
         if (timestampA && timestampB) {
-          return timestampA > timestampB ? -1 : (timestampA < timestampB ? 1 : 0);
+          return timestampA > timestampB ? -1 : timestampA < timestampB ? 1 : 0;
         }
         return 0;
       });
 
-      this.loadUsers(); // Wczytaj dane użytkowników po pobraniu komentarzy
-    });
+        this.loadUsers(); // Wczytaj dane użytkowników po pobraniu komentarzy
+      });
   }
 
   loadUsers(): void {
     // Pobierz dane użytkowników i zapisz je w obiekcie users
-    this.userService.getAll().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+    this.userService
+      .getAll()
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
         )
       )
-    ).subscribe(data => {
-      data.forEach(user => {
-        this.users[user.id] = user;
-
+      .subscribe((data) => {
+        data.forEach((user) => {
+          this.users[user.id] = user;
+        });
       });
-    });
   }
 
   getUserName(userId: string): string {
@@ -75,12 +80,14 @@ export class CommentsListComponent implements OnInit {
   getPhotoURL(userId: string): string {
     // Pobierz nazwę użytkownika na podstawie jego identyfikatora
     const user = this.users[userId];
-    return user ? user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/event-app-4eaf2.appspot.com/o/userProfileImages%2Fdefault_img.jpg?alt=media&token=fc0e9ead-7c55-4121-9790-8e4823a0aa10';
+    return user
+      ? user.photoURL
+      : 'https://firebasestorage.googleapis.com/v0/b/event-app-4eaf2.appspot.com/o/userProfileImages%2Fdefault_img.jpg?alt=media&token=fc0e9ead-7c55-4121-9790-8e4823a0aa10';
   }
 
   deleteComment(currentComment: Comment): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px', // Dostosuj szerokość do swoich potrzeb
+      width: '400px',
       data: 'Czy na pewno chcesz usunąć?',
     });
 
@@ -93,7 +100,6 @@ export class CommentsListComponent implements OnInit {
             .catch((err) => console.log(err));
         }
       } else {
-        // Użytkownik kliknął "Anuluj" lub zamknął dialog
         console.log('Cancelled category delete.');
       }
     });
@@ -105,8 +111,12 @@ export class CommentsListComponent implements OnInit {
 
   formatTimestamp(timestamp: any): string {
     const date = timestamp.toDate(); // Convert Firebase Timestamp to JavaScript Date
-    return date.toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleString('pl-PL', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   }
-
-
 }

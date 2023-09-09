@@ -39,8 +39,11 @@
           </button>
         </div>
 
+
         <div *ngIf="submitted">
-          <h4>Zapisałeś nową kategorie!</h4>
+          <div class="alert alert-success" role="alert" *ngIf="submitted">
+            Udało sie dodac nową kategorię o nazwie: <b>{{category.name}}</b>
+          </div>
           <div class="text-center">
             <button class="btn btn-success " (click)="newCategory()">
               Dodaj kolejną kategorię

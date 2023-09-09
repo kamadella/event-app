@@ -13,7 +13,6 @@ export class CommentService {
     this.commentsRef = db.collection(this.dbPath);
    }
 
-
   getAll(): AngularFirestoreCollection<Comment> {
     return this.commentsRef;
   }
@@ -28,5 +27,9 @@ export class CommentService {
 
   delete(id: string): Promise<void> {
     return this.commentsRef.doc(id).delete();
+  }
+
+  getCommentsByEvent(eventId: string): AngularFirestoreCollection<Comment> {
+    return this.db.collection(this.dbPath, (ref) => ref.where('eventId', '==', eventId));
   }
 }
