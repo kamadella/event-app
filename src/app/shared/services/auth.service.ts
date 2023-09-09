@@ -40,13 +40,10 @@ export class AuthService {
               emailVerified: user.emailVerified,
               role: userData.get('role'),
             };
-            this.userData = userWithRole;
-            localStorage.setItem('user', JSON.stringify(this.userData));
-            JSON.parse(localStorage.getItem('user')!);
+            this.setUserDataInLocalStorage(userWithRole);
           });
       } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
+        this.clearUserData();
       }
     });
   }
@@ -56,42 +53,24 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        // Pobranie danych o użytkowniku, w tym informacji o roli
-        this.afs
-          .doc(`users/${result.user!.uid}`)
-          .get()
-          .subscribe((userData) => {
-            const userWithRole = {
-              uid: result.user!.uid,
-              email: result.user!.email,
-              displayName: result.user!.displayName,
-              photoURL: result.user!.photoURL,
-              emailVerified: result.user!.emailVerified,
-              role: userData.get('role'), // Pobranie roli z bazy danych
-            };
+        this.afs.doc(`users/${result.user!.uid}`).get().subscribe((userData) => {
+          const userWithRole = {
+            uid: result.user!.uid,
+            email: result.user!.email,
+            displayName: result.user!.displayName,
+            photoURL: result.user!.photoURL,
+            emailVerified: result.user!.emailVerified,
+            role: userData.get('role'), // Pobranie roli z bazy danych
+          };
 
-            // Dodaj warunek, aby sprawdzić, czy email jest zweryfikowany
-            if (userWithRole.emailVerified) {
-              this.userData = userWithRole;
-              localStorage.setItem('user', JSON.stringify(this.userData));
-              JSON.parse(localStorage.getItem('user')!);
+          this.setUserDataInLocalStorage(userWithRole);
+          this.SetUserData(result.user);
 
-              console.log(result.user!.displayName);
-              console.log(result.user!.photoURL);
-
-              this.router.navigate(['events/list']);
-            } else {
-              // Jeśli email nie jest zweryfikowany, wyloguj użytkownika
-              this.SignOut();
-              this.dialog.open(AlertDialogComponent, {
-                width: '400px',
-                data: 'Twój email nie jest zweryfikowany. Sprawdź skrzynkę odbiorczą i zweryfikuj swój email, aby się zalogować.',
-              });
-            }
-          });
+          this.router.navigate(['events/list']);
+        });
       })
       .catch((error) => {
-        window.alert(error.message);
+        this.showAlertDialog(error.message);
       });
   }
 
@@ -117,10 +96,7 @@ export class AuthService {
           });
       })
       .catch((error) => {
-        this.dialog.open(AlertDialogComponent, {
-          width: '400px',
-          data: error.message,
-        });
+        this.showAlertDialog(error.message);
       });
   }
 
@@ -138,16 +114,12 @@ export class AuthService {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        this.dialog.open(AlertDialogComponent, {
-          width: '400px',
-          data: 'Email z linkiem resetującym haslo zostal wysłany. Sprawdż swój mail',
-        });
+        this.showAlertDialog(
+          'Email z linkiem resetującym haslo zostal wysłany. Sprawdż swój mail'
+        );
       })
       .catch((error) => {
-        this.dialog.open(AlertDialogComponent, {
-          width: '400px',
-          data: error,
-        });
+        this.showAlertDialog(error.message);
       });
   }
 
@@ -171,16 +143,23 @@ export class AuthService {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
-    const userData: User = {
+    // Sprawdź, czy pole role istnieje w obiekcie user
+    const userData = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
     };
+
     return userRef.set(userData, {
       merge: true,
     });
+  }
+
+  UpdateUserRole(uid: string, role: string): Promise<void> {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    return userRef.update({ role: role });
   }
 
   // Sign out
@@ -192,9 +171,23 @@ export class AuthService {
     });
   }
 
-  UpdateUserRole(uid: string, role: string): Promise<void> {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    return userRef.update({ role: role });
+  showAlertDialog(message: string) {
+    this.dialog.open(AlertDialogComponent, {
+      width: '400px',
+      data: message,
+    });
+  }
+
+  private setUserDataInLocalStorage(user: any) {
+    this.userData = user;
+    localStorage.setItem('user', JSON.stringify(this.userData));
+  }
+
+
+
+  private clearUserData() {
+    localStorage.setItem('user', 'null');
+    JSON.parse(localStorage.getItem('user')!);
   }
 
   // Pobierz identyfikator użytkownika
