@@ -1,6 +1,22 @@
-<app-search-filter-archive
-  (filterChanged)="handleFilterChange($event)"
-></app-search-filter-archive>
+<section class="bg-dark py-3">
+  <div class="container px-5">
+    <div class="d-flex justify-content-center">
+      <button
+      class="btn btn-outline-light d-md-none"
+      (click)="toggleSearchFilter()"
+      >
+      {{ isSearchFilterVisible ? 'Ukryj wyszukiwarkę' : 'Pokaż wyszukiwarkę' }}
+      </button>
+
+    </div>
+
+    <app-search-filter-archive
+      (filterChanged)="handleFilterChange($event)"   [ngClass]="{'d-none d-md-block': !isSearchFilterVisible}"
+    ></app-search-filter-archive>
+  </div>
+
+</section>
+
 
 <!-- Events archive section-->
 <section class="py-5">

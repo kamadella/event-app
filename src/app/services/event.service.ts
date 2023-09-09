@@ -76,11 +76,6 @@ export class EventService {
     });
   }
 
-  getImageURL(eventId: string): Promise<string> {
-    const storageRef = this.storage.ref(`eventImages/${eventId}`);
-    return storageRef.getDownloadURL().toPromise();
-  }
-
   private deleteImage(imagePath: string): Promise<void> {
     const storageRef = this.storage.ref(imagePath);
     return storageRef.delete().toPromise();
@@ -99,6 +94,11 @@ export class EventService {
       console.log('Usunięto wydarzenie i obrazek');
     });
   }
+
+  getEventsByCategory(categoryId: string): AngularFirestoreCollection<Event> {
+    return this.db.collection(this.dbPath, (ref) => ref.where('category', '==', categoryId));
+  }
+
 
 
 }

@@ -25,27 +25,38 @@ export class MapComponent implements OnInit {
 
   constructor(private eventService: EventService, public dialog: MatDialog) { }
 
-  ngOnInit() {
-    this.retrieveEvents();
-    this.map = new mapboxgl.Map({
-       accessToken: environment.mapbox.accessToken,
-       container: 'map',
-       style: this.style,
-       zoom: 11,
-       center: [this.lng, this.lat]
-     });
-     this.map.addControl(
-        new MapboxGeocoder({
-        accessToken: environment.mapbox.accessToken,
-        mapboxgl: mapboxgl
-        })
-      );
+  ngOnInit() { }
 
-      if (this.centerEvent) {
-        this.centerMapOnEvent(this.centerEvent);
-      }
 
+  ngAfterViewInit() {
+    // Opóźnij inicjalizację mapy, aby Angular miał więcej czasu
+    setTimeout(() => {
+      this.retrieveEvents();
+      this.initializeMap();
+    }, 100);
   }
+
+  initializeMap() {
+    this.map = new mapboxgl.Map({
+      accessToken: environment.mapbox.accessToken,
+      container: 'map',
+      style: this.style,
+      zoom: 11,
+      center: [this.lng, this.lat]
+    });
+
+    this.map.addControl(
+      new MapboxGeocoder({
+      accessToken: environment.mapbox.accessToken,
+      mapboxgl: mapboxgl
+      })
+    );
+
+    if (this.centerEvent) {
+      this.centerMapOnEvent(this.centerEvent);
+    }
+  }
+
 
   centerMapOnEvent(event: Event): void {
     if (this.map) {

@@ -9,7 +9,9 @@ import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { environment } from '../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ng2ImgMaxService } from 'ng2-img-max';
-
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-add-event',
@@ -26,13 +28,16 @@ export class AddEventComponent implements OnInit {
   lng: number = 23.1687;
 
   selectedImageFile: File | null = null;
+  addingEvent: boolean = false;
+
 
   constructor(
     private eventService: EventService,
     private categoryService: CategoryService,
     private router: Router,
     public fb: FormBuilder,
-    private ng2ImgMaxService: Ng2ImgMaxService
+    private ng2ImgMaxService: Ng2ImgMaxService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -106,22 +111,7 @@ export class AddEventComponent implements OnInit {
   onImageSelected(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
       const selectedImageFile = event.target.files[0];
-      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-/*
-      if (selectedImageFile.size > maxSizeInBytes) {
-        alert('Zdjęcie jest za duże. Maksymalny rozmiar to 5MB.');
 
-        // Wyczyść pole input, jeśli przekroczono limit
-        const imgFormControl = this.eventForm.get('img');
-        if (imgFormControl) {
-          // Sprawdź, czy imgFormControl nie jest null
-          imgFormControl.setValue(null);
-          imgFormControl.markAsTouched();
-        }
-
-        return;
-      }
-*/
       this.selectedImageFile = selectedImageFile;
       this.ng2ImgMaxService
       .resizeImage(selectedImageFile, 900, 506) // 16x9 ratio for 900 width
@@ -136,25 +126,41 @@ export class AddEventComponent implements OnInit {
   saveEvent(): void {
     this.eventForm.value.published = false;
 
-    if (this.eventForm.value.tickets == '') {
+    if (this.eventForm.value.tickets == '' || this.eventForm.value.tickets == null) {
       this.eventForm.value.tickets = 0;
     }
 
-    console.log(this.eventForm.value.date_end);
-
-
     this.eventForm.value.ticketsLeft = this.eventForm.value.tickets;
     this.eventForm.value.createdAt = new Date();
+    this.addingEvent = true;
 
-    if (confirm('Czy na pewno chcesz dodać nowe wydarzenie? ')) {
-      this.eventService
-        .create(this.eventForm.value, this.selectedImageFile!)
-        .then(() => {
-          console.log('Created new item successfully!');
-          this.router.navigate(['/events/list']);
-        });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: 'Czy na pewno chcesz dodać nowe wydarzenie?',
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Użytkownik kliknął "OK" w potwierdzeniu
+        this.eventService
+          .create(this.eventForm.value, this.selectedImageFile!)
+          .then(() => {
+            this.dialog.open(AlertDialogComponent, {
+              width: '400px',
+              data: 'udało ci sie dodac nowe wydarznie, poczekaj na potwierdzenie przez Admina',
+            });
+            this.router.navigate(['/events/list']);
+          })
+          .finally(() => {
+            this.addingEvent = false; // Odblokowanie przycisku po zakończeniu procesu
+          });
+      } else {
+        // Użytkownik kliknął "Anuluj" lub zamknął dialog
+        console.log('Cancelled new item creation.');
+        this.addingEvent = false; // Odblokowanie przycisku po zakończeniu procesu
+
+      }
+    });
   }
 
   retrieveCategory(): void {

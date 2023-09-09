@@ -22,4 +22,5 @@ export class UserNavbarComponent implements OnInit {
   isAdmin() {
     return this.authService.isAdmin;
   }
+
 }

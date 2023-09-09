@@ -31,8 +31,9 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule} from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-content.component';
@@ -45,8 +46,6 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { AdminNavbarComponent } from './layouts/admin-navbar/admin-navbar.component';
 import { UserNavbarComponent } from './layouts/user-navbar/user-navbar.component';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { TicketComponent } from './components/ticket/ticket.component';
@@ -59,7 +58,10 @@ import { SearchFilterArchiveComponent } from './components/events-archive/search
 import { ContactComponent } from './components/contact/contact.component';
 import { ProfileIMGDialogComponent } from './components/dashboard/profile-img-dialog/profile-img-dialog.component';
 import { DisplayNameDialogComponent } from './components/dashboard/display-name-dialog/display-name-dialog.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -82,8 +84,6 @@ import { DisplayNameDialogComponent } from './components/dashboard/display-name-
     ForgotPasswordComponent,
     VerifyEmailComponent,
     DashboardComponent,
-    AdminLayoutComponent,
-    AdminNavbarComponent,
     UserNavbarComponent,
     UserLayoutComponent,
     TicketComponent,
@@ -95,7 +95,9 @@ import { DisplayNameDialogComponent } from './components/dashboard/display-name-
     SearchFilterArchiveComponent,
     ContactComponent,
     ProfileIMGDialogComponent,
-    DisplayNameDialogComponent
+    DisplayNameDialogComponent,
+    ConfirmDialogComponent,
+    AlertDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -117,9 +119,14 @@ import { DisplayNameDialogComponent } from './components/dashboard/display-name-
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule,
+    BrowserModule,
+    MatDatepickerModule,
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

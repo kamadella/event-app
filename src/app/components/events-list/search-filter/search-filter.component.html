@@ -5,9 +5,9 @@
   type="text/css"
 />
 
-<header class="bg-dark py-5">
-  <div class="container px-5">
-    <div class="row gy-3 px-lg-5">
+<header >
+  <div >
+    <div class="row gy-2 px-lg-5 pt-md-3">
       <div class="col-lg-4 px-md-4 ">
         <p class="text-white text-center">Nazwa</p>
         <div class="form-floating">
@@ -24,7 +24,7 @@
 
       <div class="col-lg-4 px-md-4">
         <p class="text-white text-center">Lokalizacja</p>
-        <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-stretch ">
           <div id="geocoderFilter" class="geocoder" style="flex: 1"></div>
           <div class="form-floating" style="flex: 0 0 30%">
             <input
@@ -44,11 +44,11 @@
         <div class="form-floating">
           <mat-form-field appearance="outline" class="date-range">
             <mat-label>Data</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
-              <input matStartDate [(ngModel)]="dateStartFilter" />
-              <input matEndDate [(ngModel)]="dateEndFilter" />
+            <mat-date-range-input [rangePicker]="picker" format="DD/MM/YYYY">
+              <input matStartDate [(ngModel)]="dateStartFilter" format="DD/MM/YYYY" />
+              <input matEndDate [(ngModel)]="dateEndFilter" format="DD/MM/YYYY"/>
             </mat-date-range-input>
-            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle
               matSuffix
               [for]="picker"

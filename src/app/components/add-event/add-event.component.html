@@ -10,7 +10,7 @@
   <hr />
 </div>
 
-<form [formGroup]="eventForm" (ngSubmit)="saveEvent()" novalidate>
+<form [formGroup]="eventForm" (ngSubmit)="saveEvent()" validate>
   <div class="submit-form g-5 d-flex justify-content-center container">
     <div class="col-md-8">
       <div class="row g-3">
@@ -99,7 +99,7 @@
         </div>
 
         <div class="form-group col-6 my-2">
-          <label for="date_start">Data rozpoczęcia</label>
+          <label for="date_start">Data i godzina rozpoczęcia</label>
           <input
             class="form-control"
             type="datetime-local"
@@ -113,7 +113,7 @@
         </div>
 
         <div class="form-group col-6 my-2">
-          <label for="date_end">Data zakończenia</label>
+          <label for="date_end">Data i godzina zakończenia</label>
           <input
             class="form-control"
             type="datetime-local"
@@ -141,7 +141,7 @@
           required
         >
           <mat-radio-button
-            class="form-check form-check-inline"
+            class="form-check form-check-inline "
             *ngFor="let category of categories"
             [value]="category.id"
           >
@@ -178,3 +178,4 @@
     </div>
   </div>
 </form>
+

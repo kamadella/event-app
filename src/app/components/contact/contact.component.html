@@ -1,101 +1,158 @@
 <!--Section: Contact v.2-->
 <section class="container my-5">
-
   <!--Section heading-->
   <div class="text-center">
     <h2>Napisz do nas</h2>
     <hr />
   </div>
   <!--Section description-->
-  <p class="text-center w-responsive mx-auto mb-5">Masz jakieś pytania lub problem? Nie bój się zapytać, na wszystko chętnie odpowiemy.</p>
+  <p class="text-center w-responsive mx-auto mb-5">
+    Masz jakieś pytania lub problem? Nie bój się zapytać, na wszystko chętnie
+    odpowiemy.
+  </p>
 
-  <div class="row d-flex justify-content-center">
-      <!--Grid column-->
-      <div class="col-md-7 mb-md-0 mb-5">
-          <form id="contact-form" name="contact-form">
+  <div class="row align-items-center">
+    <div class="col-md-6  my-5">
+        <div class="logo">
+          <img
+            class="mx-auto d-block"
+            src="https://img.freepik.com/premium-wektory/kolekcja-logo-litery-e-alfabetu_647881-448.jpg"
+            alt="logo"
+            width="300px"
+          />
+        </div>
+    </div>
 
-              <!--Grid row-->
-              <div class="row">
+    <div class="col-md-6 my-5 text-center text-md-start">
+      <ul class="list-unstyled fs-5">
+        <li class="my-4 mx-auto">
+          <i class="bi bi-geo-alt-fill me-3 "></i>
 
-                  <!--Grid column-->
-                  <div class="col-md-6">
-                      <div class="md-form mb-3">
-                          <input type="text" id="name" name="name" class="form-control">
-                          <label for="name" class="">Imię</label>
-                      </div>
-                  </div>
-                  <!--Grid column-->
+          <b>Politechnika Białostocka</b>, Wiejska 45A, Białystok, Polska
+        </li>
 
-                  <!--Grid column-->
-                  <div class="col-md-6">
-                      <div class="md-form mb-3">
-                          <input type="text" id="email" name="email" class="form-control">
-                          <label for="email" class="">Email</label>
-                      </div>
-                  </div>
-                  <!--Grid column-->
+        <li class="my-4">
+          <i class="bi bi-telephone-fill me-3"></i>
+          +48 123 456 789
+        </li>
 
-              </div>
-              <!--Grid row-->
-
-              <!--Grid row-->
-              <div class="row">
-                  <div class="col-md-12">
-                      <div class="md-form mb-3 ">
-                          <input type="text" id="subject" name="subject" class="form-control">
-                          <label for="subject" >Temat</label>
-                      </div>
-                  </div>
-              </div>
-              <!--Grid row-->
-
-              <!--Grid row-->
-              <div class="row">
-
-                  <!--Grid column-->
-                  <div class="col-md-12">
-
-                      <div class="md-form mb-4">
-                          <textarea type="text" id="message" name="message" rows="4" class="form-control md-textarea"></textarea>
-                          <label for="message">Treść wiadomości</label>
-                      </div>
-
-                  </div>
-              </div>
-              <!--Grid row-->
-
-          </form>
-
-          <div class="text-center text-lg-left">
-              <a class="btn btn-lg btn-primary" >Wyślij</a>
-          </div>
-          <div class="status"></div>
-      </div>
-      <!--Grid column-->
-
-      <!--Grid column-->
-      <div class="col-md-3 text-center">
-          <ul class="list-unstyled mb-0">
-              <li><h2><i class="bi bi-geo-alt-fill"></i></h2>
-
-                  <p><b>Politechnika Białostocka</b>, Wiejska 45A, Białystok, Polska</p>
-
-              </li>
-
-              <li><h2><i class="bi bi-telephone-fill"></i>
-              </h2>
-                  <p>123 456 789</p>
-              </li>
-
-              <li><h2><i class="bi bi-envelope-fill"></i>
-              </h2>
-                  <p>kontakt@evencik.pl</p>
-              </li>
-          </ul>
-      </div>
-      <!--Grid column-->
-
+        <li class="my-4">
+          <i class="bi bi-envelope-fill me-3"></i>
+          kontakt@evencik.pl
+        </li>
+      </ul>
+    </div>
   </div>
-
 </section>
 <!--Section: Contact v.2-->
+
+<section class="container my-5">
+  <!--Section heading-->
+  <div class="text-center">
+    <h2>Często zadawane pytania</h2>
+    <hr />
+  </div>
+  <!--Section description-->
+  <p class="text-center w-responsive mx-auto mb-5">
+    Nie znalazłeś odpowiedzi na swoje pytanie? Napisz do nas na
+    <a href="kamilaaadamska@gmail.com">kontakt@evencik.pl</a>.
+  </p>
+
+  <div class="mx-auto">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Co zrobic jeśli zapomne hasła? </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>
+          Jeżeli zapomniałeś swojego hasła do konta, istnieje szybki sposób, aby
+          je odzyskać. W trakcie każdego procesu logowania dostępna jest opcja
+          „Zapomniałem hasła”. Proces resetowania hasła przebiega następująco:
+          Należy podać e-mail, taki sam jak ten podany przy rejestracji, na
+          który zostanie wysłana wiadomość z kodem do resetu hasła i linkiem do
+          resetu hasła. Po wpisaniu kodu, należy podać nowe hasło, oraz je
+          potwierdzić.
+        </p>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Na czym polega weryfikacja konta? </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>
+          Serwis Evencik w trosce o bezpieczeństwo użytkowników i ich
+          wiarygodność, przeprowadza dla każdego rejestrowanego konta
+          weryfikacje adresu e-mail. Wpisując email zostanie wysłana na skrzynkę
+          użytkownika aktywacja konta
+        </p>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Jak dziala wyszukiwarka wydarzeń? </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum.
+        </p>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Jak dodać nowe wydarzenie? </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum.
+        </p>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Jakie rodzaje wydarzęń moge dodać na stronę?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum.
+        </p>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Jak sprawdzić zarezerwowane bilety na wydarzenie?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum.
+        </p>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</section>

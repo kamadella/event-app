@@ -4,23 +4,26 @@ import { TicketService } from 'src/app/services/ticket.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.component.html',
-  styleUrls: ['./ticket.component.css']
+  styleUrls: ['./ticket.component.css'],
 })
 export class TicketComponent implements OnInit {
   ticketForm!: FormGroup;
   ticketsAvailabilityMessage: string = '';
 
-
-  constructor(@Inject(MAT_DIALOG_DATA) public event: any,
-  private ticketService: TicketService,
-  private eventService: EventService,
-  private authService: AuthService,
-  public fb: FormBuilder
-  ) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public event: any,
+    private ticketService: TicketService,
+    private eventService: EventService,
+    private authService: AuthService,
+    public fb: FormBuilder,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.ticketForm = this.fb.group({
@@ -31,7 +34,6 @@ export class TicketComponent implements OnInit {
       eventId: [''],
     });
   }
-
 
   get number() {
     return this.ticketForm.get('number');
@@ -46,14 +48,13 @@ export class TicketComponent implements OnInit {
 
   onReservedTicketsChange(): void {
     const reservedTickets = this.ticketForm.value.number;
-        // Tutaj wykonaj sprawdzenie dostępności biletów i ustaw odpowiednią wiadomość
-        if (this.event.ticketsLeft < reservedTickets) {
-          this.ticketsAvailabilityMessage = 'Nie ma wystarczającej ilości biletów.';
-        } else {
-          this.ticketsAvailabilityMessage = '';
-        }
+    // Tutaj wykonaj sprawdzenie dostępności biletów i ustaw odpowiednią wiadomość
+    if (this.event.ticketsLeft < reservedTickets) {
+      this.ticketsAvailabilityMessage = 'Nie ma wystarczającej ilości biletów.';
+    } else {
+      this.ticketsAvailabilityMessage = '';
+    }
   }
-
 
   saveTicket(): void {
     // Pobierz identyfikator użytkownika
@@ -65,27 +66,32 @@ export class TicketComponent implements OnInit {
     this.ticketForm.value.eventId = this.event.id;
 
     if (this.event.ticketsLeft >= this.ticketForm.value.number) {
-      if (confirm('Czy na pewno chcesz zarezerwować bilety?')) {
-        this.ticketService
-          .create(this.ticketForm.value)
-          .then(() => {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: 'Czy na pewno chcesz zarezerwować bilety?',
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          // Użytkownik kliknął "OK" w potwierdzeniu
+          this.ticketService.create(this.ticketForm.value).then(() => {
             console.log('Rezerwacja się powiodła');
             this.updateEvent(this.ticketForm.value.number);
           });
-      }
-    } else {
-      alert('Brak wystarczającej ilości dostępnych miejsc.');
+        } else {
+          // Użytkownik kliknął "Anuluj" lub zamknął dialog
+          console.log('Cancelled reservation');
+        }
+      });
     }
   }
-
 
   updateEvent(reservedTickets: number): void {
     this.event.ticketsLeft -= reservedTickets;
 
     if (this.event.id) {
-      this.eventService.update(this.event.id, this.event)
-        .catch(err => console.log(err));
+      this.eventService
+        .update(this.event.id, this.event)
+        .catch((err) => console.log(err));
     }
   }
-
 }

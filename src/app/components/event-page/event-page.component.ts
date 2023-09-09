@@ -7,10 +7,12 @@ import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { Location } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { TicketComponent } from '../ticket/ticket.component';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
-import { MapComponent } from 'src/app/map/map.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { CommentService } from 'src/app/services/comment.service';
 
 @Component({
   selector: 'app-event-page',
@@ -36,11 +38,11 @@ export class EventPageComponent implements OnInit {
   };
   mapVisible: boolean = false;
 
-
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
     private categoryService: CategoryService,
+    private commentService: CommentService,
     private authService: AuthService,
     private location: Location,
     public dialog: MatDialog
@@ -97,41 +99,92 @@ export class EventPageComponent implements OnInit {
   }
 
   deleteEvent(): void {
-    if (confirm('Czy na pewno chcesz usunąć? ')) {
-      if (this.currentEvent.id) {
-        // Wywołanie funkcji deleteEventWithImage
-        this.eventService
-          .deleteEventWithImage(this.currentEvent.id)
-          .then(() => {
-            console.log('Usunięto wydarzenie i obrazek');
-            // Przekierowanie lub inne akcje po usunięciu
-            this.location.back(); // Wróć na poprzednią kartę
-          })
-          .catch((err) => console.log(err));
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px', // Dostosuj szerokość do swoich potrzeb
+      data: 'Czy na pewno chcesz usunąć?',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Użytkownik kliknął "OK" w potwierdzeniu
+        if (this.currentEvent.id) {
+          // Wywołanie funkcji deleteEventWithImage
+          if (this.currentEvent.tickets !== this.currentEvent.ticketsLeft) {
+            this.dialog.open(AlertDialogComponent, {
+              width: '400px',
+              data: 'Nie można usunąć wydarzenia, istnieją przypisane do niego bilety',
+            });
+          } else {
+            //znajdz wszystki komentarze pod wydarzeniem i je usuń
+            this.commentService
+              .getAll()
+              .snapshotChanges()
+              .pipe(
+                map((changes) =>
+                  changes.map((c) => ({
+                    id: c.payload.doc.id,
+                    ...c.payload.doc.data(),
+                  }))
+                )
+              )
+              .subscribe((data) => {
+                const commentsToDelete = data.filter(
+                  (comment) => comment.eventId === this.eventId
+                );
+
+                // Usuń wszystkie te komentarze
+                const deletePromises = commentsToDelete.map((comment) =>
+                  this.commentService.delete(comment.id)
+                );
+              });
+
+            //usuń wydarznie
+            this.eventService
+              .deleteEventWithImage(this.currentEvent.id)
+              .then(() => {
+                console.log('Usunięto wydarzenie i obrazek');
+                // Przekierowanie lub inne akcje po usunięciu
+                this.location.back(); // Wróć na poprzednią kartę
+              })
+              .catch((err) => console.log(err));
+          }
+        }
+      } else {
+        // Użytkownik kliknął "Anuluj" lub zamknął dialog
+        console.log('Cancelled event delete.');
       }
-    }
+    });
   }
 
   publishEvent(status: boolean): void {
     let messege = '';
-    if (status ===true){
-      messege = 'Czy na pewno chcesz opublikowac to wydarzenie? '
-    }
-    else {
-      messege = 'Czy na pewno chcesz unulowac publikację tego wydarzenia? '
+    if (status === true) {
+      messege = 'Czy na pewno chcesz opublikowac to wydarzenie? ';
+    } else {
+      messege = 'Czy na pewno chcesz unulowac publikację tego wydarzenia? ';
     }
 
-    if (confirm(messege)) {
-      if (this.currentEvent.id) {
-        this.eventService
-          .update(this.currentEvent.id, { published: status })
-          .then(() => {
-            this.currentEvent.published = status;
-          })
-          .catch((err) => console.log(err));
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px', // Dostosuj szerokość do swoich potrzeb
+      data: messege,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Użytkownik kliknął "OK" w potwierdzeniu
+        if (this.currentEvent.id) {
+          this.eventService
+            .update(this.currentEvent.id, { published: status })
+            .then(() => {
+              this.currentEvent.published = status;
+            })
+            .catch((err) => console.log(err));
+        }
+      } else {
+        // Użytkownik kliknął "Anuluj" lub zamknął dialog
+        console.log('Cancelled event publish.');
       }
-
-    }
+    });
   }
 
   isAdmin() {
@@ -139,17 +192,18 @@ export class EventPageComponent implements OnInit {
   }
 
   openTicket(e: Event) {
-    const dialogRef = this.dialog.open(TicketComponent, {data: e,});
+    const dialogRef = this.dialog.open(TicketComponent, { data: e });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
   }
 
-  isActual() : boolean {
+  isActual(): boolean {
     const currentDate = new Date();
-    return this.currentEvent.date_end ? new Date(this.currentEvent.date_end) > currentDate : false
-
+    return this.currentEvent.date_end
+      ? new Date(this.currentEvent.date_end) > currentDate
+      : false;
   }
 
   isLoggedIn() {
@@ -166,5 +220,6 @@ export class EventPageComponent implements OnInit {
 
   openMap(): void {
     this.mapVisible = true;
+    console.log('mapVisible set to true');
   }
 }

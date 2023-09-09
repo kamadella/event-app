@@ -16,7 +16,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { AdminGuard } from './shared/guard/admin.guard';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { EventsArchiveComponent } from './components/events-archive/events-archive.component';
 import { ContactComponent } from './components/contact/contact.component';
