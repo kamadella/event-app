@@ -48,7 +48,7 @@ export class AddEventComponent implements OnInit {
       organizator: ['', [Validators.required, Validators.minLength(3)]],
       date_start: ['', [Validators.required]],
       date_end: ['', [Validators.required]],
-      category: [''],
+      category: ['', [Validators.required]],
       tickets: [''],
       ticketsLeft: [''],
       img: ['', [Validators.required]],

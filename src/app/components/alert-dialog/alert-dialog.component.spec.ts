@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AlertDialogComponent } from './alert-dialog.component';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 describe('AlertDialogComponent', () => {
   let component: AlertDialogComponent;
@@ -8,7 +9,12 @@ describe('AlertDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AlertDialogComponent ]
+      declarations: [ AlertDialogComponent ],
+      providers: [
+        { provide: MatDialogRef, useValue: {} }, // Provide a mock MatDialogRef
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
+      imports: [MatDialogModule],
     })
     .compileComponents();
 
