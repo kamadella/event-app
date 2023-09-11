@@ -115,27 +115,19 @@ export class EventPageComponent implements OnInit {
               data: 'Nie można usunąć wydarzenia, istnieją przypisane do niego bilety',
             });
           } else {
-            //znajdz wszystki komentarze pod wydarzeniem i je usuń
-            this.commentService
-              .getAll()
-              .snapshotChanges()
-              .pipe(
-                map((changes) =>
-                  changes.map((c) => ({
-                    id: c.payload.doc.id,
-                    ...c.payload.doc.data(),
-                  }))
-                )
-              )
-              .subscribe((data) => {
-                const commentsToDelete = data.filter(
-                  (comment) => comment.eventId === this.eventId
-                );
+            //znajdz wszystkie komentarze pod wydarzeniem i je usuń
+            this.commentService.getCommentsByEvent(this.currentEvent.id).snapshotChanges().subscribe((changes) => {
+              const commentsToDelete = changes.map((c) => ({
+                id: c.payload.doc.id,
+                ...c.payload.doc.data(),
+              }));
 
+              if (commentsToDelete.length > 0) {
                 // Usuń wszystkie te komentarze
-                const deletePromises = commentsToDelete.map((comment) =>
+                commentsToDelete.forEach((comment) =>
                   this.commentService.delete(comment.id)
                 );
+              }
               });
 
             //usuń wydarznie
@@ -191,12 +183,8 @@ export class EventPageComponent implements OnInit {
     return this.authService.isAdmin;
   }
 
-  openTicket(e: Event) {
-    const dialogRef = this.dialog.open(TicketComponent, { data: e });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+  ticketReservationDialog(e: Event) {
+    this.dialog.open(TicketComponent, { data: e });
   }
 
   isActual(): boolean {
@@ -210,16 +198,11 @@ export class EventPageComponent implements OnInit {
     return this.authService.isLoggedIn;
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(LoginDialogComponent);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+  loginDialog() {
+    this.dialog.open(LoginDialogComponent);
   }
 
   openMap(): void {
     this.mapVisible = true;
-    console.log('mapVisible set to true');
   }
 }

@@ -69,13 +69,6 @@ export class EventService {
     return this.eventsRef.doc(id);
   }
 
-  private uploadImage(eventId: string, imageFile: File): void {
-    const storageRef = this.storage.ref(`eventImages/${eventId}`);
-    storageRef.put(imageFile).then(snapshot => {
-      console.log('Obrazek został przesłany do Firebase Storage.');
-    });
-  }
-
   private deleteImage(imagePath: string): Promise<void> {
     const storageRef = this.storage.ref(imagePath);
     return storageRef.delete().toPromise();

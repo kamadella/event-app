@@ -42,7 +42,6 @@ export class EditEventComponent implements OnInit {
     private route: ActivatedRoute,
     private eventService: EventService,
     private categoryService: CategoryService,
-    private router: Router,
     public fb: FormBuilder,
     private location: Location,
     private ng2ImgMaxService: Ng2ImgMaxService
