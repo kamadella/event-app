@@ -15,9 +15,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HomeComponent } from './home/home.component';
 import { JsonPipe } from '@angular/common';
-import { CalendarComponent } from './home/calendar/calendar.component';
 import { EventPageComponent } from './components/event-page/event-page.component';
 import { AddEventComponent } from './components/add-event/add-event.component';
 import { EventsListComponent } from './components/events-list/events-list.component';
@@ -66,8 +64,6 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    CalendarComponent,
     EventPageComponent,
     AddEventComponent,
     EventsListComponent,

@@ -18,11 +18,4 @@ export class UserService {
     return this.usersRef;
   }
 
-  getUser(id: string): AngularFirestoreDocument<User> {
-    return this.usersRef.doc(id);
-  }
-
-
-
-
 }

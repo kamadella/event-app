@@ -4,9 +4,6 @@ import { CategoryService } from 'src/app/services/category.service';
 import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
-import * as mapboxgl from 'mapbox-gl';
-import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-events-archive',
