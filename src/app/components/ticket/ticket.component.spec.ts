@@ -5,6 +5,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from 'src/environments/environment'
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Import FormBuilder and related modules
 
 
 describe('TicketComponent', () => {
@@ -22,6 +23,8 @@ describe('TicketComponent', () => {
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
         MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
       ],
     })
     .compileComponents();

@@ -1,6 +1,6 @@
-<div>
+<div *ngIf="event">
   <div class="pictureBox center">
-    <img class="card-img-top" height="150" src="{{ event.img }}" />
+    <img class="card-img-top" height="150" [src]="event.img" />
   </div>
   <div class="card-body p-4 d-flex flex-column align-items-start">
     <div *ngFor="let category of categories">

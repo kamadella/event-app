@@ -49,8 +49,13 @@ export class EventPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => (this.eventId = params['id']));
-    this.getCurrentEvent(this.eventId);
+    this.route.params?.subscribe((params) => {
+      if (params && params['id']) {
+        this.eventId = params['id'];
+        // Now you can safely use this.eventId
+        this.getCurrentEvent(this.eventId);
+      }
+    });
   }
 
   getCurrentCategory(id: string): void {

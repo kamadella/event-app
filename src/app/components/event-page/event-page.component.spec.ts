@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EventPageComponent } from './event-page.component';
+import { ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from 'src/environments/environment'
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('EventPageComponent', () => {
   let component: EventPageComponent;
@@ -8,7 +13,15 @@ describe('EventPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventPageComponent ]
+      declarations: [ EventPageComponent ],
+      providers: [
+        { provide: ActivatedRoute, useValue: {} }, // Provide a mock ActivatedRoute
+      ],
+      imports: [
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule,
+        MatDialogModule
+      ]
     })
     .compileComponents();
 

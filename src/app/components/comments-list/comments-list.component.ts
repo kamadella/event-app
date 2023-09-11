@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./comments-list.component.css'],
 })
 export class CommentsListComponent implements OnInit {
-  eventId?: string;
+  eventId: string = '-1';
   comments?: Comment[];
   users: { [userId: string]: User } = {}; // Obiekt do przechowywania danych użytkowników
 
@@ -29,12 +29,18 @@ export class CommentsListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => (this.eventId = params['id']));
-    this.retrieveCommentsByEvents();
+    this.route.params?.subscribe((params) => {
+      if (params && params['id']) {
+        this.eventId = params['id'];
+        // Now you can safely use this.eventId
+        this.retrieveCommentsByEvents(this.eventId);
+      }
+    });
+
   }
 
-  retrieveCommentsByEvents(): void {
-    this.commentService.getCommentsByEvent(this.eventId!).snapshotChanges().subscribe((changes) => {
+  retrieveCommentsByEvents(eventId: string): void {
+    this.commentService.getCommentsByEvent(eventId).snapshotChanges().subscribe((changes) => {
       this.comments = changes.map((c) => ({
         id: c.payload.doc.id,
         ...c.payload.doc.data(),

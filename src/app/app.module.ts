@@ -23,7 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatRadioModule } from '@angular/material/radio';
 import { CategoryComponent } from './components/category/category.component';
 import { MapComponent } from './map/map.component';
-import { EventCardComponent } from './components/events-list/event-card/event-card.component';
+import { EventCardComponent } from './components/event-card/event-card.component';
 
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';

@@ -64,8 +64,13 @@ export class EditEventComponent implements OnInit {
       published: [''],
     });
 
-    this.route.params.subscribe((params) => (this.eventId = params['id']));
-    this.getCurrentEvent(this.eventId);
+    this.route.params?.subscribe((params) => {
+      if (params && params['id']) {
+        this.eventId = params['id'];
+        // Now you can safely use this.eventId
+        this.getCurrentEvent(this.eventId);
+      }
+    });
     this.retrieveCategory();
 
     const geocoder = new MapboxGeocoder({
