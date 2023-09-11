@@ -27,7 +27,7 @@ export class AuthService {
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
-      if (user && !this.userData) {
+      if (user) {
         this.afs
           .doc(`users/${user.uid}`)
           .get()
@@ -66,7 +66,13 @@ export class AuthService {
           this.setUserDataInLocalStorage(userWithRole);
           this.SetUserData(result.user);
 
-          this.router.navigate(['events/list']);
+          if (result.user!.emailVerified) {
+            // Jeśli adres e-mail jest zweryfikowany, przekieruj na stronę 'events/list'
+            this.router.navigate(['events/list']);
+          } else {
+            // Jeśli adres e-mail nie jest zweryfikowany, wyświetl informację użytkownikowi
+            this.showAlertDialog('Adres e-mail nie został zweryfikowany. Proszę sprawdź swoją skrzynkę odbiorczą.');
+          }
         });
       })
       .catch((error) => {
