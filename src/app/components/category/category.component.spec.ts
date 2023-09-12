@@ -6,7 +6,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from 'src/environments/environment';
 import { MatDialogModule } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { FormsModule } from '@angular/forms';
 
 describe('CategoryComponent', () => {
   let component: CategoryComponent;
@@ -16,7 +16,6 @@ describe('CategoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ CategoryComponent ],
       imports: [
-        // Import and configure AngularFireModule and AngularFirestoreModule here
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
         MatDialogModule,
