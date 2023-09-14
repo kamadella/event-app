@@ -63,6 +63,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { USE_EMULATOR as USE_AUTH_EMULATOR} from '@angular/fire/compat/auth';
 import { USE_EMULATOR as USE_FIRESTORE_EMULATOR} from '@angular/fire/compat/firestore';
 import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR} from '@angular/fire/compat/functions';
+import { BUCKET } from '@angular/fire/compat/storage'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -124,9 +126,22 @@ import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR} from '@angular/fire/compat/func
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
-    { provide: USE_AUTH_EMULATOR, useValue: environment.useEmulators ? ['http://localhost:9099'] : undefined },
-    { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['http://localhost:8080' ] : undefined },
-    { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['http://localhost:5001' ] : undefined },
+    {
+      provide: BUCKET,
+      useValue: environment.firebase.storageBucket,
+    },
+    {
+ provide: USE_AUTH_EMULATOR,
+ useValue: environment.useEmulators ? ['http://localhost:9099'] : undefined
+    },
+    {
+ provide: USE_FIRESTORE_EMULATOR,
+ useValue: environment.useEmulators ? ['localhost', 8080] : undefined
+    },
+    {
+ provide: USE_FUNCTIONS_EMULATOR,
+ useValue: environment.useEmulators ? ['localhost', 5001] : undefined
+    },
   ],
   bootstrap: [AppComponent]
 })
