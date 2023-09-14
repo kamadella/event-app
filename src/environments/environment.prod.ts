@@ -1,4 +1,6 @@
 export const environment = {
+  useEmulators: false,
+
   firebase: {
     projectId: 'event-app-4eaf2',
     appId: '1:242618419210:web:ff6c1da8085da8bd3677f3',

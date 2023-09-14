@@ -99,10 +99,12 @@ export class AuthService {
           .then(() => {
             this.SetUserData(result.user);
             this.UpdateUserRole(result.user!.uid, 'user');
+            return result;
           });
       })
       .catch((error) => {
         this.showAlertDialog(error.message);
+        throw error; // Dodaj throw error, aby przekazać błąd na zewnątrz
       });
   }
 
@@ -111,7 +113,7 @@ export class AuthService {
     return this.afAuth.currentUser
       .then((u: any) => u.sendEmailVerification())
       .then(() => {
-        this.router.navigate(['verify-email-address']);
+        this.router.navigate(['/verify-email-address']);
       });
   }
 
@@ -260,5 +262,26 @@ export class AuthService {
     return uploadTask.task.then(() => {
       return storageRef.getDownloadURL().toPromise();
     });
+  }
+
+    // Dodaj metodę do usuwania danych użytkownika
+  async deleteUser(uid: string): Promise<void> {
+    try {
+      // Usuwamy użytkownika z bazy danych Firestore
+      await this.afs.doc(`users/${uid}`).delete();
+
+      // Usuwamy użytkownika z Firebase Authentication
+      const user = await this.afAuth.currentUser;
+      if (user) {
+        await user.delete();
+      }
+
+      // Czyszczenie lokalnego stanu danych użytkownika
+      this.userData = null;
+      localStorage.removeItem('user');
+    } catch (error) {
+      console.error('Error clearing user data:', error);
+      throw error;
+    }
   }
 }
