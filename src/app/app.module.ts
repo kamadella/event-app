@@ -62,7 +62,7 @@ import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.com
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { USE_EMULATOR as USE_AUTH_EMULATOR} from '@angular/fire/compat/auth';
 import { USE_EMULATOR as USE_FIRESTORE_EMULATOR} from '@angular/fire/compat/firestore';
-import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR} from '@angular/fire/compat/functions';
+import { USE_EMULATOR as USE_STORAGE_EMULATOR } from '@angular/fire/compat/storage';
 import { BUCKET } from '@angular/fire/compat/storage'
 
 @NgModule({
@@ -139,8 +139,8 @@ import { BUCKET } from '@angular/fire/compat/storage'
  useValue: environment.useEmulators ? ['localhost', 8080] : undefined
     },
     {
- provide: USE_FUNCTIONS_EMULATOR,
- useValue: environment.useEmulators ? ['localhost', 5001] : undefined
+      provide: USE_STORAGE_EMULATOR,
+      useValue: environment.useEmulators ? ['localhost', 9199] : undefined
     },
   ],
   bootstrap: [AppComponent]

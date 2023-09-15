@@ -99,7 +99,6 @@ export class AuthService {
           .then(() => {
             this.SetUserData(result.user);
             this.UpdateUserRole(result.user!.uid, 'user');
-            return result;
           });
       })
       .catch((error) => {
@@ -242,7 +241,10 @@ export class AuthService {
               // ponieważ Firebase Authentication już przechowuje URL obrazka profilowego.
               // Możesz go pobrać bezpośrednio z obiektu użytkownika.
 
-              return downloadURL;
+              //return downloadURL;
+              return this.afs
+              .doc(`users/${result!.uid}`)
+              .update({ photoURL: downloadURL });
             });
           }
         );
