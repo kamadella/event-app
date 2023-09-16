@@ -103,7 +103,6 @@ export class AuthService {
       })
       .catch((error) => {
         this.showAlertDialog(error.message);
-        throw error; // Dodaj throw error, aby przekazać błąd na zewnątrz
       });
   }
 
