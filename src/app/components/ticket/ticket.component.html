@@ -1,4 +1,6 @@
-<H2>Zarezerwuj bilet</H2>
+<div class="text-center">
+  <H2>Zarezerwuj bilet</H2>
+</div>
 <form [formGroup]="ticketForm" (ngSubmit)="saveTicket()" novalidate>
   <div class="submit-form g-5 d-flex justify-content-center">
     <div class="col-md-7">
@@ -68,7 +70,7 @@
         </div>
 
 <hr class="my-4">
-<button mat-dialog-close type="submit" class="btn btn-success" [disabled]="!ticketForm.valid">
+<button mat-dialog-close type="submit" class="btn btn-secondary btn-lg" [disabled]="!ticketForm.valid">
   Zarezerwuj
 </button>
 </div>

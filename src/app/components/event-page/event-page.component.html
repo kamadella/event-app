@@ -1,6 +1,6 @@
 <!-- Page Content-->
 <section class="py-5">
-  <div class="container px-5 my-3">
+  <div class="container mx-auto my-3">
     <div *ngIf="canActivateEvent()">
       <div *ngIf="currentEvent">
         <div class="d-flex justify-content-center align-items-center">
@@ -59,13 +59,13 @@
           </div>
           <div
             class="col-xl-4"
-            *ngIf="currentEvent.ticketsLeft && currentEvent.ticketsLeft > 0"
+            *ngIf="currentEvent.ticketsLeft && currentEvent.ticketsLeft > 0 && isActual()"
           >
             <div class="card border-0 mt-xl-5 shadow">
               <div class="card-body p-3 py-lg-5">
                 <div class="d-flex align-items-center justify-content-center">
                   <ng-container *ngIf="isLoggedIn(); else loginPanel">
-                    <div *ngIf="isActual()">
+                    <div>
                       <div class="text-center">
                         <p class="fs-5 mb-4 ">
                           Pozostalo biletów: {{ currentEvent.ticketsLeft }}
@@ -73,7 +73,7 @@
 
                         <button
                           (click)="ticketReservationDialog(currentEvent)"
-                          class="btn btn-lg btn-primary px-4 py-2"
+                          class="btn btn-lg btn-secondary px-4 py-2"
                         >
                           Zarezerwuj bilet
                         </button>
@@ -85,7 +85,7 @@
                       <p class="fs-5 mb-4 ">
                         Pośpiesz się i zdobądź bilet!
                       </p>
-                      <button (click)="loginDialog()" class="btn btn-lg btn-primary px-4 py-2">
+                      <button (click)="loginDialog()" class="btn btn-lg btn-secondary px-4 py-2">
                         Zarezerwuj bilet
                       </button>
                     </div>
@@ -117,7 +117,7 @@
             Usuń wydarzenie
           </button>
           <button
-            class="btn btn-danger me-2"
+            class="btn btn-secondary me-2"
             *ngIf="currentEvent.published"
             (click)="publishEvent(false)"
           >
@@ -125,7 +125,7 @@
           </button>
           <button
             *ngIf="!currentEvent.published"
-            class="btn btn-success me-2"
+            class="btn btn-secondary me-2"
             (click)="publishEvent(true)"
           >
             Opublikuj

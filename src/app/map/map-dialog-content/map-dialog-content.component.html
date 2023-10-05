@@ -1,11 +1,14 @@
-<h1>{{event.name}}</h1>
-
-<div class="pictureBox">
-  <img class="image" width="300" height="250" src={{event.img}}>
+<div class="text-center">
+  <h1>{{event.name}}</h1>
 </div>
-<div class="data" >
+
+<div class="pictureBox my-3">
+  <img class="rounded" width="300" height="250" src={{event.img}}>
+</div>
+<div class="data my-3 mx-2" >
   <div class="date "> {{event.date_start | date: "dd/MM/yy"}} - {{event.date_end| date: "dd/MM/yy"}}</div>
   <div class="localization "> {{event.place_name}}</div>
 </div>
-
-<button mat-dialog-close class="btn btn-primary" type="button" routerLink="/event/{{event.id}}" >Więcej...</button>
+<div class="text-center">
+  <button mat-dialog-close class="btn btn-primary" type="button" routerLink="/event/{{event.id}}" >Więcej...</button>
+</div>

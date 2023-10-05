@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --main: #023047;
+  --primary: #219EBC;
+  --secondary: #8ECAE6;
+  --accent: #FB8500;
+  --accent-secondary: #FFB703;
+}
 
 .invalid-feedback{
   color:red;
@@ -64,4 +71,72 @@ body { margin: 0; font-family: Roboto, "Roboto", sans-serif; }
 
 .fit-cover {
   object-fit: cover;
+}
+a {
+  color: var(--primary);
+}
+/*  BOOTSTRAP */
+
+.btn-primary,
+.btn-primary:active {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus{
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+}
+
+.btn-outline-primary,
+.btn-outline-primary:active {
+  color: var(--primary);
+  border-color: var(--primary) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus{
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+
+.btn-secondary,
+.btn-secondary:active {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus{
+  background-color: var(--accent-secondary) !important;
+  border-color: var(--accent-secondary) !important;
+}
+
+.bg-dark{
+  background-color: var(--main) !important;
+}
+.bg-secondary{
+  background-color: var(--secondary) !important;
+}
+.bg-primary{
+  background-color: var(--primary) !important;
+}
+
+.text-primary{
+  color: var(--primary);
+}
+.text-accent{
+  color: var(--accent);
+}
+
+/*  end BOOTSTRAP */
+
+.padding-big{
+  padding: 50px 0;
+}
+
+.margin-big-bottom{
+  margin: 100px 0;
 }
