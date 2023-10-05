@@ -141,7 +141,7 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
 
   .map-container {
     margin: 30px auto;
-    width: 90%!important; /* Możesz dostosować szerokość kontenera */
+    width: 95%!important; /* Możesz dostosować szerokość kontenera */
     position: relative; /* Ustawiamy pozycję względem kontenera */
   }
 

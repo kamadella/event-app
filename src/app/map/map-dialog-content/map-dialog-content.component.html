@@ -6,8 +6,13 @@
   <img class="rounded" width="300" height="250" src={{event.img}}>
 </div>
 <div class="data my-3 mx-2" >
-  <div class="date "> {{event.date_start | date: "dd/MM/yy"}} - {{event.date_end| date: "dd/MM/yy"}}</div>
-  <div class="localization "> {{event.place_name}}</div>
+  <div class="card-text mb-0 d-flex align-items-start">
+    <i class="bi bi-clock me-2 "></i>
+    {{ event.date_start | date : "dd/MM/yy" }}
+  </div>
+  <div class="card-text mb-0 d-flex align-items-start">
+    <i class="bi bi-geo-alt me-2"></i> {{ event.place_name }}
+  </div>
 </div>
 <div class="text-center">
   <button mat-dialog-close class="btn btn-primary" type="button" routerLink="/event/{{event.id}}" >Więcej...</button>
