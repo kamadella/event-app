@@ -5,6 +5,7 @@ import { Category } from 'src/app/models/category.model';
 import * as mapboxgl from 'mapbox-gl';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { environment } from '../../../../environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-filter',
@@ -28,14 +29,38 @@ export class SearchFilterComponent implements OnInit {
   lat: number = 53.1322;
   lng: number = 23.1687;
 
-
-  constructor(private categoryService: CategoryService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.retrieveCategories();
     this.dateStartFilter = null;
     this.dateEndFilter = null;
+    this.route.params.subscribe((params) => {
+      const categoryId = params['category'];
+      if (categoryId && this.categories) {
+        const categoryIndex = this.categories.findIndex(
+          (category) => category.id === categoryId
+        );
+        if (categoryIndex !== -1) {
+          this.toggleCategory(categoryIndex);
+        }
+      }
+    });
 
+  }
+
+  ngAfterViewInit() {
+    // Opóźnij inicjalizację mapy, aby Angular miał więcej czasu
+    setTimeout(() => {
+      this.initializeGeocoder();
+    }, 50);
+  }
+
+  initializeGeocoder() {
     const geocoderFilter = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
       mapboxgl: mapboxgl,
@@ -64,6 +89,18 @@ export class SearchFilterComponent implements OnInit {
       )
       .subscribe((data) => {
         this.categories = data;
+
+        this.route.params.subscribe((params) => {
+          const categoryId = params['category'];
+          if (categoryId && this.categories) {
+            const categoryIndex = this.categories.findIndex(
+              (category) => category.id === categoryId
+            );
+            if (categoryIndex !== -1) {
+              this.toggleCategory(categoryIndex);
+            }
+          }
+        });
       });
   }
 
@@ -81,7 +118,7 @@ export class SearchFilterComponent implements OnInit {
   }
 
   CleanFilter() {
-      // Przywróć filtrowaną listę do pierwotnej listy wydarzeń
+    // Przywróć filtrowaną listę do pierwotnej listy wydarzeń
     this.nameFilter = '';
     this.dateStartFilter = null;
     this.dateEndFilter = null;
@@ -104,20 +141,16 @@ export class SearchFilterComponent implements OnInit {
       dateEndFilter: null,
       selectedCategories: [],
       cityBbox: undefined,
-      isFiltersCleared: true
+      isFiltersCleared: true,
     });
+    // Przenieś do /events/list po wyczyszczeniu filtrów
+    this.router.navigate(['/events/list']);
   }
 
   // Metoda do obsługi zaznaczania kategorii
   toggleCategory(index: number) {
-    console.log(this.selectedCategories);
-    if (this.selectedCategories.includes(index)) {
-      this.selectedCategories = this.selectedCategories.filter(
-        (i) => i !== index
-      );
-    } else {
+    if (!this.selectedCategories.includes(index)) {
       this.selectedCategories.push(index);
     }
   }
-
 }

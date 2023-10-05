@@ -17,9 +17,12 @@
           <div class="col-xl-8">
             <header class="mb-4">
               <!-- Post categories-->
-              <a class="badge bg-secondary text-decoration-none link-light">{{
-                currentCategory.name
-              }}</a>
+              <a
+                [routerLink]="['/events/list', currentCategory.id]"
+                class="badge bg-primary text-decoration-none link-light rounded-pill"
+              >
+                {{ currentCategory.name }}
+              </a>
               <!-- Post meta content-->
               <div class="text-muted fst-italic mb-2">
                 {{ currentEvent.date_start | date : "dd/MM/yy" }}
@@ -50,8 +53,8 @@
               </div>
               <h3 class="fw-bolder mb-4 mt-5">Data</h3>
               <p class="fs-5 mb-4">
-                {{ currentEvent.date_start | date:'yyyy/MM/dd HH:mm'}} -
-                {{ currentEvent.date_end | date:'yyyy/MM/dd HH:mm' }}
+                {{ currentEvent.date_start | date : "yyyy/MM/dd HH:mm" }} -
+                {{ currentEvent.date_end | date : "yyyy/MM/dd HH:mm" }}
               </p>
               <h3 class="fw-bolder mb-4 mt-5">Organizator</h3>
               <p class="fs-5 mb-4">{{ currentEvent.organizator }}</p>
@@ -59,7 +62,11 @@
           </div>
           <div
             class="col-xl-4"
-            *ngIf="currentEvent.ticketsLeft && currentEvent.ticketsLeft > 0 && isActual()"
+            *ngIf="
+              currentEvent.ticketsLeft &&
+              currentEvent.ticketsLeft > 0 &&
+              isActual()
+            "
           >
             <div class="card border-0 mt-xl-5 shadow">
               <div class="card-body p-3 py-lg-5">
@@ -67,7 +74,7 @@
                   <ng-container *ngIf="isLoggedIn(); else loginPanel">
                     <div>
                       <div class="text-center">
-                        <p class="fs-5 mb-4 ">
+                        <p class="fs-5 mb-4">
                           Pozostalo biletów: {{ currentEvent.ticketsLeft }}
                         </p>
 
@@ -82,14 +89,14 @@
                   </ng-container>
                   <ng-template #loginPanel>
                     <div class="text-center">
-                      <p class="fs-5 mb-4 ">
-                        Pośpiesz się i zdobądź bilet!
-                      </p>
-                      <button (click)="loginDialog()" class="btn btn-lg btn-secondary px-4 py-2">
+                      <p class="fs-5 mb-4">Pośpiesz się i zdobądź bilet!</p>
+                      <button
+                        (click)="loginDialog()"
+                        class="btn btn-lg btn-secondary px-4 py-2"
+                      >
                         Zarezerwuj bilet
                       </button>
                     </div>
-
                   </ng-template>
                 </div>
               </div>
@@ -100,7 +107,8 @@
       <section class="my-5">
         <div *ngIf="isAdmin()">
           <hr />
-          <div class="mt-5 mb-3"
+          <div
+            class="mt-5 mb-3"
             *ngIf="
               currentEvent && currentEvent.tickets && currentEvent.tickets > 0
             "
@@ -113,7 +121,11 @@
             </button>
           </div>
 
-          <button type="button" class="btn btn-danger me-2" (click)="deleteEvent()">
+          <button
+            type="button"
+            class="btn btn-danger me-2"
+            (click)="deleteEvent()"
+          >
             Usuń wydarzenie
           </button>
           <button
@@ -121,7 +133,7 @@
             *ngIf="currentEvent.published"
             (click)="publishEvent(false)"
           >
-           Cofnij publikację
+            Cofnij publikację
           </button>
           <button
             *ngIf="!currentEvent.published"
@@ -147,7 +159,6 @@
 
           <app-add-comment [eventId]="currentEvent.id"></app-add-comment>
           <app-comments-list></app-comments-list>
-
         </div>
       </section>
     </div>

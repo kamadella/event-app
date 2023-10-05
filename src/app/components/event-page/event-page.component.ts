@@ -45,7 +45,7 @@ export class EventPageComponent implements OnInit {
     private commentService: CommentService,
     private authService: AuthService,
     private location: Location,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -205,4 +205,5 @@ export class EventPageComponent implements OnInit {
   openMap(): void {
     this.mapVisible = true;
   }
+
 }
