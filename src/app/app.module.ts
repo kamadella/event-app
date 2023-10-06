@@ -32,7 +32,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
-
+import { NativeDateModule } from '@angular/material/core';
 
 import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-content.component';
 import { AdminEventsToPublishComponent } from './components/admin-events-to-publish/admin-events-to-publish.component';
@@ -119,9 +119,10 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatExpansionModule,
     BrowserModule,
     MatDatepickerModule,
+    NativeDateModule
   ],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' }
+    {provide: MAT_DATE_LOCALE, useValue: 'pl-PL'},
   ],
   bootstrap: [AppComponent]
 })
