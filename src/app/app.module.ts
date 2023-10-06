@@ -60,6 +60,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     ProfileIMGDialogComponent,
     DisplayNameDialogComponent,
     ConfirmDialogComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

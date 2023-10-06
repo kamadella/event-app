@@ -172,7 +172,7 @@ a {
   color: var(--primary);
 }
 .text-accent{
-  color: var(--accent);
+  color: var(--accent-secondary);
 }
 
 /*  end BOOTSTRAP */
@@ -189,3 +189,4 @@ a {
 .event-img {
   max-width: 600px;
 }
+
