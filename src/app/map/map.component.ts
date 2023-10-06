@@ -5,7 +5,7 @@ import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { EventService } from 'src/app/services/event.service';
 import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MapDialogContentComponent } from './map-dialog-content/map-dialog-content.component';
 
 @Component({

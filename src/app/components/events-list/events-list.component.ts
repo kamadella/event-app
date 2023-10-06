@@ -4,6 +4,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -19,12 +20,22 @@ export class EventsListComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.retrieveEvents();
     this.retrieveCategories();
+    // Odczytaj parametr category z adresu URL i aktualizuj listę wydarzeń
+    this.route.params.subscribe((params) => {
+      const categoryId = params['category'];
+      if (categoryId) {
+        this.filterEventsByCategory(categoryId);
+      } else {
+        this.filteredEventList = this.events;
+      }
+    });
   }
 
   retrieveEvents(): void {
@@ -61,6 +72,16 @@ export class EventsListComponent implements OnInit {
       .subscribe((sortedEvents) => {
         this.events = sortedEvents;
         this.filteredEventList = this.events;
+
+        // Dodaj to tu, aby filtrowanie rozpoczęło się po wczytaniu danych
+        this.route.params.subscribe((params) => {
+          const categoryId = params['category'];
+          if (categoryId) {
+            this.filterEventsByCategory(categoryId);
+          } else {
+            this.filteredEventList = this.events;
+          }
+        });
       });
   }
 
@@ -79,6 +100,13 @@ export class EventsListComponent implements OnInit {
       .subscribe((data) => {
         this.categories = data;
       });
+  }
+
+  filterEventsByCategory(categoryId: string): void {
+    // Filtrowanie wydarzeń po kategorii
+    this.filteredEventList = this.events?.filter(
+      (event) => event.category === categoryId
+    );
   }
 
   getSelectedCategories(selectedCategoryIndices: number[]) {

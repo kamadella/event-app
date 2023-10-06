@@ -28,6 +28,7 @@ const routes: Routes = [
         { path: '', redirectTo: '/events/list', pathMatch: 'full'},
         { path: 'event/:id', component: EventPageComponent },
         { path: 'events/list', component: EventsListComponent },
+        { path: 'events/list/:category', component: EventsListComponent },
         { path: 'add-event', component: AddEventComponent, canActivate: [AuthGuard] },
         { path: 'map', component: MapComponent },
         { path: 'sign-in', component: SignInComponent },
