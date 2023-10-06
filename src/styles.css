@@ -102,16 +102,29 @@ a {
 }
 
 
-.btn-secondary,
-.btn-secondary:active {
+.btn-accent,
+.btn-accent:active {
+  background-color: var(--accent-secondary) !important;
+  border-color: var(--accent-secondary) !important;
+}
+
+.btn-accent:hover,
+.btn-accent:focus{
   background-color: var(--accent) !important;
   border-color: var(--accent) !important;
 }
 
-.btn-secondary:hover,
-.btn-secondary:focus{
+.btn-outline-accent,
+.btn-outline-accent:active {
+  color: var(--accent-secondary);
+  border-color: var(--accent-secondary) !important;
+}
+
+.btn-outline-accent:hover,
+.btn-outline-accent:focus{
   background-color: var(--accent-secondary) !important;
   border-color: var(--accent-secondary) !important;
+  color: var(--main);
 }
 
 .bg-dark{
