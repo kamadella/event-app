@@ -29,7 +29,7 @@ export class AddEventComponent implements OnInit {
 
   selectedImageFile: File | null = null;
   addingEvent: boolean = false;
-
+  imageURL: string = '';
 
   constructor(
     private eventService: EventService,
@@ -124,6 +124,12 @@ export class AddEventComponent implements OnInit {
         console.log("skalowanie obrazu");
 
       });
+      //previev zdjecia
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageURL = reader.result as string;
+      }
+      reader.readAsDataURL(selectedImageFile);
     }
   }
 

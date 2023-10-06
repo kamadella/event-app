@@ -21,6 +21,14 @@ body { margin: 0; font-family: Roboto, "Roboto", sans-serif; }
   min-height: 100vh;
 }
 
+.padding-big{
+  padding: 50px 0;
+}
+
+.margin-big-bottom{
+  margin: 100px 0;
+}
+
 
 
 .geocoder .mapboxgl-ctrl-geocoder {
@@ -169,10 +177,15 @@ a {
 
 /*  end BOOTSTRAP */
 
-.padding-big{
-  padding: 50px 0;
+
+
+/* EVENT IMG  */
+
+.event-img img{
+  width: 100%;
+  object-fit: cover;
 }
 
-.margin-big-bottom{
-  margin: 100px 0;
+.event-img {
+  max-width: 600px;
 }
