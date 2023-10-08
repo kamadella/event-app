@@ -47,18 +47,13 @@ export class EventPageComponent implements OnInit {
     private authService: AuthService,
     private location: Location,
     public dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
-
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.eventId = params['id'];
-      console.log("eventId: " + this.eventId);
-      this.getCurrentEvent(this.eventId);
-    });
+    this.route.params.subscribe((params) => (this.eventId = params['id']));
+    this.getCurrentEvent(this.eventId);
   }
-
 
   getCurrentCategory(id: string): void {
     this.categoryService
@@ -73,7 +68,6 @@ export class EventPageComponent implements OnInit {
       )
       .subscribe((data) => {
         this.currentCategory = data;
-        console.log("currentCategoryName: " + this.currentCategory.name);
       });
   }
 
@@ -103,10 +97,8 @@ export class EventPageComponent implements OnInit {
       )
       .subscribe((data) => {
         this.currentEvent = data;
-        console.log("currentEventName: " + this.currentEvent.name);
         this.getCurrentCategory(this.currentEvent.category!);
         this.cdr.detectChanges(); // Ręczne wywołanie detekcji zmian
-
       });
   }
 
@@ -128,18 +120,21 @@ export class EventPageComponent implements OnInit {
             });
           } else {
             //znajdz wszystkie komentarze pod wydarzeniem i je usuń
-            this.commentService.getCommentsByEvent(this.currentEvent.id).snapshotChanges().subscribe((changes) => {
-              const commentsToDelete = changes.map((c) => ({
-                id: c.payload.doc.id,
-                ...c.payload.doc.data(),
-              }));
+            this.commentService
+              .getCommentsByEvent(this.currentEvent.id)
+              .snapshotChanges()
+              .subscribe((changes) => {
+                const commentsToDelete = changes.map((c) => ({
+                  id: c.payload.doc.id,
+                  ...c.payload.doc.data(),
+                }));
 
-              if (commentsToDelete.length > 0) {
-                // Usuń wszystkie te komentarze
-                commentsToDelete.forEach((comment) =>
-                  this.commentService.delete(comment.id)
-                );
-              }
+                if (commentsToDelete.length > 0) {
+                  // Usuń wszystkie te komentarze
+                  commentsToDelete.forEach((comment) =>
+                    this.commentService.delete(comment.id)
+                  );
+                }
               });
 
             //usuń wydarznie
@@ -217,5 +212,4 @@ export class EventPageComponent implements OnInit {
   openMap(): void {
     this.mapVisible = true;
   }
-
 }

@@ -33,7 +33,10 @@
           <section class="mb-5">
             <p class="fs-5 mb-4">{{ currentEvent.description }}</p>
             <h3 class="fw-bolder mb-4 mt-5">Lokalizacja</h3>
-            <p class="fs-5 mb-4">{{ currentEvent.place_name }}</p>
+            <p class="fs-5 mb-4">
+              <i class="bi bi-geo-alt me-2"></i>
+              {{ currentEvent.place_name }}
+            </p>
             <div>
               <button
                 *ngIf="!mapVisible"
@@ -53,11 +56,14 @@
             </div>
             <h3 class="fw-bolder mb-4 mt-5">Data</h3>
             <p class="fs-5 mb-4">
-              {{ currentEvent.date_start | date : "yyyy/MM/dd HH:mm" }} -
-              {{ currentEvent.date_end | date : "yyyy/MM/dd HH:mm" }}
+              <i class="bi bi-calendar-event me-2"></i>
+              {{ currentEvent.date_start | date : "dd.MM.yyyy HH:mm" }} -
+              {{ currentEvent.date_end | date : "dd.MM.yyyy HH:mm" }}
             </p>
             <h3 class="fw-bolder mb-4 mt-5">Organizator</h3>
-            <p class="fs-5 mb-4">{{ currentEvent.organizator }}</p>
+            <p class="fs-5 mb-4">
+              <i class="bi bi-person me-2"></i>
+              {{ currentEvent.organizator }}</p>
           </section>
         </div>
         <div

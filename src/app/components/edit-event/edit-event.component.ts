@@ -68,7 +68,12 @@ export class EditEventComponent implements OnInit {
     this.route.params.subscribe((params) => (this.eventId = params['id']));
     this.getCurrentEvent(this.eventId);
     this.retrieveCategory();
+    this.initializeGeocoder();
 
+
+  }
+
+  initializeGeocoder() {
     const geocoder = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
       mapboxgl: mapboxgl,
@@ -187,6 +192,13 @@ export class EditEventComponent implements OnInit {
       )
       .subscribe((data) => {
         this.categories = data;
+        // Sortowanie kategorii alfabetycznie
+        this.categories.sort((a, b) => {
+          if (a.name && b.name) {
+            return a.name.localeCompare(b.name);
+          }
+          return 0;
+        });
       });
   }
 
