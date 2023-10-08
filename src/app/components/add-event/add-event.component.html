@@ -86,12 +86,12 @@
         <!-- Dodaj input do przesyłania obrazka -->
         <div class="form-group col-sm-12 my-2">
           <label for="img">Zdjęcie wydarzenia</label>
-          <div class="d-flex justify-content-center align-items-centerm ">
+          <div class="d-flex justify-content-center align-items-centerm">
             <div
-              class="imagePreview ratio ratio-16x9 event-img my-4 "
+              class="imagePreview ratio ratio-16x9 event-img my-4"
               *ngIf="imageURL && imageURL !== ''"
             >
-              <img [src]="imageURL" alt="event img" class="rounded shadow " />
+              <img [src]="imageURL" alt="event img" class="rounded shadow" />
             </div>
           </div>
           <input
@@ -154,13 +154,15 @@
           formControlName="category"
           required
         >
-          <mat-radio-button
-            class="form-check form-check-inline"
-            *ngFor="let category of categories"
-            [value]="category.id"
-          >
-            {{ category.name }}
-          </mat-radio-button>
+          <div class="radio-buttons-container">
+            <mat-radio-button
+              class="form-check form-check-inline"
+              *ngFor="let category of categories"
+              [value]="category.id"
+            >
+              {{ category.name }}
+            </mat-radio-button>
+          </div>
         </mat-radio-group>
 
         <h5 class="mt-5">

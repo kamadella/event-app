@@ -1,0 +1,38 @@
+#geocoder {
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+}
+.mapboxgl-ctrl-geocoder {
+  min-width: 100%;
+}
+
+::ng-deep
+  .mat-radio-button.mat-accent.mat-radio-checked
+  .mat-radio-outer-circle,
+.mat-radio-outer-circle {
+  border-color: var(--main) !important;
+  /* Sets outer circle & click effect color */
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: var(--main) !important;
+  /* Sets inner circle color */
+}
+
+
+.radio-buttons-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dwie kolumny */
+  grid-gap: 5px; /* Odstęp między przyciskami */
+}
+
+@media screen and (max-width: 576px) {
+  .radio-buttons-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); /* jedna kolumna */
+    grid-gap: 5px; /* Odstęp między przyciskami */
+  }
+}
+

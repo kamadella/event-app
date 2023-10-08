@@ -26,14 +26,6 @@ export class CategoryComponent implements OnInit {
   ngOnInit(): void {
     this.retrieveCategories();
   }
-/*
-  saveCategory(): void {
-    this.categoryService.create(this.category).then(() => {
-      this.submitted = true;
-    });
-  }
-*/
-
 
 saveCategory(): void {
   const categoryNameLowerCase = this.category.name?.toLowerCase();

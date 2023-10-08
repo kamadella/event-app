@@ -61,8 +61,8 @@
 
         <div class="form-group col-sm-12 my-2">
           <label for="Lokalizacja">Lokalizacja</label>
-          <p>{{ previousLocalization.place_name }}</p>
-          <div id="geocoder" class="geocoder-add-event"></div>
+          <p><i class="bi bi-geo-alt me-2"></i>{{ previousLocalization.place_name }}</p>
+          <div id="geocoder" class="geocoder-add-event p-0 "></div>
         </div>
 
         <div class="form-group col-sm-12 my-2">
@@ -166,13 +166,15 @@
           formControlName="category"
           required
         >
-          <mat-radio-button
-            class="form-check form-check-inline"
-            *ngFor="let category of categories"
-            [value]="category.id"
-          >
-            {{ category.name }}
-          </mat-radio-button>
+          <div class="radio-buttons-container">
+            <mat-radio-button
+              class="form-check form-check-inline"
+              *ngFor="let category of categories"
+              [value]="category.id"
+            >
+              {{ category.name }}
+            </mat-radio-button>
+          </div>
         </mat-radio-group>
 
         <h5 class="mt-5">W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę biletów możliwych do rezerwacji:</h5>
