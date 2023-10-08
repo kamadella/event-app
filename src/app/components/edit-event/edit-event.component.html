@@ -14,8 +14,8 @@
   <div class="submit-form g-5 d-flex justify-content-center container">
     <div class="col-md-8">
       <div class="row g-3">
-        <div class="form-group col-sm-12 my-2">
-          <label for="title">Nazwa</label>
+        <div class="form-group col-sm-12 my-3">
+          <label for="title" class="fs-5 text-primary">Nazwa</label>
           <input
             placeholder="nazwa wydarzenia..."
             type="text"
@@ -36,8 +36,8 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-12 my-2">
-          <label for="description">Opis</label>
+        <div class="form-group col-sm-12 my-3">
+          <label for="description" class="fs-5 text-primary">Opis</label>
           <textarea
             placeholder="opis..."
             class="form-control"
@@ -59,14 +59,14 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-12 my-2">
-          <label for="Lokalizacja">Lokalizacja</label>
+        <div class="form-group col-sm-12 my-3">
+          <label for="Lokalizacja" class="fs-5 text-primary">Lokalizacja</label>
           <p><i class="bi bi-geo-alt me-2"></i>{{ previousLocalization.place_name }}</p>
           <div id="geocoder" class="geocoder-add-event p-0 "></div>
         </div>
 
         <div class="form-group col-sm-12 my-2">
-          <label for="organizator">Organizator</label>
+          <label for="organizator" class="fs-5 text-primary">Organizator</label>
           <input
             placeholder="organizator..."
             class="form-control"
@@ -88,8 +88,8 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-12 my-2">
-          <label for="img">Zdjęcie wydarzenia</label>
+        <div class="form-group col-sm-12 my-3">
+          <label for="img" class="fs-5 text-primary">Zdjęcie wydarzenia</label>
           <div class="d-flex justify-content-center align-items-centerm ">
             <div
               class="imagePreview ratio ratio-16x9 event-img my-4 "
@@ -114,8 +114,8 @@
 
         </div>
 
-        <div class="form-group col-6 my-2">
-          <label for="date_start">Data rozpoczęcia</label>
+        <div class="form-group col-6 my-3">
+          <label for="date_start" class="fs-5 text-primary">Data rozpoczęcia</label>
           <input
             class="form-control"
             type="datetime-local"
@@ -134,8 +134,8 @@
           </div>
         </div>
 
-        <div class="form-group col-6 my-2">
-          <label for="date_end">Data zakończenia</label>
+        <div class="form-group col-6 my-3">
+          <label for="date_end" class="fs-5 text-primary">Data zakończenia</label>
           <input
             class="form-control"
             type="datetime-local"
@@ -160,7 +160,7 @@
           </div>
         </div>
 
-        <label for="category">Kategorie</label>
+        <label for="category" class="fs-5 text-primary">Kategorie</label>
         <mat-radio-group
           class="example-radio-group"
           formControlName="category"
@@ -179,7 +179,7 @@
 
         <h5 class="mt-5">W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę biletów możliwych do rezerwacji:</h5>
         <div class="form-group col-12">
-          <label for="tickets">Ilość biletów</label>
+          <label for="tickets" class="fs-5 text-primary">Ilość biletów</label>
           <input
             type="number"
             class="form-control"
@@ -198,7 +198,7 @@
       <hr class="my-4" />
       <button
         type="submit"
-        class="btn btn-success mb-5"
+        class="btn btn-success mb-5 me-3"
         [disabled]="
           !eventForm.valid ||
           date_end?.value <= date_start?.value ||
