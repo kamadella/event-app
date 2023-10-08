@@ -21,6 +21,14 @@ body { margin: 0; font-family: Roboto, "Roboto", sans-serif; }
   min-height: 100vh;
 }
 
+.padding-big{
+  padding: 50px 0;
+}
+
+.margin-big-bottom{
+  margin: 100px 0;
+}
+
 
 
 .geocoder .mapboxgl-ctrl-geocoder {
@@ -122,6 +130,7 @@ a {
 .btn-outline-primary:focus{
   background-color: var(--primary) !important;
   border-color: var(--primary) !important;
+  color: white;
 }
 
 
@@ -164,15 +173,21 @@ a {
   color: var(--primary);
 }
 .text-accent{
-  color: var(--accent);
+  color: var(--accent-secondary);
 }
 
 /*  end BOOTSTRAP */
 
-.padding-big{
-  padding: 50px 0;
+
+
+/* EVENT IMG  */
+
+.event-img img{
+  width: 100%;
+  object-fit: cover;
 }
 
-.margin-big-bottom{
-  margin: 100px 0;
+.event-img {
+  max-width: 600px;
 }
+

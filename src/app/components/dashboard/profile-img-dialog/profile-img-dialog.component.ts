@@ -38,7 +38,7 @@ export class ProfileIMGDialogComponent {
           reader.onload = () => {
             this.imageURL = reader.result as string;
           }
-          reader.readAsDataURL(selectedImage)
+          reader.readAsDataURL(selectedImage);
         }
       }
 

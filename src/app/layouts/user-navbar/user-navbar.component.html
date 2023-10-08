@@ -1,6 +1,19 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container px-5">
-    <a class="navbar-brand" routerLink="/" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Evencik</a>
+    <a
+      class="navbar-brand"
+      routerLink="/"
+      data-bs-toggle="collapse"
+      data-bs-target=".navbar-collapse.show"
+    >
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/event-app-4eaf2.appspot.com/o/logo%2Flogo.png?alt=media&token=f3d6e56f-c73c-4741-bf81-51ff6706f7f7&_gl=1*1xahaok*_ga*OTA3MjU2MTMwLjE2ODg4MDc2ODI.*_ga_CW55HF8NVT*MTY5NjU5ODEwMi45MC4xLjE2OTY1OTg2ODEuNjAuMC4w"
+        alt="Logo"
+        width="30"
+        class="d-inline-block align-text-top"
+      />
+      Evencik
+    </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -15,29 +28,69 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item" *ngIf="isAdmin()">
-          <a class="nav-link admin" routerLink="/admin/events" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
+          <a
+            class="nav-link admin"
+            routerLink="/admin/events"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
             >Wydarzenia do akceptacji</a
           >
         </li>
         <li class="nav-item" *ngIf="isAdmin()">
-          <a class="nav-link admin" routerLink="/admin/category" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Kategorie</a>
+          <a
+            class="nav-link admin"
+            routerLink="/admin/category"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            >Kategorie</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Wydarzenia</a>
+          <a
+            class="nav-link"
+            routerLink="/"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            >Wydarzenia</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/map" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Mapa</a>
+          <a
+            class="nav-link"
+            routerLink="/map"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            >Mapa</a
+          >
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/add-event" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Dodaj Event</a>
+          <a
+            class="nav-link"
+            routerLink="/add-event"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            >Dodaj Event</a
+          >
         </li>
         <li class="nav-item" *ngIf="!isLoggedIn(); else loggedIn">
-          <a class="nav-link" routerLink="/sign-in" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Zaloguj się</a>
+          <a
+            class="nav-link"
+            routerLink="/sign-in"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            >Zaloguj się</a
+          >
         </li>
         <ng-template #loggedIn>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/dashboard" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Moje konto</a>
+            <a
+              class="nav-link"
+              routerLink="/dashboard"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              >Moje konto</a
+            >
           </li>
         </ng-template>
       </ul>

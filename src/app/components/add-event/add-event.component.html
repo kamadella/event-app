@@ -30,8 +30,8 @@
             *ngIf="name?.invalid && (name?.dirty || name?.touched)"
             class="invalid-feedback"
           >
-          <p>Nazwa musi zawierać od 3 do 50 znaków</p>
-        </div>
+            <p>Nazwa musi zawierać od 3 do 50 znaków</p>
+          </div>
         </div>
 
         <div class="form-group col-sm-12 my-2">
@@ -52,8 +52,7 @@
             "
             class="invalid-feedback"
           >
-          <p>Opis musi zawierać canajmniej 10 znaków</p>
-
+            <p>Opis musi zawierać canajmniej 10 znaków</p>
           </div>
         </div>
 
@@ -80,13 +79,21 @@
             "
             class="invalid-feedback"
           >
-          <p>Organizator musi zawierać od 5 do 50 znaków</p>
-        </div>
+            <p>Organizator musi zawierać od 5 do 50 znaków</p>
+          </div>
         </div>
 
         <!-- Dodaj input do przesyłania obrazka -->
         <div class="form-group col-sm-12 my-2">
           <label for="img">Zdjęcie wydarzenia</label>
+          <div class="d-flex justify-content-center align-items-centerm ">
+            <div
+              class="imagePreview ratio ratio-16x9 event-img my-4 "
+              *ngIf="imageURL && imageURL !== ''"
+            >
+              <img [src]="imageURL" alt="event img" class="rounded shadow " />
+            </div>
+          </div>
           <input
             type="file"
             class="form-control"
@@ -107,7 +114,12 @@
             required
             formControlName="date_start"
           />
-          <div *ngIf="date_start?.invalid && (date_start?.dirty || date_start?.touched)" class="invalid-feedback">
+          <div
+            *ngIf="
+              date_start?.invalid && (date_start?.dirty || date_start?.touched)
+            "
+            class="invalid-feedback"
+          >
             <p>Podano nieprawidłową datę początkową</p>
           </div>
         </div>
@@ -121,11 +133,14 @@
             required
             formControlName="date_end"
           />
-          <div *ngIf="(date_end?.dirty || date_end?.touched)">
+          <div *ngIf="date_end?.dirty || date_end?.touched">
             <div *ngIf="date_end?.invalid" class="invalid-feedback">
               <p>Podano nieprawidłową datę końcową</p>
             </div>
-            <div *ngIf="date_end?.value<date_start?.value" class="invalid-feedback">
+            <div
+              *ngIf="date_end?.value < date_start?.value"
+              class="invalid-feedback"
+            >
               <p>Data końcowa powinna być większa od początkowej 😉</p>
             </div>
             <div *ngIf="isDateEndInvalid()" class="invalid-feedback">
@@ -135,13 +150,12 @@
         </div>
         <label for="category">Kategorie</label>
         <mat-radio-group
-
           class="example-radio-group"
           formControlName="category"
           required
         >
           <mat-radio-button
-            class="form-check form-check-inline "
+            class="form-check form-check-inline"
             *ngFor="let category of categories"
             [value]="category.id"
           >
@@ -149,7 +163,10 @@
           </mat-radio-button>
         </mat-radio-group>
 
-        <h5 class="mt-5">W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę biletów możliwych do rezerwacji:</h5>
+        <h5 class="mt-5">
+          W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę
+          biletów możliwych do rezerwacji:
+        </h5>
         <div class="form-group col-12">
           <label for="tickets">Ilość biletów</label>
           <input
@@ -160,8 +177,13 @@
             formControlName="tickets"
             min="0"
           />
-          <div *ngIf="tickets?.value < 0 ||  tickets?.invalid &&
-          (tickets?.dirty || tickets?.touched)" class="invalid-feedback">
+          <div
+            *ngIf="
+              tickets?.value < 0 ||
+              (tickets?.invalid && (tickets?.dirty || tickets?.touched))
+            "
+            class="invalid-feedback"
+          >
             nie można dodawać ujemnych biletów
           </div>
         </div>
@@ -170,12 +192,15 @@
       <button
         type="submit"
         class="btn btn-success mb-5"
-        [disabled]="!eventForm.valid || date_end?.value <= date_start?.value || !eventForm.get('place_name')?.value || isDateEndInvalid()"
+        [disabled]="
+          !eventForm.valid ||
+          date_end?.value <= date_start?.value ||
+          !eventForm.get('place_name')?.value ||
+          isDateEndInvalid()
+        "
       >
         Dodaj
       </button>
-
     </div>
   </div>
 </form>
-

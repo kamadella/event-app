@@ -1,12 +1,3 @@
-.event-img img{
-  width: 100%;
-  object-fit: cover;
-}
-
-.event-img {
-  max-width: 600px;
-}
-
 .map_container {
   height: 300px;
 }

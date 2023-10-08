@@ -14,7 +14,8 @@ service cloud.firestore {
 
     match /categories/{document} {
     	allow read: if request.time < timestamp.date(2023, 10, 12);
-     	allow write, delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+     	allow delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+      allow update, create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
    	}
 
     match /comments/{document} {

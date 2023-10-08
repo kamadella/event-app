@@ -37,6 +37,7 @@ export class EditEventComponent implements OnInit {
   lat: number = 53.1322;
   lng: number = 23.1687;
   selectedImageFile: File | null = null;
+  imageURL: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -223,6 +224,12 @@ export class EditEventComponent implements OnInit {
           });
           console.log('skalowanie obrazu');
         });
+      //previev zdjecia
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageURL = reader.result as string;
+      };
+      reader.readAsDataURL(selectedImageFile);
     }
   }
 

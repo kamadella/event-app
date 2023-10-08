@@ -19,7 +19,7 @@ import { UserLayoutComponent } from './layouts/user-layout/user-layout.component
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { EventsArchiveComponent } from './components/events-archive/events-archive.component';
 import { ContactComponent } from './components/contact/contact.component';
-
+import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
     {
@@ -38,6 +38,7 @@ const routes: Routes = [
         { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
         { path: 'events/archive', component: EventsArchiveComponent },
         { path: 'contact', component: ContactComponent },
+        { path: 'about', component: AboutComponent },
       ]
     },
 

@@ -90,15 +90,19 @@
 
         <div class="form-group col-sm-12 my-2">
           <label for="img">Zdjęcie wydarzenia</label>
-          <div *ngIf="previousImage" class="mt-2">
-            <p>Poprzednie zdjęcie:</p>
-            <img
-              width="200px"
-              height="200px"
-              [src]="previousImage"
-              alt="Previous Image"
-              class="img-thumbnail"
-            />
+          <div class="d-flex justify-content-center align-items-centerm ">
+            <div
+              class="imagePreview ratio ratio-16x9 event-img my-4 "
+              *ngIf="imageURL && imageURL !== ''"
+            >
+              <img [src]="imageURL" alt="event img" class="rounded shadow " />
+            </div>
+            <div
+            class="imagePreview ratio ratio-16x9 event-img my-4 "
+            *ngIf="previousImage && !(imageURL && imageURL !== '')"
+          >
+            <img [src]="previousImage" alt="event img" class="rounded shadow " />
+          </div>
           </div>
           <input
             type="file"
