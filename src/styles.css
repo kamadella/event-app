@@ -130,6 +130,7 @@ a {
 .btn-outline-primary:focus{
   background-color: var(--primary) !important;
   border-color: var(--primary) !important;
+  color: white;
 }
 
 

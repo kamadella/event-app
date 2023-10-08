@@ -59,8 +59,8 @@
         <h2>Lista kategorii</h2>
         <hr />
       </div>
-      <ul class="list-group" *ngFor="let category of categories">
-        <li class="list-group-item">
+      <ul class="list-group" >
+        <li *ngFor="let category of categories" class="list-group-item">
           <button
             type="button"
             class="btn btn-danger ms-2 rounded-circle me-4"

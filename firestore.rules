@@ -2,6 +2,12 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isUniqueName(name) {
+      return exists(
+        /databases/$(database)/documents/categories,
+        ['name', '==', name]
+      ) == false;
+    }
 
      match /events/{document} {
       allow read: if request.time < timestamp.date(2023, 10, 12);
@@ -14,7 +20,8 @@ service cloud.firestore {
 
     match /categories/{document} {
     	allow read: if request.time < timestamp.date(2023, 10, 12);
-     	allow write, delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+     	allow delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+      allow update, create: if if isUniqueName(request.resource.data.name) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
    	}
 
     match /comments/{document} {

@@ -129,7 +129,7 @@
             Usuń wydarzenie
           </button>
           <button
-            class="btn btn-secondary me-2"
+            class="btn btn-accent text-white me-2"
             *ngIf="currentEvent.published"
             (click)="publishEvent(false)"
           >
@@ -137,7 +137,7 @@
           </button>
           <button
             *ngIf="!currentEvent.published"
-            class="btn btn-secondary me-2"
+            class="btn btn-accent text-white me-2"
             (click)="publishEvent(true)"
           >
             Opublikuj
