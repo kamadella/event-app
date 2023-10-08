@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { CommentService } from 'src/app/services/comment.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-event-page',
@@ -46,12 +47,18 @@ export class EventPageComponent implements OnInit {
     private authService: AuthService,
     private location: Location,
     public dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
+
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => (this.eventId = params['id']));
-    this.getCurrentEvent(this.eventId);
+    this.route.params.subscribe((params) => {
+      this.eventId = params['id'];
+      console.log("eventId: " + this.eventId);
+      this.getCurrentEvent(this.eventId);
+    });
   }
+
 
   getCurrentCategory(id: string): void {
     this.categoryService
@@ -66,6 +73,7 @@ export class EventPageComponent implements OnInit {
       )
       .subscribe((data) => {
         this.currentCategory = data;
+        console.log("currentCategoryName: " + this.currentCategory.name);
       });
   }
 
@@ -82,6 +90,7 @@ export class EventPageComponent implements OnInit {
   }
 
   getCurrentEvent(id: string): void {
+    this.mapVisible = false; // Ustawia mapVisible na false przy zmianie wydarzenia
     this.eventService
       .getOne(id)
       .snapshotChanges()
@@ -94,7 +103,10 @@ export class EventPageComponent implements OnInit {
       )
       .subscribe((data) => {
         this.currentEvent = data;
+        console.log("currentEventName: " + this.currentEvent.name);
         this.getCurrentCategory(this.currentEvent.category!);
+        this.cdr.detectChanges(); // Ręczne wywołanie detekcji zmian
+
       });
   }
 
