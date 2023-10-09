@@ -45,14 +45,14 @@ export class TicketListComponent implements OnInit {
   }
 
   retrieveTickets(): void {
-    this.ticketService.getAll().snapshotChanges().pipe(
+    this.ticketService.getTicketsByEvent(this.eventId).snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
           ({ id: c.payload.doc.id, ...c.payload.doc.data() })
         )
       )
     ).subscribe(data => {
-      this.tickets = data.filter(ticket => ticket.eventId === this.eventId);
+      this.tickets = data;
     });
   }
 

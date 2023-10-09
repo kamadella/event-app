@@ -33,4 +33,8 @@ export class TicketService {
   getTicketsByUser(userId: string): AngularFirestoreCollection<Ticket> {
     return this.db.collection(this.dbPath, (ref) => ref.where('userId', '==', userId));
   }
+
+  getTicketsByEvent(eventId: string): AngularFirestoreCollection<Ticket> {
+    return this.db.collection(this.dbPath, (ref) => ref.where('eventId', '==', eventId));
+  }
 }
