@@ -28,7 +28,7 @@ export class AdminEventsToPublishComponent implements OnInit {
 
   retrieveEvents(): void {
     this.eventService
-      .getAll()
+      .getEventsToPublish()
       .snapshotChanges()
       .pipe(
         map((changes) =>
@@ -36,21 +36,10 @@ export class AdminEventsToPublishComponent implements OnInit {
             id: c.payload.doc.id,
             ...c.payload.doc.data(),
           }))
-        ),
-        map((data) => data.filter((e) => e.published === false)),
-        map((filteredEvents) =>
-          filteredEvents.sort((a, b) => {
-            const dateA: any = a.createdAt ? a.createdAt : null;
-            const dateB: any = b.createdAt ? b.createdAt : null;
-            if (dateA && dateB) return dateA - dateB;
-            if (dateA) return -1;
-            if (dateB) return 1;
-            return 0;
-          })
         )
       )
-      .subscribe((sortedEvents) => {
-        this.events = sortedEvents;
+      .subscribe((data) => {
+        this.events = data;
       });
   }
 

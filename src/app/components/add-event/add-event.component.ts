@@ -185,13 +185,6 @@ export class AddEventComponent implements OnInit {
       )
       .subscribe((data) => {
         this.categories = data;
-        // Sortowanie kategorii alfabetycznie
-        this.categories.sort((a, b) => {
-          if (a.name && b.name) {
-            return a.name.localeCompare(b.name);
-          }
-          return 0;
-        });
       });
   }
 

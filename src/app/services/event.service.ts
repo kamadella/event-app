@@ -1,21 +1,49 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  AngularFirestoreDocument,
+} from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Event } from '../models/event.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventService {
   private dbPath = '/events';
   eventsRef: AngularFirestoreCollection<Event>;
 
-  constructor(private db: AngularFirestore, private storage: AngularFireStorage) {
+  constructor(
+    private db: AngularFirestore,
+    private storage: AngularFireStorage
+  ) {
     this.eventsRef = db.collection(this.dbPath);
-   }
+  }
 
   getAll(): AngularFirestoreCollection<Event> {
     return this.eventsRef;
+  }
+
+  getEventsToPublish(): AngularFirestoreCollection<Event> {
+    return this.db.collection(this.dbPath, (ref) =>
+      ref.where('published', '==', false).orderBy('createdAt')
+    );
+  }
+
+  getFilteredEvents(
+    archiveMode: boolean = false
+  ): AngularFirestoreCollection<Event> {
+    const currentDate = new Date();
+    const dateComparison = archiveMode ? '<' : '>';
+
+    return this.db.collection(
+      this.dbPath,
+      (ref) =>
+        ref
+          .where('published', '==', true)
+          .where('date_end', dateComparison, currentDate.toISOString()) // Konwertuj obecną datę na string
+    );
   }
 
   async create(event: Event, imageFile: File): Promise<any> {
@@ -25,7 +53,10 @@ export class EventService {
       const eventId = (await eventDocRef).id;
 
       const storageRef = this.storage.ref(`eventImages/${eventId}`);
-      const uploadTask = this.storage.upload(`eventImages/${eventId}`, imageFile);
+      const uploadTask = this.storage.upload(
+        `eventImages/${eventId}`,
+        imageFile
+      );
 
       await uploadTask.task;
 
@@ -37,13 +68,15 @@ export class EventService {
     return eventDocRef;
   }
 
-
   update(id: string, data: any): Promise<void> {
     return this.eventsRef.doc(id).update(data);
   }
 
-
-  async updateIMG(id: string, data: any, imageFile: File | null): Promise<void> {
+  async updateIMG(
+    id: string,
+    data: any,
+    imageFile: File | null
+  ): Promise<void> {
     const eventRef = this.eventsRef.doc(id);
 
     if (imageFile) {
@@ -89,9 +122,8 @@ export class EventService {
   }
 
   getEventsByCategory(categoryId: string): AngularFirestoreCollection<Event> {
-    return this.db.collection(this.dbPath, (ref) => ref.where('category', '==', categoryId));
+    return this.db.collection(this.dbPath, (ref) =>
+      ref.where('category', '==', categoryId)
+    );
   }
-
-
-
 }

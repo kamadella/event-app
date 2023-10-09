@@ -89,17 +89,14 @@ export class MapComponent implements OnInit {
 
 
   retrieveEvents(): void {
-    this.eventService.getAll().snapshotChanges().pipe(
+    this.eventService.getFilteredEvents().snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
           ({ id: c.payload.doc.id, ...c.payload.doc.data() })
         )
       )
       ).subscribe(data => {
-        const currentDate = new Date();
-        this.events = data.filter(event =>
-          event.published === true && (event.date_end ? new Date(event.date_end) > currentDate : false)
-        );
+        this.events = data
         this.retrieveMarkers();
       });
   }

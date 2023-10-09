@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
   }
 
   showTickets(): void {
-    this.showed = !this.showed; // Zamienia wartość na przeciwną (true na false lub false na true)
+    this.showed = !this.showed;
   }
 
   checkTicketValidity(): void {
