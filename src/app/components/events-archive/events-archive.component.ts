@@ -29,7 +29,7 @@ export class EventsArchiveComponent implements OnInit {
 
   retrieveEvents(): void {
     this.eventService
-      .getAll()
+      .getFilteredEvents(true)
       .snapshotChanges()
       .pipe(
         map((changes) =>
@@ -39,14 +39,8 @@ export class EventsArchiveComponent implements OnInit {
           }))
         ),
         map((data) => {
-          const currentDate = new Date();
-          const filteredEvents = data.filter(
-            (event) =>
-              event.published === true &&
-              (event.date_end ? new Date(event.date_end) < currentDate : false)
-          );
-          //sortowanie po dacie rozpoczęcia
-          return filteredEvents.sort((a, b) => {
+          // Sortowanie po dacie rozpoczęcia
+          const sortedEvents = data.sort((a, b) => {
             const dateA = a.date_start ? new Date(a.date_start) : null;
             const dateB = b.date_start ? new Date(b.date_start) : null;
 
@@ -56,10 +50,12 @@ export class EventsArchiveComponent implements OnInit {
 
             return dateB.getTime() - dateA.getTime();
           });
+
+          return sortedEvents;
         })
       )
-      .subscribe((sortedEvents) => {
-        this.events = sortedEvents;
+      .subscribe((data) => {
+        this.events = data;
         this.filteredEventList = this.events;
       });
   }

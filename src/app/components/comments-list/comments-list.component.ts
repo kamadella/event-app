@@ -34,20 +34,20 @@ export class CommentsListComponent implements OnInit {
   }
 
   retrieveCommentsByEvents(): void {
-    this.commentService.getCommentsByEvent(this.eventId!).snapshotChanges().subscribe((changes) => {
-      this.comments = changes.map((c) => ({
-        id: c.payload.doc.id,
-        ...c.payload.doc.data(),
-      })).sort((a, b) => {
-        const timestampA = a.date;
-        const timestampB = b.date;
-        if (timestampA && timestampB) {
-          return timestampA > timestampB ? -1 : timestampA < timestampB ? 1 : 0;
-        }
-        return 0;
-      });
-
-        this.loadUsers(); // Wczytaj dane użytkowników po pobraniu komentarzy
+    this.commentService
+      .getCommentsByEvent(this.eventId!)
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
+        )
+      )
+      .subscribe((data) => {
+        this.comments = data;
+        this.loadUsers();
       });
   }
 

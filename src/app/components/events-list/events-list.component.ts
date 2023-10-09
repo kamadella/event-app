@@ -6,7 +6,6 @@ import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
   selector: 'app-events-list',
   templateUrl: './events-list.component.html',
@@ -38,9 +37,10 @@ export class EventsListComponent implements OnInit {
     });
   }
 
+
   retrieveEvents(): void {
     this.eventService
-      .getAll()
+      .getFilteredEvents()
       .snapshotChanges()
       .pipe(
         map((changes) =>
@@ -50,14 +50,8 @@ export class EventsListComponent implements OnInit {
           }))
         ),
         map((data) => {
-          const currentDate = new Date();
-          const filteredEvents = data.filter(
-            (event) =>
-              event.published === true &&
-              (event.date_end ? new Date(event.date_end) > currentDate : false)
-          );
-          //sortowanie po dacie rozpoczęcia
-          return filteredEvents.sort((a, b) => {
+          // Sortowanie po dacie rozpoczęcia
+          const sortedEvents = data.sort((a, b) => {
             const dateA = a.date_start ? new Date(a.date_start) : null;
             const dateB = b.date_start ? new Date(b.date_start) : null;
 
@@ -67,12 +61,13 @@ export class EventsListComponent implements OnInit {
 
             return dateA.getTime() - dateB.getTime();
           });
+
+          return sortedEvents;
         })
       )
-      .subscribe((sortedEvents) => {
-        this.events = sortedEvents;
+      .subscribe((data) => {
+        this.events = data;
         this.filteredEventList = this.events;
-
         // Dodaj to tu, aby filtrowanie rozpoczęło się po wczytaniu danych
         this.route.params.subscribe((params) => {
           const categoryId = params['category'];
@@ -143,10 +138,15 @@ export class EventsListComponent implements OnInit {
     const dateStartFilter = filters.dateStartFilter ?? new Date(0);
     const dateEndFilter = filters.dateEndFilter ?? new Date(9999, 11, 31);
 
-    const selectedCategoryObjects = this.getSelectedCategories(filters.selectedCategories);
+    const selectedCategoryObjects = this.getSelectedCategories(
+      filters.selectedCategories
+    );
     console.log('bbox: ' + filters.cityBbox);
     if (filters.cityBbox && filters.distanceFilter) {
-      filters.cityBbox = this.calculateBbox(filters.cityBbox, filters.distanceFilter);
+      filters.cityBbox = this.calculateBbox(
+        filters.cityBbox,
+        filters.distanceFilter
+      );
       console.log('nowy bbox: ' + filters.cityBbox);
     }
 
@@ -176,11 +176,11 @@ export class EventsListComponent implements OnInit {
           event.lng <= filters.cityBbox[2] &&
           event.lat <= filters.cityBbox[3];
 
-          console.log("event.lng: " + event.lng);
-          console.log("event.lat: " + event.lat );
+        console.log('event.lng: ' + event.lng);
+        console.log('event.lat: ' + event.lat);
         isInsideBbox = isPointInsideBbox; // Ustaw wartość na podstawie sprawdzenia punktu w bbox
       }
-      console.log("isInsideBbox: " + isInsideBbox);
+      console.log('isInsideBbox: ' + isInsideBbox);
 
       return (
         isInsideBbox &&

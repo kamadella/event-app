@@ -14,7 +14,8 @@ export class CategoryService {
   }
 
   getAll(): AngularFirestoreCollection<Category> {
-    return this.categoriesRef;
+    return this.db.collection(this.dbPath, (ref) => ref.orderBy('name'));
+    //return this.categoriesRef;
   }
 
   create(category: Category): any {

@@ -30,6 +30,6 @@ export class CommentService {
   }
 
   getCommentsByEvent(eventId: string): AngularFirestoreCollection<Comment> {
-    return this.db.collection(this.dbPath, (ref) => ref.where('eventId', '==', eventId));
+    return this.db.collection(this.dbPath, (ref) => ref.where('eventId', '==', eventId).orderBy('date', 'desc'));
   }
 }
