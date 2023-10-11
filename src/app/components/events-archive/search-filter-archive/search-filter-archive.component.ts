@@ -18,9 +18,6 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
   templateUrl: './search-filter-archive.component.html',
   styleUrls: ['./search-filter-archive.component.css'],
   providers: [
-    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-    // `MatMomentDateModule` in your applications root module. We provide it at the component level
-    // here, due to limitations of our example generation script.
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -38,7 +35,7 @@ export class SearchFilterArchiveComponent implements OnInit {
   distanceFilter: number = 0;
   dateStartFilter: Date | null = new Date();
   dateEndFilter: Date | null = new Date();
-  selectedCategories: number[] = []; // Tablica do przechowywania zaznaczonych indeksów kategorii
+  selectedCategoriesIndexes: number[] = []; // Tablica do przechowywania zaznaczonych indeksów kategorii
   cityBbox?: number[];
 
   map: mapboxgl.Map | undefined;
@@ -98,7 +95,7 @@ export class SearchFilterArchiveComponent implements OnInit {
       distanceFilter: this.distanceFilter,
       dateStartFilter: this.dateStartFilter,
       dateEndFilter: this.dateEndFilter,
-      selectedCategories: this.selectedCategories,
+      selectedCategories: this.selectedCategoriesIndexes,
       cityBbox: this.cityBbox,
     };
 
@@ -111,7 +108,7 @@ export class SearchFilterArchiveComponent implements OnInit {
     this.dateStartFilter = null;
     this.dateEndFilter = null;
     this.distanceFilter = 0;
-    this.selectedCategories = [];
+    this.selectedCategoriesIndexes = [];
     this.cityBbox = undefined;
 
     const geocoderInput = document.querySelector(
@@ -133,16 +130,24 @@ export class SearchFilterArchiveComponent implements OnInit {
     });
   }
 
-  // Metoda do obsługi zaznaczania kategorii
-  toggleCategory(index: number) {
-    console.log(this.selectedCategories);
-    if (this.selectedCategories.includes(index)) {
-      this.selectedCategories = this.selectedCategories.filter(
-        (i) => i !== index
-      );
+  // Metoda do obsługi zaznaczania i odznaczania kategorii
+  //Ta metoda jest wywoływana, gdy użytkownik zmienia stan checkboxa poprzez kliknięcie.
+  toggleCategory(categoryIndex: number) {
+    const selectedIndex = this.selectedCategoriesIndexes.indexOf(categoryIndex);
+
+    if (selectedIndex === -1) {
+      //Kategoria nie jest w tablicy, dodaj ją
+      this.selectedCategoriesIndexes.push(categoryIndex);
     } else {
-      this.selectedCategories.push(index);
+      //Kategoria jest już w tablicy, usuń ją
+      this.selectedCategoriesIndexes.splice(selectedIndex, 1);
     }
+  }
+
+  //sprawdza, czy dany indeks kategorii znajduje się w tablicy
+  //jest po to by odznaczało przy czyszczeniu filtrów
+  isSelectedCategory(index: number): boolean {
+    return this.selectedCategoriesIndexes.includes(index);
   }
 
   setLocale(locale: string) {

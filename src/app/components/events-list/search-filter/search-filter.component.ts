@@ -19,9 +19,6 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
   templateUrl: './search-filter.component.html',
   styleUrls: ['./search-filter.component.css'],
   providers: [
-    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-    // `MatMomentDateModule` in your applications root module. We provide it at the component level
-    // here, due to limitations of our example generation script.
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -33,13 +30,13 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 export class SearchFilterComponent implements OnInit {
   @Output() filterChanged = new EventEmitter<any>();
 
-  categories!: Category[];
+  categories!: Category[]; // tu przechowuje wszystki kategorie
 
   nameFilter: string = '';
   distanceFilter: number = 0;
   dateStartFilter: Date | null = new Date();
   dateEndFilter: Date | null = new Date();
-  selectedCategories: number[] = []; // Tablica do przechowywania zaznaczonych indeksów kategorii
+  selectedCategoriesIndexes: number[] = []; // Tablica do przechowywania zaznaczonych indeksów kategorii
   cityBbox?: number[];
 
   map: mapboxgl.Map | undefined;
@@ -130,7 +127,7 @@ export class SearchFilterComponent implements OnInit {
       distanceFilter: this.distanceFilter,
       dateStartFilter: this.dateStartFilter,
       dateEndFilter: this.dateEndFilter,
-      selectedCategories: this.selectedCategories,
+      selectedCategories: this.selectedCategoriesIndexes,
       cityBbox: this.cityBbox,
     };
 
@@ -143,7 +140,7 @@ export class SearchFilterComponent implements OnInit {
     this.dateStartFilter = null;
     this.dateEndFilter = null;
     this.distanceFilter = 0;
-    this.selectedCategories = [];
+    this.selectedCategoriesIndexes = [];
     this.cityBbox = undefined;
 
     const geocoderInput = document.querySelector(
@@ -167,11 +164,24 @@ export class SearchFilterComponent implements OnInit {
     this.router.navigate(['/events/list']);
   }
 
-  // Metoda do obsługi zaznaczania kategorii
-  toggleCategory(index: number) {
-    if (!this.selectedCategories.includes(index)) {
-      this.selectedCategories.push(index);
+  // Metoda do obsługi zaznaczania i odznaczania kategorii
+  //Ta metoda jest wywoływana, gdy użytkownik zmienia stan checkboxa poprzez kliknięcie.
+  toggleCategory(categoryIndex: number) {
+    const selectedIndex = this.selectedCategoriesIndexes.indexOf(categoryIndex);
+
+    if (selectedIndex === -1) {
+      //Kategoria nie jest w tablicy, dodaj ją
+      this.selectedCategoriesIndexes.push(categoryIndex);
+    } else {
+      //Kategoria jest już w tablicy, usuń ją
+      this.selectedCategoriesIndexes.splice(selectedIndex, 1);
     }
+  }
+
+  //sprawdza, czy dany indeks kategorii znajduje się w tablicy
+  //jest po to by odznaczało przy czyszczeniu filtrów
+  isSelectedCategory(index: number): boolean {
+    return this.selectedCategoriesIndexes.includes(index);
   }
 
   setLocale(locale: string) {
