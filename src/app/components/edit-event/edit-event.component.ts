@@ -50,18 +50,18 @@ export class EditEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
-      organizator: ['', [Validators.required, Validators.minLength(3)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000)]],
+      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       date_start: ['', [Validators.required]],
       date_end: ['', [Validators.required]],
-      category: [''],
+      category: ['', [Validators.required]],
       tickets: [''],
       ticketsLeft: [''],
-      img: [''],
-      lat: [''], // New form control for latitude
-      lng: [''], // New form control for longitude
-      place_name: ['', [Validators.required]], // New form control for place_name
+      img: ['', [Validators.required]],
+      lat: ['', [Validators.required]],
+      lng: ['', [Validators.required]],
+      place_name: ['', [Validators.required]],
       published: [''],
     });
 
