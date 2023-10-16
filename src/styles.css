@@ -123,20 +123,25 @@ a {
 
 .btn-primary,
 .btn-primary:active {
-  background-color: var(--primary) !important;
-  border-color: var(--primary) !important;
+  background-color: var(--primary) ;
+  border-color: var(--primary) ;
 }
 
-.btn-primary:hover,
 .btn-primary:focus{
+  background-color: var(--primary) !important;
+  border-color: var(--secondary) !important;
+}
+
+.btn-primary:hover{
   background-color: var(--secondary) !important;
   border-color: var(--secondary) !important;
 }
 
+
 .btn-outline-primary,
 .btn-outline-primary:active {
   color: var(--primary);
-  border-color: var(--primary) !important;
+  border-color: var(--primary);
 }
 
 .btn-outline-primary:hover,
@@ -149,8 +154,8 @@ a {
 
 .btn-accent,
 .btn-accent:active {
-  background-color: var(--accent-secondary) !important;
-  border-color: var(--accent-secondary) !important;
+  background-color: var(--accent-secondary) ;
+  border-color: var(--accent-secondary) ;
 }
 
 .btn-accent:hover,
@@ -162,7 +167,7 @@ a {
 .btn-outline-accent,
 .btn-outline-accent:active {
   color: var(--accent-secondary);
-  border-color: var(--accent-secondary) !important;
+  border-color: var(--accent-secondary);
 }
 
 .btn-outline-accent:hover,
