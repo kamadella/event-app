@@ -43,17 +43,17 @@ export class AddEventComponent implements OnInit {
   ngOnInit(): void {
     this.retrieveCategory();
     this.eventForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
-      organizator: ['', [Validators.required, Validators.minLength(3)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000)]],
+      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       date_start: ['', [Validators.required]],
       date_end: ['', [Validators.required]],
-      category: [''],
+      category: ['', [Validators.required]],
       tickets: [''],
       ticketsLeft: [''],
       img: ['', [Validators.required]],
-      lat: [''],
-      lng: [''],
+      lat: ['', [Validators.required]],
+      lng: ['', [Validators.required]],
       place_name: ['', [Validators.required]],
       published: [''],
       createdAt: ['']

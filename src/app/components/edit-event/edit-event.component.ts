@@ -63,14 +63,13 @@ export class EditEventComponent implements OnInit {
       lng: ['', [Validators.required]],
       place_name: ['', [Validators.required]],
       published: [''],
+      createdAt: ['']
     });
 
     this.route.params.subscribe((params) => (this.eventId = params['id']));
     this.getCurrentEvent(this.eventId);
     this.retrieveCategory();
     this.initializeGeocoder();
-
-
   }
 
   initializeGeocoder() {
@@ -172,6 +171,7 @@ export class EditEventComponent implements OnInit {
           lat: data.lat,
           lng: data.lng,
           place_name: data.place_name,
+
         });
 
         this.getCurrentCategory(this.currentEvent.category!);
