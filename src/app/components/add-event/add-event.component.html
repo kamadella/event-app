@@ -15,7 +15,7 @@
     <div class="col-md-8">
       <div class="row g-3">
         <div class="form-group col-sm-12 my-3">
-          <label for="title" class="fs-5 text-primary">Nazwa</label>
+          <label for="name" class="fs-5 text-primary">Nazwa</label>
           <input
             placeholder="Przykładowa nazwa"
             type="text"
@@ -23,15 +23,21 @@
             id="name"
             required
             formControlName="name"
-            minlength="3"
-            maxlength="50"
           />
           <div
-            *ngIf="name?.invalid && (name?.dirty || name?.touched)"
-            class="invalid-feedback"
-          >
-            <p>Nazwa musi zawierać od 3 do 50 znaków</p>
+          *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="name?.errors?.['required']">
+            Nazwa wydarzenia jest wymagana
           </div>
+          <div *ngIf="name?.errors?.['minlength']">
+            Nazwa musi mieć conajmniej 3 znaki
+          </div>
+          <div *ngIf="name?.errors?.['maxlength']">
+            Nazwa nie może być dłuższa niż 50 znaków
+          </div>
+        </div>
         </div>
 
         <div class="form-group col-sm-12 my-3">
@@ -42,17 +48,20 @@
             id="description"
             required
             formControlName="description"
-            minlength="10"
-            maxlength="1500"
           ></textarea>
           <div
-            *ngIf="
-              description?.invalid &&
-              (description?.dirty || description?.touched)
-            "
+            *ngIf="description?.invalid && (description?.dirty || description?.touched)"
             class="invalid-feedback"
           >
-            <p>Opis musi zawierać canajmniej 10 znaków</p>
+            <div *ngIf="description?.errors?.['required']">
+              Opis wydarzenia jest wymagany
+            </div>
+            <div *ngIf="description?.errors?.['minlength']">
+              Opis musi mieć conajmniej 10 znaków
+            </div>
+            <div *ngIf="description?.errors?.['maxlength']">
+              Opis nie może być dłuższa niż 2000 znaków
+            </div>
           </div>
         </div>
 
@@ -69,17 +78,20 @@
             id="organizator"
             required
             formControlName="organizator"
-            minlength="5"
-            maxlength="50"
           />
           <div
-            *ngIf="
-              organizator?.invalid &&
-              (organizator?.dirty || organizator?.touched)
-            "
-            class="invalid-feedback"
+          *ngIf="organizator?.invalid && (organizator?.dirty || organizator?.touched)"
+          class="invalid-feedback"
           >
-            <p>Organizator musi zawierać od 5 do 50 znaków</p>
+            <div *ngIf="organizator?.errors?.['required']">
+              Organizator wydarzenia jest wymagany
+            </div>
+            <div *ngIf="organizator?.errors?.['minlength']">
+              Nazwa organizatora musi mieć conajmniej 5 znaków
+            </div>
+            <div *ngIf="organizator?.errors?.['maxlength']">
+              Nazwa organizatora nie może być dłuższa niż 50 znaków
+            </div>
           </div>
         </div>
 

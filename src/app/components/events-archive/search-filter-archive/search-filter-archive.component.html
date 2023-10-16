@@ -73,7 +73,7 @@
           class="btn-check"
           id="{{ i }}"
           autocomplete="off"
-          [ngModel]="selectedCategories.includes(i)"
+          [ngModel]="isSelectedCategory(i)"
           (change)="toggleCategory(i)"
         />
         <label class="btn btn-outline-light" for="{{ i }}">

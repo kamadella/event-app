@@ -15,7 +15,7 @@
     <div class="col-md-8">
       <div class="row g-3">
         <div class="form-group col-sm-12 my-3">
-          <label for="title" class="fs-5 text-primary">Nazwa</label>
+          <label for="name" class="fs-5 text-primary">Nazwa</label>
           <input
             placeholder="nazwa wydarzenia..."
             type="text"
@@ -23,16 +23,22 @@
             id="name"
             required
             formControlName="name"
-            name="title"
+            name="name"
             value="{{ currentEvent.name }}"
-            minlength="3"
-            maxlength="50"
           />
           <div
             *ngIf="name?.invalid && (name?.dirty || name?.touched)"
             class="invalid-feedback"
           >
-            <p>Nazwa musi zawierać od 3 do 50 znaków</p>
+            <div *ngIf="name?.errors?.['required']">
+              Nazwa wydarzenia jest wymagana
+            </div>
+            <div *ngIf="name?.errors?.['minlength']">
+              Nazwa musi mieć conajmniej 3 znaki
+            </div>
+            <div *ngIf="name?.errors?.['maxlength']">
+              Nazwa nie może być dłuższa niż 50 znaków
+            </div>
           </div>
         </div>
 
@@ -43,26 +49,33 @@
             class="form-control"
             id="description"
             required
+            name="description"
             formControlName="description"
             value="{{ currentEvent.description }}"
-            minlength="10"
-            maxlength="1500"
           ></textarea>
           <div
-            *ngIf="
-              description?.invalid &&
-              (description?.dirty || description?.touched)
-            "
+            *ngIf="description?.invalid && (description?.dirty || description?.touched)"
             class="invalid-feedback"
           >
-            <p>Opis musi zawierać canajmniej 10 znaków</p>
+            <div *ngIf="description?.errors?.['required']">
+              Opis wydarzenia jest wymagany
+            </div>
+            <div *ngIf="description?.errors?.['minlength']">
+              Opis musi mieć conajmniej 10 znaków
+            </div>
+            <div *ngIf="description?.errors?.['maxlength']">
+              Opis nie może być dłuższa niż 2000 znaków
+            </div>
           </div>
         </div>
 
         <div class="form-group col-sm-12 my-3">
           <label for="Lokalizacja" class="fs-5 text-primary">Lokalizacja</label>
-          <p><i class="bi bi-geo-alt me-2"></i>{{ previousLocalization.place_name }}</p>
-          <div id="geocoder" class="geocoder-add-event p-0 "></div>
+          <p>
+            <i class="bi bi-geo-alt me-2"></i
+            >{{ previousLocalization.place_name }}
+          </p>
+          <div id="geocoder" class="geocoder-add-event p-0"></div>
         </div>
 
         <div class="form-group col-sm-12 my-2">
@@ -74,48 +87,56 @@
             required
             formControlName="organizator"
             value="{{ currentEvent.organizator }}"
-            minlength="5"
-            maxlength="50"
           />
           <div
-            *ngIf="
-              organizator?.invalid &&
-              (organizator?.dirty || organizator?.touched)
-            "
-            class="invalid-feedback"
+          *ngIf="organizator?.invalid && (organizator?.dirty || organizator?.touched)"
+          class="invalid-feedback"
           >
-            <p>Organizator musi zawierać od 5 do 50 znaków</p>
+            <div *ngIf="organizator?.errors?.['required']">
+              Organizator wydarzenia jest wymagany
+            </div>
+            <div *ngIf="organizator?.errors?.['minlength']">
+              Nazwa organizatora musi mieć conajmniej 5 znaków
+            </div>
+            <div *ngIf="organizator?.errors?.['maxlength']">
+              Nazwa organizatora nie może być dłuższa niż 50 znaków
+            </div>
           </div>
         </div>
 
         <div class="form-group col-sm-12 my-3">
           <label for="img" class="fs-5 text-primary">Zdjęcie wydarzenia</label>
-          <div class="d-flex justify-content-center align-items-centerm ">
+          <div class="d-flex justify-content-center align-items-centerm">
             <div
-              class="imagePreview ratio ratio-16x9 event-img my-4 "
+              class="imagePreview ratio ratio-16x9 event-img my-4"
               *ngIf="imageURL && imageURL !== ''"
             >
-              <img [src]="imageURL" alt="event img" class="rounded shadow " />
+              <img [src]="imageURL" alt="event img" class="rounded shadow" />
             </div>
             <div
-            class="imagePreview ratio ratio-16x9 event-img my-4 "
-            *ngIf="previousImage && !(imageURL && imageURL !== '')"
-          >
-            <img [src]="previousImage" alt="event img" class="rounded shadow " />
-          </div>
+              class="imagePreview ratio ratio-16x9 event-img my-4"
+              *ngIf="previousImage && !(imageURL && imageURL !== '')"
+            >
+              <img
+                [src]="previousImage"
+                alt="event img"
+                class="rounded shadow"
+              />
+            </div>
           </div>
           <input
             type="file"
-            class="form-control "
+            class="form-control"
             id="img"
             (change)="onImageSelected($event)"
             accept="image/*"
           />
-
         </div>
 
         <div class="form-group col-6 my-3">
-          <label for="date_start" class="fs-5 text-primary">Data rozpoczęcia</label>
+          <label for="date_start" class="fs-5 text-primary"
+            >Data rozpoczęcia</label
+          >
           <input
             class="form-control"
             type="datetime-local"
@@ -135,7 +156,9 @@
         </div>
 
         <div class="form-group col-6 my-3">
-          <label for="date_end" class="fs-5 text-primary">Data zakończenia</label>
+          <label for="date_end" class="fs-5 text-primary"
+            >Data zakończenia</label
+          >
           <input
             class="form-control"
             type="datetime-local"
@@ -177,7 +200,10 @@
           </div>
         </mat-radio-group>
 
-        <h5 class="mt-5">W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę biletów możliwych do rezerwacji:</h5>
+        <h5 class="mt-5">
+          W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę
+          biletów możliwych do rezerwacji:
+        </h5>
         <div class="form-group col-12">
           <label for="tickets" class="fs-5 text-primary">Ilość biletów</label>
           <input
@@ -187,10 +213,15 @@
             id="tickets"
             formControlName="tickets"
             value="{{ currentEvent.tickets }}"
-            min={{reservedTickets}}
+            min="{{ reservedTickets }}"
           />
-          <div *ngIf="tickets?.value < 0 ||  tickets?.invalid &&
-          (tickets?.dirty || tickets?.touched)" class="invalid-feedback">
+          <div
+            *ngIf="
+              tickets?.value < 0 ||
+              (tickets?.invalid && (tickets?.dirty || tickets?.touched))
+            "
+            class="invalid-feedback"
+          >
             <p>nie można dodawać ujemnych biletów</p>
           </div>
         </div>
@@ -208,11 +239,11 @@
         Aktualizuj
       </button>
       <button
-      class="btn btn-outline-primary mb-5"
-      routerLink="/event/{{currentEvent.id}}"
-    >
-      Wróć do wydarznia
-    </button>
+        class="btn btn-outline-primary mb-5"
+        routerLink="/event/{{ currentEvent.id }}"
+      >
+        Wróć do wydarznia
+      </button>
     </div>
   </div>
 </form>

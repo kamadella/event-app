@@ -11,7 +11,7 @@ import { MapDialogContentComponent } from './map-dialog-content/map-dialog-conte
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements OnInit {
   map: mapboxgl.Map | undefined;
@@ -22,11 +22,9 @@ export class MapComponent implements OnInit {
   @Input() centerEvent: Event | undefined;
   @Input() hideSideBar: boolean = false;
 
+  constructor(private eventService: EventService, public dialog: MatDialog) {}
 
-  constructor(private eventService: EventService, public dialog: MatDialog) { }
-
-  ngOnInit() { }
-
+  ngOnInit() {}
 
   ngAfterViewInit() {
     // Opóźnij inicjalizację mapy, aby Angular miał więcej czasu
@@ -42,13 +40,13 @@ export class MapComponent implements OnInit {
       container: 'map',
       style: this.style,
       zoom: 11,
-      center: [this.lng, this.lat]
+      center: [this.lng, this.lat],
     });
 
     this.map.addControl(
       new MapboxGeocoder({
-      accessToken: environment.mapbox.accessToken,
-      mapboxgl: mapboxgl
+        accessToken: environment.mapbox.accessToken,
+        mapboxgl: mapboxgl,
       })
     );
 
@@ -57,21 +55,23 @@ export class MapComponent implements OnInit {
     }
   }
 
-
   centerMapOnEvent(event: Event): void {
     if (this.map) {
       this.map.flyTo({
         center: [event.lng!, event.lat!],
-        zoom: 14
+        zoom: 14,
       });
     }
   }
 
   retrieveMarkers(): void {
-    this.events?.filter(e => e.lng !== undefined && e.lat !== undefined)
-      .forEach(e => {
+    this.events
+      ?.filter((e) => e.lng !== undefined && e.lat !== undefined)
+      .forEach((e) => {
         // create MapBox Marker
-        const marker = new mapboxgl.Marker().setLngLat([e.lng! , e.lat!]).addTo(this.map!);
+        const marker = new mapboxgl.Marker()
+          .setLngLat([e.lng!, e.lat!])
+          .addTo(this.map!);
         // use GetElement to get HTML Element from marker and add event
         marker.getElement().addEventListener('click', () => {
           //this.createPopUp(e);
@@ -80,36 +80,37 @@ export class MapComponent implements OnInit {
       });
   }
 
-  openDialog(e: Event) {
-    const dialogRef = this.dialog.open(MapDialogContentComponent, {data: e,});
-
-    dialogRef.afterClosed().subscribe(result => {
+  openDialog(event: Event) {
+    const dialogRef = this.dialog.open(MapDialogContentComponent, {
+      width: '500px',
+      data: event,
     });
   }
 
-
   retrieveEvents(): void {
-    this.eventService.getFilteredEvents().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+    this.eventService
+      .getFilteredEvents()
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
         )
       )
-      ).subscribe(data => {
-        this.events = data
+      .subscribe((data) => {
+        this.events = data;
         this.retrieveMarkers();
       });
   }
 
-
-
-  flyToStore(event: Event) : void{
+  flyToStore(event: Event): void {
     this.map!.flyTo({
       center: [event.lng!, event.lat!],
-      zoom: 13
+      zoom: 13,
     });
   }
-
 
   createPopUp(event: Event) {
     const popUps = document.getElementsByClassName('mapboxgl-popup');
@@ -117,12 +118,14 @@ export class MapComponent implements OnInit {
     if (popUps[0]) popUps[0].remove();
 
     const popup = new mapboxgl.Popup({ closeOnClick: true })
-    .setLngLat([event.lng!, event.lat!])
-    .setHTML(`
+      .setLngLat([event.lng!, event.lat!])
+      .setHTML(
+        `
 
       <button class="btn-open-dialog btn btn-primary">Informacje</button>
-    `)
-    .addTo(this.map!);
+    `
+      )
+      .addTo(this.map!);
 
     // Get the popup's content element
     const popupContent = popup.getElement();
@@ -134,7 +137,5 @@ export class MapComponent implements OnInit {
         this.openDialog(event);
       }
     });
-
   }
-
 }
