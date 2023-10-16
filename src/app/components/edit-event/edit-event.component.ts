@@ -197,10 +197,14 @@ export class EditEventComponent implements OnInit {
 
   updateEvent(): void {
     const newTicketsLeft = this.eventForm.value.tickets - this.reservedTickets;
+
     this.eventForm.patchValue({
       published: false,
       ticketsLeft: newTicketsLeft,
     }); // Ustaw published na false
+
+    // Zamień znaki nowej linii w opisie na znaczniki HTML <br>
+    this.eventForm.value.description = this.eventForm.value.description.replace(/\n/g, '<br>');
 
     if (this.currentEvent.id) {
       this.eventService

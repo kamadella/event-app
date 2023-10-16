@@ -144,6 +144,9 @@ export class AddEventComponent implements OnInit {
     this.eventForm.value.createdAt = new Date();
     this.addingEvent = true;
 
+    // Zamień znaki nowej linii w opisie na znaczniki HTML <br>
+    this.eventForm.value.description = this.eventForm.value.description.replace(/\n/g, '<br>');
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: 'Czy na pewno chcesz dodać nowe wydarzenie?',
