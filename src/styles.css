@@ -106,11 +106,17 @@ body { margin: 0; font-family: Roboto, "Roboto", sans-serif; }
 }
 
 .form-signin input[type="password"] {
-  margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
+.form-signin input[type="login"] {
+  border-radius: 0;
+}
+
+.form-signin input[type="password-confirm"] {
+  border-radius: 0;
+}
 
 
 .fit-cover {
@@ -123,8 +129,8 @@ a {
 
 .btn-primary,
 .btn-primary:active {
-  background-color: var(--primary) ;
-  border-color: var(--primary) ;
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
 }
 
 .btn-primary:focus{
@@ -154,8 +160,8 @@ a {
 
 .btn-accent,
 .btn-accent:active {
-  background-color: var(--accent-secondary) ;
-  border-color: var(--accent-secondary) ;
+  background-color: var(--accent-secondary) !important;
+  border-color: var(--accent-secondary) !important;
 }
 
 .btn-accent:hover,

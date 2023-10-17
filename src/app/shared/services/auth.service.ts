@@ -81,7 +81,12 @@ export class AuthService {
   }
 
   // Sign up with email/password
-  SignUp(email: string, password: string, displayName: string) {
+  SignUp(email: string, password: string, displayName: string, confirmPassword: string) {
+      // Check if passwords match
+    if (password !== confirmPassword) {
+      this.showAlertDialog('Passwords do not match.');
+      return;
+    }
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
