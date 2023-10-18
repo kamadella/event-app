@@ -27,22 +27,22 @@ export class CategoryComponent implements OnInit {
     this.retrieveCategories();
   }
 
-saveCategory(): void {
-  const categoryNameLowerCase = this.category.name?.toLowerCase();
-  const isNameUnique = !this.categories?.some(c => c.name?.toLowerCase() === categoryNameLowerCase);
+  saveCategory(): void {
+    const categoryNameLowerCase = this.category.name?.toLowerCase();
+    const isNameUnique = !this.categories?.some(c => c.name?.toLowerCase() === categoryNameLowerCase);
 
-  if (isNameUnique) {
-    this.categoryService.create(this.category).then(() => {
-      this.submitted = true;
-    });
-  } else {
-    // Nazwa kategorii nie jest unikalna, obsłuż odpowiednio
-    this.dialog.open(AlertDialogComponent, {
-      width: '400px',
-      data: 'Nazwa kategorii nie jest unikalna.',
-    });
+    if (isNameUnique) {
+      this.categoryService.create(this.category).then(() => {
+        this.submitted = true;
+      });
+    } else {
+      // Nazwa kategorii nie jest unikalna, obsłuż odpowiednio
+      this.dialog.open(AlertDialogComponent, {
+        width: '400px',
+        data: 'Nazwa kategorii nie jest unikalna.',
+      });
+    }
   }
-}
 
   newCategory(): void {
     this.submitted = false;

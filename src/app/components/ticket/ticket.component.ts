@@ -27,9 +27,25 @@ export class TicketComponent implements OnInit {
 
   ngOnInit(): void {
     this.ticketForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      surname: ['', [Validators.required, Validators.minLength(2)]],
-      number: [''],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30),
+          Validators.pattern('^[a-zA-Z]+$'),
+        ],
+      ],
+      surname: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30),
+          Validators.pattern('^[a-zA-Z]+$'),
+        ],
+      ],
+      number: ['', [Validators.required]],
       userId: [''],
       eventId: [''],
     });

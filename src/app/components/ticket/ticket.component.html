@@ -15,14 +15,24 @@
             id="name"
             required
             formControlName="name"
-            maxlength="50"
           />
           <div
           *ngIf="name?.invalid && (name?.dirty || name?.touched)"
           class="invalid-feedback"
-        >
-          Podaj poprawne imię
-        </div>
+          >
+            <div *ngIf="name?.errors?.['required']">
+              Podanie imienia jest wymagane
+            </div>
+            <div *ngIf="name?.errors?.['minlength']">
+              Imię musi mieć conajmniej 2 znaki
+            </div>
+            <div *ngIf="name?.errors?.['maxlength']">
+              Imię nie może być dłuższe niż 30 znaków
+            </div>
+            <div *ngIf="name?.errors?.['pattern']">
+              Imię musi posiadać jedynie litery
+            </div>
+          </div>
         </div>
 
 
@@ -35,14 +45,24 @@
             id="surname"
             required
             formControlName="surname"
-            maxlength="50"
           />
           <div
           *ngIf="surname?.invalid && (surname?.dirty || surname?.touched)"
           class="invalid-feedback"
-        >
-          Podaj poprawne nazwisko
-        </div>
+          >
+            <div *ngIf="surname?.errors?.['required']">
+              Podanie nazwiska jest wymagane
+            </div>
+            <div *ngIf="surname?.errors?.['minlength']">
+              Nazwisko musi mieć conajmniej 2 znaki
+            </div>
+            <div *ngIf="surname?.errors?.['maxlength']">
+              Nazwisko nie może być dłuższe niż 30 znaków
+            </div>
+            <div *ngIf="surname?.errors?.['pattern']">
+              Nazwisko musi posiadać jedynie litery
+            </div>
+          </div>
         </div>
 
         <div class="form-group col-sm-12">
@@ -59,13 +79,14 @@
             min="1"
             max = "{{event.ticketsLeft}}"
           />
-          <div *ngIf="number?.invalid &&
-          (number?.dirty || number?.touched)" class="invalid-feedback">
-            <p>Musisz podac liczbę</p>
-          </div>
-          <div *ngIf="ticketsAvailabilityMessage" class="invalid-feedback">{{ ticketsAvailabilityMessage }}</div>
-          <div *ngIf="number?.value < 0" class="invalid-feedback">
-            <p>nie można dodawać ujemnych biletów</p>
+          <div
+          *ngIf="number?.invalid && (number?.dirty || number?.touched)"
+          class="invalid-feedback"
+          >
+            <div *ngIf="ticketsAvailabilityMessage" >{{ ticketsAvailabilityMessage }}</div>
+            <div *ngIf="number?.value < 0" class="invalid-feedback">
+              Nie można dodawać ujemnych biletów
+            </div>
           </div>
         </div>
 

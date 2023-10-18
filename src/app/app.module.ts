@@ -32,6 +32,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
 import { NativeDateModule } from '@angular/material/core';
 
 import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-content.component';
@@ -119,6 +120,7 @@ import { AboutComponent } from './components/about/about.component';
     MatInputModule,
     MatDialogModule,
     MatExpansionModule,
+    MatIconModule,
     BrowserModule,
     MatDatepickerModule,
     NativeDateModule

@@ -10,10 +10,32 @@
           />
         </div>
       </div>
+
+    </section>
+
+    <section class="container mt-2 mb-4">
+      <ng-container *ngIf="isLoggedIn(); else loginPanel">
+        <div class="d-flex justify-content-center justify-content-md-end">
+          <button type="button" class="btn btn-primary d-flex align-items-center" (click)="updateLikedEventsList(isEventLiked())">
+            <mat-icon>{{ isEventLiked() ? 'favorite' : 'favorite_border' }}</mat-icon>
+            <span class="ms-2">{{ isEventLiked() ? 'Usuń z ulubionych' : 'Dodaj do ulubionych' }}</span>
+          </button>
+        </div>
+      </ng-container>
+      <ng-template #loginPanel>
+        <div class="d-flex justify-content-center justify-content-md-end">
+          <button type="button" class="btn btn-primary d-flex align-items-center" (click)="openLoginDialog()">
+            <mat-icon>favorite_border</mat-icon>
+            <span>Dodaj do ulubionych</span>
+          </button>
+        </div>
+
+      </ng-template>
     </section>
 
     <section class="container">
-      <div class="row my-5">
+      <div class="row mb-5">
+        <hr />
         <div class="col-xl-8">
           <header class="mb-4">
             <!-- Post categories-->
@@ -98,7 +120,7 @@
                   <div class="text-center">
                     <p class="fs-5 mb-4">Pośpiesz się i zdobądź bilet!</p>
                     <button
-                      (click)="loginDialog()"
+                      (click)="openLoginDialog()"
                       class="btn btn-lg btn-accent text-white px-4 py-2"
                     >
                       Zarezerwuj bilet
@@ -154,7 +176,11 @@
         Edytuj
       </button>
     </div>
+
   </section>
+
+
+
   <section class="container my-5">
     <div class="card bg-light p-5">
       <h3>Komentarze</h3>

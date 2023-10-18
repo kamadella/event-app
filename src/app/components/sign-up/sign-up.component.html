@@ -16,20 +16,22 @@
           required
           type="email"
           class="form-control"
-          id="floatingInput"
+          id="mail"
           placeholder="name@example.com"
         />
-        <label for="floatingInput">Email</label>
+        <label for="mail">Email</label>
       </div>
+
       <div class="form-floating ">
         <input
           placeholder="Login"
           #userDisplayName
+          type="text"
           required
           class="form-control"
-          id="floatingLogin"
+          id="login"
         />
-        <label for="floatingLogin">Login</label>
+        <label for="login">Login</label>
       </div>
 
 
@@ -39,16 +41,30 @@
           #userPwd
           required
           class="form-control"
-          id="floatingPassword"
+          id="password"
           placeholder="Haslo"
         />
-        <label for="floatingPassword">Hasło</label>
+        <label for="password">Hasło</label>
       </div>
+
+      <div class="form-floating">
+        <input
+          type="password"
+          #confirmPwd
+          required
+          class="form-control"
+          id="password-confirm"
+          placeholder="Haslo"
+        />
+        <label for="password-confirm">Powtórz hasło</label>
+      </div>
+
+
       <input
         type="button"
         class=" btn btn-lg btn-primary mt-3"
         value="Zarejestruj się"
-        (click)="authService.SignUp(userEmail.value, userPwd.value, userDisplayName.value)"
+        (click)="authService.SignUp(userEmail.value, userPwd.value, userDisplayName.value, confirmPwd.value)"
       />
       <div class="mt-5 mb-3 text-muted">
         <span

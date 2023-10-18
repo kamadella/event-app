@@ -216,13 +216,15 @@
             min="{{ reservedTickets }}"
           />
           <div
-            *ngIf="
-              tickets?.value < 0 ||
-              (tickets?.invalid && (tickets?.dirty || tickets?.touched))
-            "
+            *ngIf="tickets?.invalid && (tickets?.dirty || tickets?.touched)"
             class="invalid-feedback"
           >
-            <p>nie można dodawać ujemnych biletów</p>
+            <div *ngIf="tickets?.value < 0">
+              Nie można dodawać ujemnych biletów
+            </div>
+            <div *ngIf="tickets?.errors?.['max']">
+              Maksymalna liczba biletów to 100 000
+            </div>
           </div>
         </div>
       </div>

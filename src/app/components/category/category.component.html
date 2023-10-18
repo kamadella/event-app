@@ -20,16 +20,18 @@
                 [(ngModel)]="category.name"
                 #categoryText="ngModel"
                 minlength="3"
-                maxlength="20"
+                maxlength="25"
               />
               <div
-                *ngIf="
-                  categoryText.invalid &&
-                  (categoryText.dirty || categoryText.touched)
-                "
+                *ngIf="categoryText?.invalid && (categoryText?.dirty || categoryText?.touched)"
                 class="invalid-feedback"
               >
-                Kategoria musi zawierać od 3 do 20 znaków
+                <div *ngIf="categoryText?.errors?.['minlength']">
+                  Nazwa musi mieć conajmniej 3 znaki
+                </div>
+                <div *ngIf="categoryText?.errors?.['maxlength']">
+                  Nazwa nie może być dłuższa niż 25 znaków
+                </div>
               </div>
             </div>
           </div>

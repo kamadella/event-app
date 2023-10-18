@@ -56,7 +56,7 @@ export class EditEventComponent implements OnInit {
       date_start: ['', [Validators.required]],
       date_end: ['', [Validators.required]],
       category: ['', [Validators.required]],
-      tickets: [''],
+      tickets: ['', [Validators.max(100000)]],
       ticketsLeft: [''],
       img: ['', [Validators.required]],
       lat: ['', [Validators.required]],
