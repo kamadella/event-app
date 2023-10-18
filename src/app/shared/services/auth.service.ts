@@ -1,5 +1,4 @@
 import { Injectable, NgZone } from '@angular/core';
-import { User } from '../services/user';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
@@ -39,12 +38,15 @@ export class AuthService {
               photoURL: user.photoURL,
               emailVerified: user.emailVerified,
               role: userData.get('role'),
+              likedEvents: userData.get('likedEvents'),
             };
             this.setUserDataInLocalStorage(userWithRole);
           });
+
       } else {
         this.clearUserData();
       }
+
     });
   }
 
@@ -53,27 +55,33 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.afs.doc(`users/${result.user!.uid}`).get().subscribe((userData) => {
-          const userWithRole = {
-            uid: result.user!.uid,
-            email: result.user!.email,
-            displayName: result.user!.displayName,
-            photoURL: result.user!.photoURL,
-            emailVerified: result.user!.emailVerified,
-            role: userData.get('role'), // Pobranie roli z bazy danych
-          };
+        this.afs
+          .doc(`users/${result.user!.uid}`)
+          .get()
+          .subscribe((userData) => {
+            const userWithRole = {
+              uid: result.user!.uid,
+              email: result.user!.email,
+              displayName: result.user!.displayName,
+              photoURL: result.user!.photoURL,
+              emailVerified: result.user!.emailVerified,
+              role: userData.get('role'), // Pobranie roli z bazy danych
+              likedEvents: userData.get('likedEvents'),
+            };
 
-          this.setUserDataInLocalStorage(userWithRole);
-          this.SetUserData(result.user);
+            this.setUserDataInLocalStorage(userWithRole);
+            this.SetUserData(userWithRole);
 
-          if (result.user!.emailVerified) {
-            // Jeśli adres e-mail jest zweryfikowany, przekieruj na stronę 'events/list'
-            this.router.navigate(['events/list']);
-          } else {
-            // Jeśli adres e-mail nie jest zweryfikowany, wyświetl informację użytkownikowi
-            this.showAlertDialog('Adres e-mail nie został zweryfikowany. Proszę sprawdź swoją skrzynkę odbiorczą.');
-          }
-        });
+            if (result.user!.emailVerified) {
+              // Jeśli adres e-mail jest zweryfikowany, przekieruj na stronę 'events/list'
+              this.router.navigate(['events/list']);
+            } else {
+              // Jeśli adres e-mail nie jest zweryfikowany, wyświetl informację użytkownikowi
+              this.showAlertDialog(
+                'Adres e-mail nie został zweryfikowany. Proszę sprawdź swoją skrzynkę odbiorczą.'
+              );
+            }
+          });
       })
       .catch((error) => {
         this.showAlertDialog(error.message);
@@ -81,8 +89,13 @@ export class AuthService {
   }
 
   // Sign up with email/password
-  SignUp(email: string, password: string, displayName: string, confirmPassword: string) {
-      // Check if passwords match
+  SignUp(
+    email: string,
+    password: string,
+    displayName: string,
+    confirmPassword: string
+  ) {
+    // Check if passwords match
     if (password !== confirmPassword) {
       this.showAlertDialog('Passwords do not match.');
       return;
@@ -103,7 +116,7 @@ export class AuthService {
           })
           .then(() => {
             this.SetUserData(result.user);
-            this.UpdateUserRole(result.user!.uid, 'user');
+            //this.UpdateUserRole(result.user!.uid, 'user');
           });
       })
       .catch((error) => {
@@ -161,7 +174,11 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
+      likedEvents: user.likedEvents || [],
+      role: user.role || "user",
     };
+
+    console.log('userData before set/update:', userData);
 
     return userRef.set(userData, {
       merge: true,
@@ -193,8 +210,6 @@ export class AuthService {
     this.userData = user;
     localStorage.setItem('user', JSON.stringify(this.userData));
   }
-
-
 
   private clearUserData() {
     localStorage.setItem('user', 'null');
@@ -266,4 +281,50 @@ export class AuthService {
       return storageRef.getDownloadURL().toPromise();
     });
   }
+
+  // Dodaj wydarzenie do listy polubionych
+  addLikedEvent(eventId: string) {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    if (user) {
+      user.likedEvents = user.likedEvents || [];
+      if(user.likedEvents.indexOf(eventId) == -1){
+        user.likedEvents.push(eventId);
+        this.updateUser(user);
+      }
+
+    }
+  }
+
+  // Usuń wydarzenie z listy polubionych
+  removeLikedEvent(eventId: string) {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    if (user && user.likedEvents) {
+      user.likedEvents = user.likedEvents.filter((id: string) => id !== eventId);
+      this.updateUser(user);
+    }
+  }
+
+  isEventLiked(eventId: string): boolean {
+    const user = JSON.parse(localStorage.getItem('user')!);
+
+    if (user && user.likedEvents) {
+      return user.likedEvents.includes(eventId);
+    }
+
+    return false;
+  }
+
+  // Aktualizuj dokument użytkownika w bazie danych Firestore
+  private updateUser(user: any) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `users/${user.uid}`
+    );
+    return userRef.update({ likedEvents: user.likedEvents })
+      .then(() => {
+        // Update local storage after Firestore update
+        localStorage.setItem('user', JSON.stringify(user));
+      });
+  }
+
+
 }

@@ -13,8 +13,17 @@
 
     </section>
 
+    <section class="container mt-2 mb-4">
+      <div *ngIf="isLoggedIn()" class="d-flex justify-content-center justify-content-md-end">
+        <button type="button" class="btn btn-primary d-flex align-items-center" (click)="updateLikedEventsList(isEventLiked())">
+          <mat-icon>{{ isEventLiked() ? 'favorite' : 'favorite_border' }}</mat-icon>
+          <span class="ms-2">{{ isEventLiked() ? 'Usuń z ulubionych' : 'Dodaj do ulubionych' }}</span>
+        </button>
+      </div>
+    </section>
+
     <section class="container">
-      <div class="row my-5">
+      <div class="row mb-5">
         <hr />
         <div class="col-xl-8">
           <header class="mb-4">
@@ -156,7 +165,11 @@
         Edytuj
       </button>
     </div>
+
   </section>
+
+
+
   <section class="container my-5">
     <div class="card bg-light p-5">
       <h3>Komentarze</h3>

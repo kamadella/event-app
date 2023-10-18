@@ -212,4 +212,22 @@ export class EventPageComponent implements OnInit {
   openMap(): void {
     this.mapVisible = true;
   }
+
+  isEventLiked(): boolean {
+    // Replace this logic with your actual implementation
+    return this.authService.isEventLiked(this.currentEvent.id!);
+  }
+
+  updateLikedEventsList(action: boolean): void {
+    if (this.currentEvent.id) {
+      if (!action) {
+        console.log("addLikedEvent");
+        this.authService.addLikedEvent(this.currentEvent.id);
+      }
+      if (action) {
+        console.log("removeLikedEvent");
+        this.authService.removeLikedEvent(this.currentEvent.id);
+      }
+    }
+  }
 }
