@@ -205,7 +205,7 @@ export class EventPageComponent implements OnInit {
     return this.authService.isLoggedIn;
   }
 
-  loginDialog() {
+  openLoginDialog() {
     this.dialog.open(LoginDialogComponent);
   }
 

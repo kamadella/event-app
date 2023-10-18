@@ -164,11 +164,16 @@ a {
   border-color: var(--accent-secondary) !important;
 }
 
-.btn-accent:hover,
 .btn-accent:focus{
+  background-color: var(--accent-secondary) !important;
+  border-color: var(--accent) !important;
+}
+
+.btn-accent:hover{
   background-color: var(--accent) !important;
   border-color: var(--accent) !important;
 }
+
 
 .btn-outline-accent,
 .btn-outline-accent:active {
@@ -194,10 +199,10 @@ a {
 }
 
 .text-primary{
-  color: var(--primary);
+  color: var(--primary) !important;
 }
 .text-accent{
-  color: var(--accent-secondary);
+  color: var(--accent-secondary) !important;
 }
 
 /*  end BOOTSTRAP */

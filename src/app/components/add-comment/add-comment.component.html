@@ -1,37 +1,43 @@
 <div class="submit-form">
-    <div class="row ">
-      <div class="col-md-10   ">
+  <div class="row">
+    <div class="col-md-10">
+      <textarea
+        type="text"
+        class="form-control"
+        id="name"
+        rows="3"
+        placeholder="Dołacz do dyskusji i zostaw komentarz!"
+        required
+        [(ngModel)]="comment.text"
+        #commentText="ngModel"
+        maxlength="300"
+      ></textarea>
+    </div>
 
-          <textarea
-          type="text"
-          class="form-control"
-          id="name"
-          rows="3"
-          placeholder="Dołacz do dyskusji i zostaw komentarz!"
-          required
-          [(ngModel)]="comment.text"
-          #commentText="ngModel"
-          maxlength="300"
-          ></textarea>
-      </div>
-
-      <div class="col-md-2 ">
-        <ng-container *ngIf="isLoggedIn(); else loginPanel">
+    <div class="col-md-2">
+      <ng-container *ngIf="isLoggedIn(); else loginPanel">
         <button (click)="saveComment()" class="btn btn-success p-3">
           Dodaj komentarz
         </button>
       </ng-container>
       <ng-template #loginPanel>
-        <button (click)="openLoginDialog()" class="btn btn-outline-success  p-3">
+        <button (click)="openLoginDialog()" class="btn btn-outline-success p-3">
           Dodaj
         </button>
       </ng-template>
-
     </div>
-    <div class="alert alert-danger alert-dismissible fade show m-2" role="alert" *ngIf="invalidComment">
+    <div
+      class="alert alert-danger alert-dismissible fade show m-2"
+      role="alert"
+      *ngIf="invalidComment"
+    >
       Dodaj prawdziwy komentarz a nie same białe znaki
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
     </div>
   </div>
 </div>
