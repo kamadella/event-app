@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { CommentService } from 'src/app/services/comment.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-event-page',
@@ -45,6 +46,7 @@ export class EventPageComponent implements OnInit {
     private categoryService: CategoryService,
     private commentService: CommentService,
     private authService: AuthService,
+    private userService: UserService,
     private location: Location,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef
@@ -136,6 +138,25 @@ export class EventPageComponent implements OnInit {
                   );
                 }
               });
+
+              this.userService
+              .getUsersByLikedEvents(this.currentEvent.id)
+              .snapshotChanges()
+              .subscribe((changes) => {
+                const usersWithEventToDelete = changes.map((c) => ({
+                  id: c.payload.doc.id,
+                  ...c.payload.doc.data(),
+                }));
+                if (usersWithEventToDelete.length > 0) {
+                  // Usuń wszystkie te komentarze
+                  usersWithEventToDelete.forEach((user) =>
+                  this.userService
+                  .removeLikedEventFromUser(user.uid, this.currentEvent.id!)
+                  .catch((err) => console.log(err))
+                  );
+                }
+              });
+
 
             //usuń wydarznie
             this.eventService

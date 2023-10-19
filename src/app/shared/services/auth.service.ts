@@ -178,8 +178,6 @@ export class AuthService {
       role: user.role || "user",
     };
 
-    console.log('userData before set/update:', userData);
-
     return userRef.set(userData, {
       merge: true,
     });
@@ -322,7 +320,19 @@ export class AuthService {
     return userRef.update({ likedEvents: user.likedEvents })
       .then(() => {
         // Update local storage after Firestore update
-        localStorage.setItem('user', JSON.stringify(user));
+        //localStorage.setItem('user', JSON.stringify(user));
+        userRef.get().subscribe((userData) => {
+          const userWithRole = {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            emailVerified: user.emailVerified,
+            role: userData.get('role'),
+            likedEvents: userData.get('likedEvents'),
+          };
+          this.setUserDataInLocalStorage(userWithRole);
+        });
       });
   }
 

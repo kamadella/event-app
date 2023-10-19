@@ -144,6 +144,7 @@ a {
 }
 
 
+
 .btn-outline-primary,
 .btn-outline-primary:active {
   color: var(--primary);
@@ -155,6 +156,29 @@ a {
   background-color: var(--primary) !important;
   border-color: var(--primary) !important;
   color: white;
+}
+
+/* Styl dla niezaznaczonego checkboxa */
+.btn-check:not(:checked) + .btn-outline-primary,
+.btn-check:not(:checked) + .btn-outline-primary:active {
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Styl dla zaznaczonego checkboxa */
+.btn-check:checked + .btn-outline-primary,
+.btn-check:checked + .btn-outline-primary:active {
+  color: white !important;
+  border-color: var(--primary) !important;
+  background-color: var(--primary) !important;
+}
+
+/* Styl dla hovera na checkboxie */
+.btn-check + .btn-outline-primary:hover,
+.btn-check + .btn-outline-primary:focus {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+  color: white !important;
 }
 
 

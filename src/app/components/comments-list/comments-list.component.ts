@@ -25,7 +25,6 @@ export class CommentsListComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private route: ActivatedRoute,
-
   ) {}
 
   ngOnInit(): void {
