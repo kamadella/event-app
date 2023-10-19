@@ -70,7 +70,6 @@ export class DashboardComponent implements OnInit {
     if (this.tickets && this.tickets.length > 0) {
       const currentDate = new Date();
 
-
       //sprawdzam ważność biletów (pobieram eventy i sprawdzamkiedy sie zakonczyly dla każdego ticketu)
       this.tickets.forEach((ticket) => {
         if (ticket.eventId) {

@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
 import { ActivatedRoute } from '@angular/router';
-
+import { AuthService } from 'src/app/shared/services/auth.service';
 @Component({
   selector: 'app-events-list',
   templateUrl: './events-list.component.html',
@@ -15,12 +15,15 @@ export class EventsListComponent implements OnInit {
   categories!: Category[];
   events?: Event[];
   filteredEventList?: Event[] = [];
+  originalEventList: Event[] = [];
   isSearchFilterVisible = false;
+  isShowOnlyLikedEventsClicked = false;
 
   constructor(
     private eventService: EventService,
     private categoryService: CategoryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -121,7 +124,6 @@ export class EventsListComponent implements OnInit {
     const newMinLat = cityBbox[1] - latPerKm * distanceFilter;
     const newMaxLon = cityBbox[2] + lonPerKm * distanceFilter;
     const newMaxLat = cityBbox[3] + latPerKm * distanceFilter;
-    console.log('jestem calculateBbox');
 
     //cityBbox = [newMinLon, newMinLat, newMaxLon, newMaxLat];
     return [newMinLon, newMinLat, newMaxLon, newMaxLat];
@@ -132,6 +134,9 @@ export class EventsListComponent implements OnInit {
     // Logika filtrowania
     if (filters.isFiltersCleared) {
       this.filteredEventList = this.events; // Przywróć pierwotny stan, jeśli filtry są puste
+      if(this.isShowOnlyLikedEventsClicked){
+        this.showOnlyLikedEvents()
+      }
       return;
     }
 
@@ -141,13 +146,11 @@ export class EventsListComponent implements OnInit {
     const selectedCategoryObjects = this.getSelectedCategories(
       filters.selectedCategories
     );
-    console.log('bbox: ' + filters.cityBbox);
     if (filters.cityBbox && filters.distanceFilter) {
       filters.cityBbox = this.calculateBbox(
         filters.cityBbox,
         filters.distanceFilter
       );
-      console.log('nowy bbox: ' + filters.cityBbox);
     }
 
     this.filteredEventList = this.events!.filter((event) => {
@@ -176,11 +179,9 @@ export class EventsListComponent implements OnInit {
           event.lng <= filters.cityBbox[2] &&
           event.lat <= filters.cityBbox[3];
 
-        console.log('event.lng: ' + event.lng);
-        console.log('event.lat: ' + event.lat);
         isInsideBbox = isPointInsideBbox; // Ustaw wartość na podstawie sprawdzenia punktu w bbox
       }
-      console.log('isInsideBbox: ' + isInsideBbox);
+
 
       return (
         isInsideBbox &&
@@ -189,9 +190,34 @@ export class EventsListComponent implements OnInit {
         isMatchingName
       );
     });
+    if(this.isShowOnlyLikedEventsClicked){
+      this.showOnlyLikedEvents()
+    }
   }
 
   toggleSearchFilter() {
     this.isSearchFilterVisible = !this.isSearchFilterVisible;
+  }
+
+  toggleShowOnlyLikedEvents() {
+    this.isShowOnlyLikedEventsClicked = !this.isShowOnlyLikedEventsClicked;
+    this.showOnlyLikedEvents();
+  }
+
+  showOnlyLikedEvents(){
+    if(this.isShowOnlyLikedEventsClicked && this.filteredEventList){
+      this.originalEventList = this.filteredEventList;
+      if(this.authService.userData){
+        console.log(this.authService.userData.likedEvents);
+        const likedEvents = this.authService.userData.likedEvents;
+        this.filteredEventList = this.filteredEventList!.filter((event) => {
+          // Sprawdź, czy aktualne wydarzenie jest na liście polubionych
+          return likedEvents.includes(event.id);
+        });
+      }
+    }
+    else{
+      this.filteredEventList = this.originalEventList;
+    }
   }
 }
