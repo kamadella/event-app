@@ -150,13 +150,13 @@
       </div>
     </div>
 
-    <div class="container px-5 my-5">
+    <div class="px-5 my-5">
       <div
         *ngIf="expiredTickets && expiredTickets.length > 0"
         class="text-center"
       >
         <button *ngIf="!showed" class="btn btn-outline-primary" (click)="showTickets()">
-          Pokaż bilety
+          Pokaż bilety z przeszłosci
         </button>
         <button *ngIf="showed" class="btn btn-outline-primary" (click)="showTickets()">
           Ukryj bilety
@@ -164,7 +164,7 @@
       </div>
 
       <div *ngIf="showed && expiredTickets && expiredTickets.length > 0">
-        <div class="text-center">
+        <div class="mt-5 text-center">
           <h2>Bilety z przeszłości</h2>
           <hr />
         </div>
@@ -190,7 +190,7 @@
                 <td>
                   <button
                     type="submit"
-                    class="btn btn-accent text-whit"
+                    class="btn btn-accent text-white"
                     routerLink="/event/{{ ticket.eventId }}"
                   >
                     Pokaż wydarzenie
