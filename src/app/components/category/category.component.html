@@ -10,12 +10,12 @@
         <div *ngIf="!submitted" class="col-md-7">
           <div class="row g-3">
             <div class="form-group col-sm-12">
-              <label for="title">Nazwa</label>
+              <label for="category">Nazwa</label>
               <input
                 placeholder="nazwa kategorii..."
                 type="text"
                 class="form-control"
-                id="name"
+                id="category"
                 required
                 [(ngModel)]="category.name"
                 #categoryText="ngModel"
@@ -65,10 +65,17 @@
         <li *ngFor="let category of categories" class="list-group-item">
           <button
             type="button"
-            class="btn btn-danger ms-2 rounded-circle me-4"
+            class="btn btn-danger ms-2 rounded-circle me-2"
             (click)="deleteCategory(category)"
           >
             <i class="bi bi-x " style="font-size: 18px;"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary ms-2 rounded-circle me-4"
+            (click)="openEditCategoryDialog(category)"
+          >
+            <i class="bi bi-pencil " style="font-size: 18px;"></i>
           </button>
           {{ category.name }}
         </li>

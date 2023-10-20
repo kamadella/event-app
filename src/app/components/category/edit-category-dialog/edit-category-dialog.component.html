@@ -1,0 +1,24 @@
+<div >
+  <p>Edytuj kategorię:</p>
+  <input
+    placeholder="nazwa"
+    type="text"
+    class="form-control"
+    id="name"
+    required
+    value = " {{ category }}"
+    [(ngModel)]="categoryName"
+    name="categoryName"
+  />
+</div>
+<div >
+  <button class="btn btn-outline-danger mt-3 me-2" (click)="onNoClick()">Anuluj</button>
+  <button
+    class="btn btn-outline-success mt-3"
+    [mat-dialog-close]="categoryName"
+    cdkFocusInitial
+    *ngIf="categoryName"
+  >
+    Zapisz
+  </button>
+</div>
