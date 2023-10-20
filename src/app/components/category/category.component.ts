@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { EditCategoryDialogComponent } from './edit-category-dialog/edit-category-dialog.component';
 
 @Component({
   selector: 'app-category',
@@ -97,6 +98,26 @@ export class CategoryComponent implements OnInit {
       } else {
         // Użytkownik kliknął "Anuluj" lub zamknął dialog
         console.log('Cancelled category delete.');
+      }
+    });
+  }
+
+  openEditCategoryDialog(category: Category): void {
+    const dialogRef = this.dialog.open(EditCategoryDialogComponent, {
+      width: '400px',
+      data: category.name,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const data = {
+          name: result,
+        };
+
+        if (category.id) {
+          this.categoryService.update(category.id, data)
+            .catch(err => console.log(err));
+        }
       }
     });
   }

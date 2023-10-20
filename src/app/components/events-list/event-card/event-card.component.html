@@ -6,7 +6,7 @@
   </a>
 
   <div
-    class="rounded-circle position-absolute top-20 end-0 translate-middle p-2 bg-white"
+    class="heart rounded-circle position-absolute top-20 end-0 translate-middle p-2 bg-white"
   >
     <ng-container *ngIf="isLoggedIn(); else loginPanel">
       <button
@@ -19,6 +19,7 @@
         }}</mat-icon>
       </button>
     </ng-container>
+
     <ng-template #loginPanel>
       <button
       type="button"
@@ -28,9 +29,10 @@
       <mat-icon class="text-primary fs-4">favorite_border</mat-icon>
     </button>
     </ng-template>
+
   </div>
 
-  <a class="text-decoration-none link-dark" routerLink="/event/{{ event.id }}">
+  <a class=" text-decoration-none link-dark" routerLink="/event/{{ event.id }}">
     <div class="link-container">
       <div class="card-body p-4 d-flex flex-column align-items-start">
         <div *ngFor="let category of categories">

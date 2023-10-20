@@ -1,0 +1,4 @@
+/* Dodaj kolor dla aktywnego linku */
+.navbar-nav .nav-item .nav-link.active-link {
+  color: var(--accent-secondary);
+}

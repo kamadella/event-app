@@ -16,15 +16,25 @@
     <section class="container mt-2 mb-4">
       <ng-container *ngIf="isLoggedIn(); else loginPanel">
         <div class="d-flex justify-content-center justify-content-md-end">
-          <button type="button" class="btn btn-primary d-flex align-items-center" (click)="updateLikedEventsList(isEventLiked())">
+
+          <input
+            type="checkbox"
+            class="btn-check"
+            id="btn-check-outlined"
+            autocomplete="off"
+            [checked]="isEventLiked()"
+            (click)="updateLikedEventsList(isEventLiked())"
+          />
+          <label class="btn btn-outline-primary d-flex align-items-center" for="btn-check-outlined">
             <mat-icon>{{ isEventLiked() ? 'favorite' : 'favorite_border' }}</mat-icon>
             <span class="ms-2">{{ isEventLiked() ? 'Usuń z ulubionych' : 'Dodaj do ulubionych' }}</span>
-          </button>
+            </label
+          >
         </div>
       </ng-container>
       <ng-template #loginPanel>
         <div class="d-flex justify-content-center justify-content-md-end">
-          <button type="button" class="btn btn-primary d-flex align-items-center" (click)="openLoginDialog()">
+          <button type="button" class="btn btn-outline-primary d-flex align-items-center" (click)="openLoginDialog()">
             <mat-icon>favorite_border</mat-icon>
             <span>Dodaj do ulubionych</span>
           </button>

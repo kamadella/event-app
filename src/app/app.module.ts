@@ -34,6 +34,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { NativeDateModule } from '@angular/material/core';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 
 import { MapDialogContentComponent } from './map/map-dialog-content/map-dialog-content.component';
 import { AdminEventsToPublishComponent } from './components/admin-events-to-publish/admin-events-to-publish.component';
@@ -62,6 +64,7 @@ import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.com
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { AboutComponent } from './components/about/about.component';
+import { EditCategoryDialogComponent } from './components/category/edit-category-dialog/edit-category-dialog.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +99,8 @@ import { AboutComponent } from './components/about/about.component';
     DisplayNameDialogComponent,
     ConfirmDialogComponent,
     AlertDialogComponent,
-    AboutComponent
+    AboutComponent,
+    EditCategoryDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -121,6 +125,7 @@ import { AboutComponent } from './components/about/about.component';
     MatDialogModule,
     MatExpansionModule,
     MatIconModule,
+    MatPaginatorModule,
     BrowserModule,
     MatDatepickerModule,
     NativeDateModule

@@ -15,7 +15,6 @@ export class CategoryService {
 
   getAll(): AngularFirestoreCollection<Category> {
     return this.db.collection(this.dbPath, (ref) => ref.orderBy('name'));
-    //return this.categoriesRef;
   }
 
   create(category: Category): any {
@@ -28,6 +27,11 @@ export class CategoryService {
 
   delete(id: string): Promise<void> {
     return this.categoriesRef.doc(id).delete();
+  }
+
+
+  update(id: string, data: any): Promise<void> {
+    return this.categoriesRef.doc(id).update(data);
   }
 
 }
