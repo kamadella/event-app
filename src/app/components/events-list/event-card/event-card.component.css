@@ -3,3 +3,11 @@ img{
   object-fit: cover;
 }
 
+.link-container{
+  box-shadow: 0 -5px 5px -6px #606060;
+}
+
+.heart {
+  box-shadow: 0 -5px 5px -6px #606060;
+}
+
