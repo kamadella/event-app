@@ -10,8 +10,8 @@ import { environment } from '../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ng2ImgMaxService } from 'ng2-img-max';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { ConfirmDialogComponent } from '../dialogs/confirm-dialog/confirm-dialog.component';
+import { AlertDialogComponent } from '../dialogs/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-add-event',

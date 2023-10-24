@@ -52,19 +52,20 @@ import { UserLayoutComponent } from './layouts/user-layout/user-layout.component
 import { TicketComponent } from './components/ticket/ticket.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { EventsArchiveComponent } from './components/events-archive/events-archive.component';
-import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
+import { LoginDialogComponent } from './components/dialogs/login-dialog/login-dialog.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { SearchFilterComponent } from './components/events-list/search-filter/search-filter.component';
 import { SearchFilterArchiveComponent } from './components/events-archive/search-filter-archive/search-filter-archive.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ProfileIMGDialogComponent } from './components/dashboard/profile-img-dialog/profile-img-dialog.component';
 import { DisplayNameDialogComponent } from './components/dashboard/display-name-dialog/display-name-dialog.component';
-import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
+import { ConfirmDialogComponent } from './components/dialogs/confirm-dialog/confirm-dialog.component';
+import { AlertDialogComponent } from './components/dialogs/alert-dialog/alert-dialog.component';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { AboutComponent } from './components/about/about.component';
 import { EditCategoryDialogComponent } from './components/category/edit-category-dialog/edit-category-dialog.component';
+import { ScrollToTopComponent } from './components/scroll-to-top/scroll-to-top.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,8 @@ import { EditCategoryDialogComponent } from './components/category/edit-category
     ConfirmDialogComponent,
     AlertDialogComponent,
     AboutComponent,
-    EditCategoryDialogComponent
+    EditCategoryDialogComponent,
+    ScrollToTopComponent
   ],
   imports: [
     BrowserModule,
