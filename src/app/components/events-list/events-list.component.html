@@ -28,20 +28,33 @@
         <h2>Lista wydarzeń</h2>
       </div>
       <div class="col-md-4 text-end">
-        <div class="d-flex justify-content-center justify-content-md-end">
-          <input
-            type="checkbox"
-            class="btn-check"
-            id="btn-check-outlined"
-            unchecked
-            autocomplete="off"
-            (click)="toggleShowOnlyLikedEvents()"
-          />
-          <label class="btn btn-outline-primary d-flex align-items-center" for="btn-check-outlined">
-            <mat-icon>{{ isShowOnlyLikedEventsClicked ? 'favorite' : 'favorite_border' }}</mat-icon>
-            <span class="ms-2">Tylko ulubione</span></label
-          ><br />
-        </div>
+        <ng-container *ngIf="isLoggedIn(); else loginPanel">
+          <div class="d-flex justify-content-center justify-content-md-end">
+            <input
+              type="checkbox"
+              class="btn-check"
+              id="btn-check-outlined"
+              unchecked
+              autocomplete="off"
+              (click)="toggleShowOnlyLikedEvents()"
+            />
+            <label class="btn btn-outline-primary d-flex align-items-center" for="btn-check-outlined">
+              <mat-icon>{{ isShowOnlyLikedEventsClicked ? 'favorite' : 'favorite_border' }}</mat-icon>
+              <span class="ms-2">Tylko ulubione</span></label
+            ><br />
+          </div>
+        </ng-container>
+        <ng-template #loginPanel>
+          <div class="d-flex justify-content-center justify-content-md-end">
+            <button type="button" class="btn btn-outline-primary d-flex align-items-center" (click)="openLoginDialog()">
+              <mat-icon>favorite_border</mat-icon>
+              <span class="ms-2">Tylko ulubione</span>
+            </button>
+          </div>
+
+        </ng-template>
+
+
       </div>
       <hr />
     </div>

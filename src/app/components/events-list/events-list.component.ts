@@ -6,6 +6,9 @@ import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { LoginDialogComponent } from '../dialogs/login-dialog/login-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-events-list',
   templateUrl: './events-list.component.html',
@@ -23,7 +26,8 @@ export class EventsListComponent implements OnInit {
     private eventService: EventService,
     private categoryService: CategoryService,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -220,4 +224,13 @@ export class EventsListComponent implements OnInit {
       this.filteredEventList = this.originalEventList;
     }
   }
+
+  openLoginDialog() {
+    this.dialog.open(LoginDialogComponent);
+  }
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn;
+  }
+
 }
