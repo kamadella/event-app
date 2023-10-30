@@ -122,20 +122,31 @@ export class AddEventComponent implements OnInit {
     if (event.target.files && event.target.files.length > 0) {
       const selectedImageFile = event.target.files[0];
 
+      // Sprawdź, czy plik jest obrazkiem
+    if (selectedImageFile.type.startsWith('image/')) {
+      // Kontynuuj przetwarzanie tylko dla plików obrazków
       this.selectedImageFile = selectedImageFile;
-      this.ng2ImgMaxService
-      .resizeImage(selectedImageFile, 900, 506) // 16x9 ratio for 900 width
-      .subscribe((result) => {
-        this.selectedImageFile = new File([result], selectedImageFile.name, { type: result.type });
-        console.log("skalowanie obrazu");
 
-      });
-      //previev zdjecia
+      this.ng2ImgMaxService
+        .resizeImage(selectedImageFile, 900, 506)
+        .subscribe((result) => {
+          this.selectedImageFile = new File([result], selectedImageFile.name, { type: result.type });
+          console.log("skalowanie obrazu");
+        });
+
+      // Preview zdjęcia
       const reader = new FileReader();
       reader.onload = () => {
         this.imageURL = reader.result as string;
-      }
+      };
       reader.readAsDataURL(selectedImageFile);
+    } else {
+      // Wyświetl komunikat w przypadku nieprawidłowego formatu pliku
+      this.dialog.open(AlertDialogComponent, {
+        width: '400px',
+        data: 'Wybrany plik nie jest obrazkiem.'
+      });
+    }
     }
   }
 
