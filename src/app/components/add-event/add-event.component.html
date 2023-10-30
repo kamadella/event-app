@@ -136,13 +136,14 @@
             required
             formControlName="date_start"
           />
-          <div
-            *ngIf="
-              date_start?.invalid && (date_start?.dirty || date_start?.touched)
-            "
-            class="invalid-feedback"
-          >
-            <p>Podano nieprawidłową datę początkową</p>
+          <div *ngIf="date_start?.dirty || date_start?.touched">
+            <div *ngIf="date_start?.invalid" class="invalid-feedback">
+              <p>Podano nieprawidłową datę poczatkową</p>
+            </div>
+            <div *ngIf="!isDateInRange(date_start?.value)" class="invalid-feedback">
+              <p>Data powinna być między {{ minDate | date: 'dd-MM-yyyy' }} a {{ maxDate | date: 'dd-MM-yyyy' }}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -169,6 +170,10 @@
             </div>
             <div *ngIf="isDateEndInvalid()" class="invalid-feedback">
               <p>Data zakończenia nie może być z przeszlości</p>
+            </div>
+            <div *ngIf="!isDateInRange(date_end?.value)" class="invalid-feedback">
+              <p>Data powinna być między {{ minDate | date: 'dd-MM-yyyy' }} a {{ maxDate | date: 'dd-MM-yyyy' }}
+              </p>
             </div>
           </div>
         </div>

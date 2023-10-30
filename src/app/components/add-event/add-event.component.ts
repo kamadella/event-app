@@ -30,6 +30,8 @@ export class AddEventComponent implements OnInit {
   selectedImageFile: File | null = null;
   addingEvent: boolean = false;
   imageURL: string = '';
+  minDate?: Date;
+  maxDate?: Date;
 
   constructor(
     private eventService: EventService,
@@ -60,6 +62,10 @@ export class AddEventComponent implements OnInit {
     });
 
     this.initializeGeocoder();
+
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 2, 0, 1, 0, 0, 0); // 2 lata temu
+    this.maxDate = new Date(currentYear + 2, 11, 31, 23, 59, 59); // Za 2 lata
   }
 
   initializeGeocoder() {
@@ -196,5 +202,14 @@ export class AddEventComponent implements OnInit {
     const today = new Date();
     const dateEnd = this.eventForm.get('date_end')?.value;
     return new Date(dateEnd) < today;
+  }
+
+  isDateInRange(date: Date): boolean {
+    const dateTyped = new Date(date);
+    if(this.minDate &&  this.maxDate){
+      return dateTyped >= this.minDate && dateTyped <= this.maxDate;
+    }
+    else
+      return false;
   }
 }
