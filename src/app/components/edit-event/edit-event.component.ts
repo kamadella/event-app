@@ -11,6 +11,7 @@ import { environment } from '../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Ng2ImgMaxService } from 'ng2-img-max';
+import { ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-event',
@@ -50,9 +51,9 @@ export class EditEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000)]],
-      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), this.notOnlySpaces]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000), this.notOnlySpaces]],
+      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), this.notOnlySpaces]],
       date_start: ['', [Validators.required]],
       date_end: ['', [Validators.required]],
       category: ['', [Validators.required]],
@@ -71,6 +72,16 @@ export class EditEventComponent implements OnInit {
     this.retrieveCategory();
     this.initializeGeocoder();
   }
+
+    // Funkcja walidacyjna, która sprawdza, czy ciąg znaków nie składa się tylko ze spacjii
+    notOnlySpaces: ValidatorFn = (control: AbstractControl) => {
+      if (!control.value || control.value.trim() === '') {
+        // Jeśli wartość jest pusta lub składa się tylko ze spacjii, zwracamy błąd
+        return { notOnlySpaces: true };
+      }
+      // W przeciwnym razie uważamy, że jest to poprawne
+      return null;
+    };
 
   initializeGeocoder() {
     const geocoder = new MapboxGeocoder({

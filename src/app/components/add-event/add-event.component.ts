@@ -46,9 +46,9 @@ export class AddEventComponent implements OnInit {
   ngOnInit(): void {
     this.retrieveCategory();
     this.eventForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50),this.notOnlySpaces]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000),this.notOnlySpaces]],
-      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50),this.notOnlySpaces]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), this.notOnlySpaces]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000), this.notOnlySpaces]],
+      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), this.notOnlySpaces]],
       date_start: ['', [Validators.required]],
       date_end: ['', [Validators.required]],
       category: ['', [Validators.required]],
