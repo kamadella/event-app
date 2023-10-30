@@ -12,6 +12,7 @@ import { Ng2ImgMaxService } from 'ng2-img-max';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../dialogs/confirm-dialog/confirm-dialog.component';
 import { AlertDialogComponent } from '../dialogs/alert-dialog/alert-dialog.component';
+import { ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-event',
@@ -45,9 +46,9 @@ export class AddEventComponent implements OnInit {
   ngOnInit(): void {
     this.retrieveCategory();
     this.eventForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000)]],
-      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50),this.notOnlySpaces]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000),this.notOnlySpaces]],
+      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50),this.notOnlySpaces]],
       date_start: ['', [Validators.required]],
       date_end: ['', [Validators.required]],
       category: ['', [Validators.required]],
@@ -67,6 +68,16 @@ export class AddEventComponent implements OnInit {
     this.minDate = new Date(currentYear - 2, 0, 1, 0, 0, 0); // 2 lata temu
     this.maxDate = new Date(currentYear + 2, 11, 31, 23, 59, 59); // Za 2 lata
   }
+
+  // Funkcja walidacyjna, która sprawdza, czy ciąg znaków nie składa się tylko ze spacjii
+  notOnlySpaces: ValidatorFn = (control: AbstractControl) => {
+    if (!control.value || control.value.trim() === '') {
+      // Jeśli wartość jest pusta lub składa się tylko ze spacjii, zwracamy błąd
+      return { notOnlySpaces: true };
+    }
+    // W przeciwnym razie uważamy, że jest to poprawne
+    return null;
+  };
 
   initializeGeocoder() {
     const geocoder = new MapboxGeocoder({

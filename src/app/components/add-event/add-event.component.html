@@ -37,6 +37,9 @@
             <div *ngIf="name?.errors?.['maxlength']">
               Nazwa nie może być dłuższa niż 50 znaków
             </div>
+            <div *ngIf="name?.errors?.['notOnlySpaces']">
+              Nazwa nie może składać się tylko ze spacjii
+            </div>
           </div>
         </div>
 
@@ -64,6 +67,9 @@
             </div>
             <div *ngIf="description?.errors?.['maxlength']">
               Opis nie może być dłuższa niż 2000 znaków
+            </div>
+            <div *ngIf="name?.errors?.['notOnlySpaces']">
+              Nazwa nie może składać się tylko ze spacjii
             </div>
           </div>
         </div>
@@ -99,6 +105,9 @@
             </div>
             <div *ngIf="organizator?.errors?.['maxlength']">
               Nazwa organizatora nie może być dłuższa niż 50 znaków
+            </div>
+            <div *ngIf="name?.errors?.['notOnlySpaces']">
+              Nazwa nie może składać się tylko ze spacjii
             </div>
           </div>
         </div>
