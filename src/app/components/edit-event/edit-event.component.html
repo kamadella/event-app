@@ -15,7 +15,7 @@
     <div class="col-md-8">
       <div class="row g-3">
         <div class="form-group col-sm-12 my-3">
-          <label for="name" class="fs-5 text-primary">Nazwa</label>
+          <label for="name" class="fs-5 text-primary">Nazwa *</label>
           <input
             placeholder="nazwa wydarzenia..."
             type="text"
@@ -46,7 +46,7 @@
         </div>
 
         <div class="form-group col-sm-12 my-3">
-          <label for="description" class="fs-5 text-primary">Opis</label>
+          <label for="description" class="fs-5 text-primary">Opis *</label>
           <textarea
             placeholder="opis..."
             class="form-control"
@@ -76,7 +76,7 @@
         </div>
 
         <div class="form-group col-sm-12 my-3">
-          <label for="Lokalizacja" class="fs-5 text-primary">Lokalizacja</label>
+          <label for="Lokalizacja" class="fs-5 text-primary">Lokalizacja *</label>
           <p>
             <i class="bi bi-geo-alt me-2"></i
             >{{ previousLocalization.place_name }}
@@ -85,7 +85,7 @@
         </div>
 
         <div class="form-group col-sm-12 my-2">
-          <label for="organizator" class="fs-5 text-primary">Organizator</label>
+          <label for="organizator" class="fs-5 text-primary">Organizator *</label>
           <input
             placeholder="organizator..."
             class="form-control"
@@ -114,7 +114,7 @@
         </div>
 
         <div class="form-group col-sm-12 my-3">
-          <label for="img" class="fs-5 text-primary">Zdjęcie wydarzenia</label>
+          <label for="img" class="fs-5 text-primary">Zdjęcie wydarzenia *</label>
           <div class="d-flex justify-content-center align-items-centerm">
             <div
               class="imagePreview ratio ratio-16x9 event-img my-4"
@@ -144,7 +144,7 @@
 
         <div class="form-group col-6 my-3">
           <label for="date_start" class="fs-5 text-primary"
-            >Data rozpoczęcia</label
+            >Data rozpoczęcia *</label
           >
           <input
             class="form-control"
@@ -166,7 +166,7 @@
 
         <div class="form-group col-6 my-3">
           <label for="date_end" class="fs-5 text-primary"
-            >Data zakończenia</label
+            >Data zakończenia *</label
           >
           <input
             class="form-control"
@@ -192,7 +192,7 @@
           </div>
         </div>
 
-        <label for="category" class="fs-5 text-primary">Kategorie</label>
+        <label for="category" class="fs-5 text-primary">Kategoria *</label>
         <mat-radio-group
           class="example-radio-group"
           formControlName="category"
@@ -208,6 +208,28 @@
             </mat-radio-button>
           </div>
         </mat-radio-group>
+
+        <div class="form-group col-sm-12 my-4">
+          <label for="url" class="fs-5 text-primary">Link do wydarzenia</label>
+          <input
+            placeholder="http://"
+            class="form-control"
+            id="url"
+            formControlName="url"
+            value="{{ currentEvent.url }}"
+          />
+          <div
+            *ngIf="
+              url?.invalid &&
+              (url?.dirty || url?.touched)
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="url?.errors?.['pattern']">
+              Podaj poprawny link
+            </div>
+          </div>
+        </div>
 
         <h5 class="mt-5">
           W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę

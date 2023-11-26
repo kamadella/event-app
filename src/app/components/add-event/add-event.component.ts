@@ -59,7 +59,8 @@ export class AddEventComponent implements OnInit {
       lng: ['', [Validators.required]],
       place_name: ['', [Validators.required]],
       published: [''],
-      createdAt: ['']
+      createdAt: [''],
+      url: ['',  Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')],
     });
 
     this.initializeGeocoder();
@@ -127,6 +128,10 @@ export class AddEventComponent implements OnInit {
 
   get place_name() {
     return this.eventForm.get('place_name');
+  }
+
+  get url() {
+    return this.eventForm.get('url');
   }
 
   onImageSelected(event: any): void {

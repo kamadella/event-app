@@ -93,10 +93,18 @@
               {{ currentEvent.date_start | date : "dd.MM.yyyy HH:mm" }} -
               {{ currentEvent.date_end | date : "dd.MM.yyyy HH:mm" }}
             </p>
+
             <h3 class="fw-bolder mb-4 mt-5">Organizator</h3>
             <p class="fs-5 mb-4">
               <i class="bi bi-person me-2"></i>
               {{ currentEvent.organizator }}</p>
+              <div *ngIf="currentEvent.url">
+                <h3 class="fw-bolder mb-4 mt-5">Link do wydarzenia</h3>
+                <p class="fs-5 mb-4">
+                  <i class="bi bi-box-arrow-up-right me-3"></i>
+                  <a href="{{ currentEvent.url }}" target="_blank" rel="noopener noreferrer">Zobacz wydarzenie</a>
+                </p>
+              </div>
           </section>
         </div>
         <div

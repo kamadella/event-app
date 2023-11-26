@@ -64,7 +64,8 @@ export class EditEventComponent implements OnInit {
       lng: ['', [Validators.required]],
       place_name: ['', [Validators.required]],
       published: [''],
-      createdAt: ['']
+      createdAt: [''],
+      url: ['',  Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')],
     });
 
     this.route.params.subscribe((params) => (this.eventId = params['id']));
@@ -134,6 +135,9 @@ export class EditEventComponent implements OnInit {
   get tickets() {
     return this.eventForm.get('tickets');
   }
+  get url() {
+    return this.eventForm.get('url');
+  }
 
   getCurrentCategory(id: string): void {
     this.categoryService
@@ -182,7 +186,7 @@ export class EditEventComponent implements OnInit {
           lat: data.lat,
           lng: data.lng,
           place_name: data.place_name,
-
+          url: data.url,
         });
 
         this.getCurrentCategory(this.currentEvent.category!);
