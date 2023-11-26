@@ -81,7 +81,8 @@ export class SearchFilterComponent implements OnInit {
     const geocoderFilter = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
       mapboxgl: mapboxgl,
-      types: 'country,place,postcode,locality,neighborhood',
+      countries: 'pl',
+      types: 'place,postcode,locality,neighborhood',
     });
 
     geocoderFilter.addTo('#geocoderFilter');

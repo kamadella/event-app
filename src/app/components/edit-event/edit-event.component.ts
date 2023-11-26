@@ -87,6 +87,7 @@ export class EditEventComponent implements OnInit {
   initializeGeocoder() {
     const geocoder = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
+      countries: 'pl',
       mapboxgl: mapboxgl,
     });
     geocoder.addTo('#geocoder');
