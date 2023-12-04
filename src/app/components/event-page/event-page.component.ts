@@ -185,7 +185,7 @@ export class EventPageComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px', // Dostosuj szerokość do swoich potrzeb
+      width: '300px',
       data: messege,
     });
 
@@ -212,7 +212,10 @@ export class EventPageComponent implements OnInit {
   }
 
   ticketReservationDialog(e: Event) {
-    this.dialog.open(TicketComponent, { data: e });
+    this.dialog.open(TicketComponent, {
+      data: e,
+      width: '550px'
+     });
   }
 
   isActual(): boolean {
@@ -227,7 +230,9 @@ export class EventPageComponent implements OnInit {
   }
 
   openLoginDialog() {
-    this.dialog.open(LoginDialogComponent);
+    this.dialog.open(LoginDialogComponent, {
+      width: '500px',
+    });
   }
 
   openMap(): void {

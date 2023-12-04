@@ -44,7 +44,9 @@ export class EventCardComponent  {
   }
 
   openLoginDialog() {
-    this.dialog.open(LoginDialogComponent);
+    this.dialog.open(LoginDialogComponent, {
+      width: '500px',
+    });
   }
 
 }
