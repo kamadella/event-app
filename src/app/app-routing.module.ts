@@ -36,7 +36,6 @@ const routes: Routes = [
         { path: 'forgot-password', component: ForgotPasswordComponent },
         { path: 'verify-email-address', component: VerifyEmailComponent },
         { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-        { path: 'events/archive', component: EventsArchiveComponent },
         { path: 'contact', component: ContactComponent },
         { path: 'about', component: AboutComponent },
       ]
@@ -50,6 +49,8 @@ const routes: Routes = [
         { path: 'events', component: AdminEventsToPublishComponent, canActivate: [AdminGuard] },
         { path: 'event/edit/:id', component: EditEventComponent, canActivate: [AdminGuard] },
         { path: 'event/tickets/:id', component: TicketListComponent, canActivate: [AdminGuard] },
+        { path: 'events/archive', component: EventsArchiveComponent, canActivate: [AdminGuard] },
+
       ]
     },
 ];
