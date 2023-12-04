@@ -226,11 +226,17 @@ export class EventsListComponent implements OnInit {
   }
 
   openLoginDialog() {
-    this.dialog.open(LoginDialogComponent);
+    this.dialog.open(LoginDialogComponent, {
+      width: '500px',
+    });
   }
 
   isLoggedIn() {
     return this.authService.isLoggedIn;
+  }
+
+  isAdmin() {
+    return this.authService.isAdmin;
   }
 
 }

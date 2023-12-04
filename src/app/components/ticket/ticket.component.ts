@@ -45,7 +45,7 @@ export class TicketComponent implements OnInit {
           Validators.pattern('^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$'),
         ],
       ],
-      number: ['', [Validators.required]],
+      number: ['', [Validators.required, Validators.max(5)]],
       userId: [''],
       eventId: [''],
     });

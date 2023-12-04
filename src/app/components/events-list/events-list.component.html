@@ -69,13 +69,15 @@
     </div>
   </div>
 </section>
+<section *ngIf="isAdmin()">
+  <div class="container text-center px-5 my-5">
+    <button
+      class="btn btn-outline-primary"
+      type="button"
+      routerLink="/admin/events/archive"
+    >
+      Wydarzenia z przeszłości
+    </button>
+  </div>
+</section>
 
-<div class="container text-center px-5 my-5">
-  <button
-    class="btn btn-outline-primary"
-    type="button"
-    routerLink="/events/archive"
-  >
-    Wydarzenia z przeszłości
-  </button>
-</div>

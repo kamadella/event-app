@@ -51,6 +51,8 @@ export class AddCommentComponent  {
   }
 
   openLoginDialog() {
-    this.dialog.open(LoginDialogComponent);
+    this.dialog.open(LoginDialogComponent, {
+      width: '500px',
+    });
   }
 }

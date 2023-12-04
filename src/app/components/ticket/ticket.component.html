@@ -3,9 +3,7 @@
 </div>
 <form [formGroup]="ticketForm" (ngSubmit)="saveTicket()" novalidate>
   <div class="submit-form g-5 d-flex justify-content-center">
-    <div class="col-md-7">
       <div class="row g-3">
-
         <div class="form-group col-sm-12">
           <label for="title">Imię</label>
           <input
@@ -17,8 +15,8 @@
             formControlName="name"
           />
           <div
-          *ngIf="name?.invalid && (name?.dirty || name?.touched)"
-          class="invalid-feedback"
+            *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+            class="invalid-feedback"
           >
             <div *ngIf="name?.errors?.['required']">
               Podanie imienia jest wymagane
@@ -35,7 +33,6 @@
           </div>
         </div>
 
-
         <div class="form-group col-sm-12">
           <label for="title">Nazwisko</label>
           <input
@@ -47,8 +44,8 @@
             formControlName="surname"
           />
           <div
-          *ngIf="surname?.invalid && (surname?.dirty || surname?.touched)"
-          class="invalid-feedback"
+            *ngIf="surname?.invalid && (surname?.dirty || surname?.touched)"
+            class="invalid-feedback"
           >
             <div *ngIf="surname?.errors?.['required']">
               Podanie nazwiska jest wymagane
@@ -77,22 +74,33 @@
             [(ngModel)]="ticketForm.value.number"
             (ngModelChange)="onReservedTicketsChange()"
             min="1"
-            max = "{{event.ticketsLeft}}"
+            max="{{ event.ticketsLeft }}"
           />
           <div
-          *ngIf="number?.invalid && (number?.dirty || number?.touched)"
-          class="invalid-feedback"
+            *ngIf="number?.invalid && (number?.dirty || number?.touched)"
+            class="invalid-feedback"
           >
-            <div *ngIf="ticketsAvailabilityMessage" >{{ ticketsAvailabilityMessage }}</div>
+            <div *ngIf="ticketsAvailabilityMessage">
+              {{ ticketsAvailabilityMessage }}
+            </div>
             <div *ngIf="number?.value < 0" class="invalid-feedback">
               Nie można dodawać ujemnych biletów
+            </div>
+            <div *ngIf="number?.errors?.['max']">
+              <p>Maksymalna liczba biletów które można zarezerwowąc jednorazowo to 5</p>
             </div>
           </div>
         </div>
 
-<hr class="my-4">
-<button mat-dialog-close type="submit" class="btn btn-accent text-white btn-lg" [disabled]="!ticketForm.valid">
-  Zarezerwuj
-</button>
-</div>
-</div>
+        <hr class="my-4" />
+        <button
+          mat-dialog-close
+          type="submit"
+          class="btn btn-accent text-white btn-lg"
+          [disabled]="!ticketForm.valid"
+        >
+          Zarezerwuj
+        </button>
+      </div>
+    </div>
+</form>
