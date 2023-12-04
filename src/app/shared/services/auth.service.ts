@@ -7,7 +7,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage'; // Import AngularFireStorage
 import { MatDialog } from '@angular/material/dialog';
-import { AlertDialogComponent } from 'src/app/components/alert-dialog/alert-dialog.component';
+import { AlertDialogComponent } from 'src/app/components/dialogs/alert-dialog/alert-dialog.component';
 
 @Injectable({
   providedIn: 'root',

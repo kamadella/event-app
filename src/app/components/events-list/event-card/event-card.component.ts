@@ -3,7 +3,7 @@ import { Event } from 'src/app/models/event.model';
 import { Category } from 'src/app/models/category.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { LoginDialogComponent } from '../../login-dialog/login-dialog.component';
+import { LoginDialogComponent } from '../../dialogs/login-dialog/login-dialog.component';
 
 
 @Component({

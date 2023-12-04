@@ -31,7 +31,7 @@ export class MapComponent implements OnInit {
     setTimeout(() => {
       this.retrieveEvents();
       this.initializeMap();
-    }, 100);
+    }, 50);
   }
 
   initializeMap() {
@@ -46,6 +46,7 @@ export class MapComponent implements OnInit {
     this.map.addControl(
       new MapboxGeocoder({
         accessToken: environment.mapbox.accessToken,
+        countries: 'pl',
         mapboxgl: mapboxgl,
       })
     );

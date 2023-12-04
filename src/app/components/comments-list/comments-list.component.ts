@@ -5,7 +5,7 @@ import { Comment } from 'src/app/models/comment.model';
 import { User } from '../../shared/services/user';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from '../../shared/services/auth.service';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../dialogs/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 

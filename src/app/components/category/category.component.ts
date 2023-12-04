@@ -3,8 +3,8 @@ import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { EventService } from 'src/app/services/event.service';
 import { map } from 'rxjs/operators';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { ConfirmDialogComponent } from '../dialogs/confirm-dialog/confirm-dialog.component';
+import { AlertDialogComponent } from '../dialogs/alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EditCategoryDialogComponent } from './edit-category-dialog/edit-category-dialog.component';
 

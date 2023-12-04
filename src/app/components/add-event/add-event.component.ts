@@ -10,8 +10,9 @@ import { environment } from '../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ng2ImgMaxService } from 'ng2-img-max';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { ConfirmDialogComponent } from '../dialogs/confirm-dialog/confirm-dialog.component';
+import { AlertDialogComponent } from '../dialogs/alert-dialog/alert-dialog.component';
+import { ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-event',
@@ -30,6 +31,8 @@ export class AddEventComponent implements OnInit {
   selectedImageFile: File | null = null;
   addingEvent: boolean = false;
   imageURL: string = '';
+  minDate?: Date;
+  maxDate?: Date;
 
   constructor(
     private eventService: EventService,
@@ -43,9 +46,9 @@ export class AddEventComponent implements OnInit {
   ngOnInit(): void {
     this.retrieveCategory();
     this.eventForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000)]],
-      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), this.notOnlySpaces]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000), this.notOnlySpaces]],
+      organizator: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), this.notOnlySpaces]],
       date_start: ['', [Validators.required]],
       date_end: ['', [Validators.required]],
       category: ['', [Validators.required]],
@@ -56,15 +59,31 @@ export class AddEventComponent implements OnInit {
       lng: ['', [Validators.required]],
       place_name: ['', [Validators.required]],
       published: [''],
-      createdAt: ['']
+      createdAt: [''],
+      url: ['',  Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')],
     });
 
     this.initializeGeocoder();
+
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 2, 0, 1, 0, 0, 0); // 2 lata temu
+    this.maxDate = new Date(currentYear + 2, 11, 31, 23, 59, 59); // Za 2 lata
   }
+
+  // Funkcja walidacyjna, która sprawdza, czy ciąg znaków nie składa się tylko ze spacjii
+  notOnlySpaces: ValidatorFn = (control: AbstractControl) => {
+    if (!control.value || control.value.trim() === '') {
+      // Jeśli wartość jest pusta lub składa się tylko ze spacjii, zwracamy błąd
+      return { notOnlySpaces: true };
+    }
+    // W przeciwnym razie uważamy, że jest to poprawne
+    return null;
+  };
 
   initializeGeocoder() {
     const geocoder = new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
+      countries: 'pl',
       mapboxgl: mapboxgl,
     });
 
@@ -112,24 +131,39 @@ export class AddEventComponent implements OnInit {
     return this.eventForm.get('place_name');
   }
 
+  get url() {
+    return this.eventForm.get('url');
+  }
+
   onImageSelected(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
       const selectedImageFile = event.target.files[0];
 
+      // Sprawdź, czy plik jest obrazkiem
+    if (selectedImageFile.type.startsWith('image/')) {
+      // Kontynuuj przetwarzanie tylko dla plików obrazków
       this.selectedImageFile = selectedImageFile;
-      this.ng2ImgMaxService
-      .resizeImage(selectedImageFile, 900, 506) // 16x9 ratio for 900 width
-      .subscribe((result) => {
-        this.selectedImageFile = new File([result], selectedImageFile.name, { type: result.type });
-        console.log("skalowanie obrazu");
 
-      });
-      //previev zdjecia
+      this.ng2ImgMaxService
+        .resizeImage(selectedImageFile, 900, 506)
+        .subscribe((result) => {
+          this.selectedImageFile = new File([result], selectedImageFile.name, { type: result.type });
+          console.log("skalowanie obrazu");
+        });
+
+      // Preview zdjęcia
       const reader = new FileReader();
       reader.onload = () => {
         this.imageURL = reader.result as string;
-      }
+      };
       reader.readAsDataURL(selectedImageFile);
+    } else {
+      // Wyświetl komunikat w przypadku nieprawidłowego formatu pliku
+      this.dialog.open(AlertDialogComponent, {
+        width: '400px',
+        data: 'Wybrany plik nie jest obrazkiem.'
+      });
+    }
     }
   }
 
@@ -196,5 +230,14 @@ export class AddEventComponent implements OnInit {
     const today = new Date();
     const dateEnd = this.eventForm.get('date_end')?.value;
     return new Date(dateEnd) < today;
+  }
+
+  isDateInRange(date: Date): boolean {
+    const dateTyped = new Date(date);
+    if(this.minDate &&  this.maxDate){
+      return dateTyped >= this.minDate && dateTyped <= this.maxDate;
+    }
+    else
+      return false;
   }
 }

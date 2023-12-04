@@ -15,7 +15,7 @@
     <div class="col-md-8">
       <div class="row g-3">
         <div class="form-group col-sm-12 my-3">
-          <label for="name" class="fs-5 text-primary">Nazwa</label>
+          <label for="name" class="fs-5 text-primary">Nazwa *</label>
           <input
             placeholder="Przykładowa nazwa"
             type="text"
@@ -37,11 +37,14 @@
             <div *ngIf="name?.errors?.['maxlength']">
               Nazwa nie może być dłuższa niż 50 znaków
             </div>
+            <div *ngIf="name?.errors?.['notOnlySpaces']">
+              Nazwa nie może składać się tylko ze spacjii
+            </div>
           </div>
         </div>
 
         <div class="form-group col-sm-12 my-3">
-          <label for="description" class="fs-5 text-primary">Opis</label>
+          <label for="description" class="fs-5 text-primary">Opis *</label>
           <textarea
             placeholder="dokładny opis wydarzenia"
             class="form-control"
@@ -65,18 +68,21 @@
             <div *ngIf="description?.errors?.['maxlength']">
               Opis nie może być dłuższa niż 2000 znaków
             </div>
+            <div *ngIf="description?.errors?.['notOnlySpaces']">
+              Opis nie może składać się tylko ze spacjii
+            </div>
           </div>
         </div>
 
         <div class="form-group col-sm-12 my-3">
           <label for="Lokalizacja" class="fs-5 text-primary" required
-            >Lokalizacja</label
+            >Lokalizacja *</label
           >
           <div id="geocoder" class="geocoder-add-event p-0 mt-0"></div>
         </div>
 
         <div class="form-group col-sm-12 my-4">
-          <label for="organizator" class="fs-5 text-primary">Organizator</label>
+          <label for="organizator" class="fs-5 text-primary">Organizator *</label>
           <input
             placeholder="Prezydent miasta"
             class="form-control"
@@ -100,12 +106,16 @@
             <div *ngIf="organizator?.errors?.['maxlength']">
               Nazwa organizatora nie może być dłuższa niż 50 znaków
             </div>
+            <div *ngIf="organizator?.errors?.['notOnlySpaces']">
+              Nazwa organizatora nie może składać się tylko ze spacjii
+            </div>
           </div>
         </div>
 
+
         <!-- Dodaj input do przesyłania obrazka -->
         <div class="form-group col-sm-12 my-3">
-          <label for="img" class="fs-5 text-primary">Zdjęcie wydarzenia</label>
+          <label for="img" class="fs-5 text-primary">Zdjęcie wydarzenia *</label>
           <div class="d-flex justify-content-center align-items-centerm">
             <div
               class="imagePreview ratio ratio-16x9 event-img my-4"
@@ -127,7 +137,7 @@
 
         <div class="form-group col-sm-6 my-3">
           <label for="date_start" class="fs-5 text-primary"
-            >Data i godzina rozpoczęcia</label
+            >Data i godzina rozpoczęcia *</label
           >
           <input
             class="form-control"
@@ -136,19 +146,20 @@
             required
             formControlName="date_start"
           />
-          <div
-            *ngIf="
-              date_start?.invalid && (date_start?.dirty || date_start?.touched)
-            "
-            class="invalid-feedback"
-          >
-            <p>Podano nieprawidłową datę początkową</p>
+          <div *ngIf="date_start?.dirty || date_start?.touched">
+            <div *ngIf="date_start?.invalid" class="invalid-feedback">
+              <p>Podano nieprawidłową datę poczatkową</p>
+            </div>
+            <div *ngIf="!isDateInRange(date_start?.value)" class="invalid-feedback">
+              <p>Data powinna być między {{ minDate | date: 'dd-MM-yyyy' }} a {{ maxDate | date: 'dd-MM-yyyy' }}
+              </p>
+            </div>
           </div>
         </div>
 
         <div class="form-group col-sm-6 my-3">
           <label for="date_end" class="fs-5 text-primary"
-            >Data i godzina zakończenia</label
+            >Data i godzina zakończenia*</label
           >
           <input
             class="form-control"
@@ -170,9 +181,13 @@
             <div *ngIf="isDateEndInvalid()" class="invalid-feedback">
               <p>Data zakończenia nie może być z przeszlości</p>
             </div>
+            <div *ngIf="!isDateInRange(date_end?.value)" class="invalid-feedback">
+              <p>Data powinna być między {{ minDate | date: 'dd-MM-yyyy' }} a {{ maxDate | date: 'dd-MM-yyyy' }}
+              </p>
+            </div>
           </div>
         </div>
-        <label for="category" class="fs-5 text-primary">Kategorie</label>
+        <label for="category" class="fs-5 text-primary">Kategoria *</label>
         <mat-radio-group
           class="example-radio-group"
           formControlName="category"
@@ -188,6 +203,28 @@
             </mat-radio-button>
           </div>
         </mat-radio-group>
+
+
+        <div class="form-group col-sm-12 my-4">
+          <label for="url" class="fs-5 text-primary">Link do wydarzenia</label>
+          <input
+            placeholder="http://"
+            class="form-control"
+            id="url"
+            formControlName="url"
+          />
+          <div
+            *ngIf="
+              url?.invalid &&
+              (url?.dirty || url?.touched)
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="url?.errors?.['pattern']">
+              Podaj poprawny link
+            </div>
+          </div>
+        </div>
 
         <h5 class="mt-5">
           W przypadku wydarzenia z ograniczoną ilością miejsc podaj liczbę
