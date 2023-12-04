@@ -206,21 +206,22 @@
 
 
         <div class="form-group col-sm-12 my-4">
-          <label for="url" class="fs-5 text-primary">Link do wydarzenia</label>
+          <label for="link" class="fs-5 text-primary">Link do wydarzenia</label>
           <input
             placeholder="http://"
             class="form-control"
-            id="url"
-            formControlName="url"
+            id="link"
+            formControlName="link"
+            value=""
           />
           <div
             *ngIf="
-              url?.invalid &&
-              (url?.dirty || url?.touched)
+              link?.invalid &&
+              (link?.dirty || link?.touched)
             "
             class="invalid-feedback"
           >
-            <div *ngIf="url?.errors?.['pattern']">
+            <div *ngIf="link?.errors?.['pattern']">
               Podaj poprawny link
             </div>
           </div>
@@ -239,6 +240,8 @@
             id="tickets"
             formControlName="tickets"
             min="0"
+            placeholder="0"
+
           />
           <div
             *ngIf="tickets?.invalid && (tickets?.dirty || tickets?.touched)"
@@ -250,6 +253,34 @@
             <div *ngIf="tickets?.errors?.['max']">
               Maksymalna liczba biletów to 100 000
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-12 mt-3">
+        <label for="price" class="fs-5 text-primary">Cena biletu</label>
+        <input
+          type="number"
+          class="form-control"
+          value="0,00"
+          id="price"
+          formControlName="price"
+          min="0.00"
+          step="0.01"
+          placeholder="0.00 PLN"
+
+        />
+        <div
+          *ngIf="price?.invalid && (price?.dirty || price?.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="price?.value < 0">
+            Cena nie może być ujemn
+          </div>
+          <div *ngIf="price?.errors?.['max']">
+            Maksymalna cena biletu to 10 000 PLN
+          </div>
+          <div *ngIf="price?.errors?.['pattern']">
+            Cena powinna mieć 2 miejsca po przecinku
           </div>
         </div>
       </div>

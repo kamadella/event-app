@@ -14,5 +14,6 @@ export class Event {
   ticketsLeft?: number;
   published?: boolean;
   createdAt?: Date;
-  url?: string;
+  link?: string;
+  price?: number;
 }

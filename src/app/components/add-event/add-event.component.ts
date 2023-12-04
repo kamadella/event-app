@@ -60,7 +60,8 @@ export class AddEventComponent implements OnInit {
       place_name: ['', [Validators.required]],
       published: [''],
       createdAt: [''],
-      url: ['',  Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')],
+      link: ['',  [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+      price: ['', [Validators.max(10000), Validators.pattern('[0-9]+(\\.[0-9][0-9]?)?')]],
     });
 
     this.initializeGeocoder();
@@ -106,33 +107,29 @@ export class AddEventComponent implements OnInit {
   get name() {
     return this.eventForm.get('name');
   }
-
   get description() {
     return this.eventForm.get('description');
   }
-
   get tickets() {
     return this.eventForm.get('tickets');
   }
-
   get organizator() {
     return this.eventForm.get('organizator');
   }
-
   get date_start() {
     return this.eventForm.get('date_start');
   }
-
   get date_end() {
     return this.eventForm.get('date_end');
   }
-
   get place_name() {
     return this.eventForm.get('place_name');
   }
-
-  get url() {
-    return this.eventForm.get('url');
+  get link() {
+    return this.eventForm.get('link');
+  }
+  get price() {
+    return this.eventForm.get('price');
   }
 
   onImageSelected(event: any): void {
@@ -172,6 +169,10 @@ export class AddEventComponent implements OnInit {
 
     if (this.eventForm.value.tickets == '' || this.eventForm.value.tickets == null) {
       this.eventForm.value.tickets = 0;
+    }
+
+    if (this.eventForm.value.price == '' || this.eventForm.value.price == null) {
+      this.eventForm.value.price = 0.00;
     }
 
     this.eventForm.value.ticketsLeft = this.eventForm.value.tickets;

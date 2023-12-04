@@ -144,7 +144,7 @@
 
         <div class="form-group col-6 my-3">
           <label for="date_start" class="fs-5 text-primary"
-            >Data rozpoczęcia *</label
+            >Data i godzina rozpoczęcia *</label
           >
           <input
             class="form-control"
@@ -154,19 +154,20 @@
             formControlName="date_start"
             value="{{ currentEvent.date_start }}"
           />
-          <div
-            *ngIf="
-              date_start?.invalid && (date_start?.dirty || date_start?.touched)
-            "
-            class="invalid-feedback"
-          >
-            <p>Podano nieprawidłową datę początkową</p>
+          <div *ngIf="date_start?.dirty || date_start?.touched">
+            <div *ngIf="date_start?.invalid" class="invalid-feedback">
+              <p>Podano nieprawidłową datę poczatkową</p>
+            </div>
+            <div *ngIf="!isDateInRange(date_start?.value)" class="invalid-feedback">
+              <p>Data powinna być między {{ minDate | date: 'dd-MM-yyyy' }} a {{ maxDate | date: 'dd-MM-yyyy' }}
+              </p>
+            </div>
           </div>
         </div>
 
         <div class="form-group col-6 my-3">
           <label for="date_end" class="fs-5 text-primary"
-            >Data zakończenia *</label
+            >Data i godzina zakończenia *</label
           >
           <input
             class="form-control"
@@ -189,6 +190,10 @@
             <div *ngIf="isDateEndInvalid()" class="invalid-feedback">
               <p>Data zakończenia nie może być z przeszlości</p>
             </div>
+            <div *ngIf="!isDateInRange(date_end?.value)" class="invalid-feedback">
+              <p>Data powinna być między {{ minDate | date: 'dd-MM-yyyy' }} a {{ maxDate | date: 'dd-MM-yyyy' }}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -210,22 +215,22 @@
         </mat-radio-group>
 
         <div class="form-group col-sm-12 my-4">
-          <label for="url" class="fs-5 text-primary">Link do wydarzenia</label>
+          <label for="link" class="fs-5 text-primary">Link do wydarzenia</label>
           <input
             placeholder="http://"
             class="form-control"
-            id="url"
-            formControlName="url"
-            value="{{ currentEvent.url }}"
+            id="link"
+            formControlName="link"
+            value="{{ currentEvent.link }}"
           />
           <div
             *ngIf="
-              url?.invalid &&
-              (url?.dirty || url?.touched)
+              link?.invalid &&
+              (link?.dirty || link?.touched)
             "
             class="invalid-feedback"
           >
-            <div *ngIf="url?.errors?.['pattern']">
+            <div *ngIf="link?.errors?.['pattern']">
               Podaj poprawny link
             </div>
           </div>
@@ -255,6 +260,32 @@
             </div>
             <div *ngIf="tickets?.errors?.['max']">
               Maksymalna liczba biletów to 100 000
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-12 mt-3">
+          <label for="price" class="fs-5 text-primary">Cena biletu</label>
+          <input
+            type="number"
+            class="form-control"
+            value="0,00"
+            id="price"
+            formControlName="price"
+            min="0.00"
+            step="0.01"
+          />
+          <div
+            *ngIf="price?.invalid && (price?.dirty || price?.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="price?.value < 0">
+              Cena nie może być ujemn
+            </div>
+            <div *ngIf="price?.errors?.['max']">
+              Maksymalna cena biletu to 10 000 PLN
+            </div>
+            <div *ngIf="price?.errors?.['pattern']">
+              Cena powinna mieć 2 miejsca po przecinku
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Event } from 'src/app/models/event.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
@@ -39,6 +39,8 @@ export class EditEventComponent implements OnInit {
   lng: number = 23.1687;
   selectedImageFile: File | null = null;
   imageURL: string = '';
+  minDate?: Date;
+  maxDate?: Date;
 
   constructor(
     private route: ActivatedRoute,
@@ -65,7 +67,8 @@ export class EditEventComponent implements OnInit {
       place_name: ['', [Validators.required]],
       published: [''],
       createdAt: [''],
-      url: ['',  Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')],
+      link: ['',  [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+      price: ['', [Validators.max(10000), Validators.pattern('[0-9]+(\\.[0-9][0-9]?)?')]],
     });
 
     this.route.params.subscribe((params) => (this.eventId = params['id']));
@@ -136,9 +139,13 @@ export class EditEventComponent implements OnInit {
   get tickets() {
     return this.eventForm.get('tickets');
   }
-  get url() {
-    return this.eventForm.get('url');
+  get link() {
+    return this.eventForm.get('link');
   }
+  get price() {
+    return this.eventForm.get('price');
+  }
+
 
   getCurrentCategory(id: string): void {
     this.categoryService
@@ -187,7 +194,9 @@ export class EditEventComponent implements OnInit {
           lat: data.lat,
           lng: data.lng,
           place_name: data.place_name,
-          url: data.url,
+          link: data.link,
+          price: data.price,
+          createdAt : data.createdAt,
         });
 
         this.getCurrentCategory(this.currentEvent.category!);
@@ -263,5 +272,14 @@ export class EditEventComponent implements OnInit {
 
     const dateEnd = this.eventForm.get('date_end')?.value;
     return new Date(dateEnd) < today;
+  }
+
+  isDateInRange(date: Date): boolean {
+    const dateTyped = new Date(date);
+    if(this.minDate &&  this.maxDate){
+      return dateTyped >= this.minDate && dateTyped <= this.maxDate;
+    }
+    else
+      return false;
   }
 }
