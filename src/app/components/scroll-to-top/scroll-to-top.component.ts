@@ -14,8 +14,7 @@ export class ScrollToTopComponent implements OnInit {
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    // Check the scroll position and toggle the class
-    this.showScrollTop = window.scrollY > 100; // You can adjust the threshold as needed
+    this.showScrollTop = window.scrollY > 100;
   }
 
   scrollToTop(): void {

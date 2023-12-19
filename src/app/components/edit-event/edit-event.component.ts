@@ -75,6 +75,9 @@ export class EditEventComponent implements OnInit {
     this.getCurrentEvent(this.eventId);
     this.retrieveCategory();
     this.initializeGeocoder();
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 2, 0, 1, 0, 0, 0); // 2 lata temu
+    this.maxDate = new Date(currentYear + 2, 11, 31, 23, 59, 59); // Za 2 lata
   }
 
     // Funkcja walidacyjna, która sprawdza, czy ciąg znaków nie składa się tylko ze spacjii
