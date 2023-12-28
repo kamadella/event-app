@@ -1,27 +1,11 @@
 # EventApp
+The main goal of the project is to develop a web application for searching cultural and entertainment events in the nearby area. Instead of browsing multiple sources for interesting events, users have access to a personalized platform that collects and presents information in an organized and accessible manner. By applying advanced filtering algorithms, the application provides users with events that best match their individual interests, preferences, and current locations. The application has been developed using modern technologies such as Angular and Firebase. 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
+![image](https://github.com/kamadella/event-app/assets/76974781/065d5bf7-7bb8-4e91-b6ad-56c278b20fb5)
+
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
