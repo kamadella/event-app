@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminEventsToPublishComponent } from './admin-events-to-publish.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from 'src/environments/environment'
 
 describe('AdminEventsToPublishComponent', () => {
   let component: AdminEventsToPublishComponent;
@@ -8,7 +11,11 @@ describe('AdminEventsToPublishComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminEventsToPublishComponent ]
+      declarations: [ AdminEventsToPublishComponent ],
+      imports: [
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule,
+      ],
     })
     .compileComponents();
 

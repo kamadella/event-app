@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserNavbarComponent } from './user-navbar.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from 'src/environments/environment';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 describe('UserNavbarComponent', () => {
   let component: UserNavbarComponent;
@@ -8,7 +13,12 @@ describe('UserNavbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserNavbarComponent ]
+      declarations: [ UserNavbarComponent ],
+      imports: [
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule,
+        MatDialogModule,
+      ],
     })
     .compileComponents();
 
