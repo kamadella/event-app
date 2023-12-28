@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
 import { MatDialogModule } from '@angular/material/dialog';
 import { of } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 const mockActivatedRoute = {
   params: of({ category: 'test-category' }),
@@ -48,11 +49,18 @@ const mockCategories = [
   { id: '3', name: 'art' },
 ];
 
+const mockUserData = {
+  likedEvents: ['1', '3'], // Assuming the user has liked Event 1 and Event 3
+};
+
 describe('EventsListComponent', () => {
   let component: EventsListComponent;
   let fixture: ComponentFixture<EventsListComponent>;
 
   beforeEach(async () => {
+    let authServiceSpy = jasmine.createSpyObj('AuthService', [], {
+      userData: mockUserData,
+    });
     await TestBed.configureTestingModule({
       declarations: [EventsListComponent],
       imports: [
@@ -60,13 +68,16 @@ describe('EventsListComponent', () => {
         AngularFirestoreModule,
         MatDialogModule,
       ],
-      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: AuthService, useValue: authServiceSpy },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EventsListComponent);
     component = fixture.componentInstance;
-    component.events = mockEvents; // Set the mock events
-    component.categories = mockCategories; // Set the mock categories
+    component.events = mockEvents;
+    component.categories = mockCategories;
     fixture.detectChanges();
   });
 
@@ -186,4 +197,40 @@ describe('EventsListComponent', () => {
       fail('filteredEventList is undefined');
     }
   });
+
+  it('should show only liked events when toggleShowOnlyLikedEvents is called', () => {
+    component.filteredEventList = [...component.events!];
+
+    component.toggleShowOnlyLikedEvents();
+    fixture.detectChanges();
+
+    expect(component.filteredEventList.length).toBe(2);
+
+    const likedEventIds = mockUserData.likedEvents;
+    const allLiked = component.filteredEventList.every(event => likedEventIds.includes(event.id ?? ''));
+    expect(allLiked).toBeTrue();
+    expect(component.filteredEventList.some(event => event.id === '1')).toBeTrue();
+    expect(component.filteredEventList.some(event => event.id === '3')).toBeTrue();
+  });
+
+  it('should display no events when filters match no events', () => {
+    const noResultFilter = {
+      selectedCategories: [],
+      nameFilter: 'NonExistingEvent',
+      dateStartFilter: null,
+      dateEndFilter: null,
+      cityBbox: undefined,
+      distanceFilter: 0,
+    };
+    component.handleFilterChange(noResultFilter);
+    fixture.detectChanges();
+    expect(component.filteredEventList!.length).toBe(0);
+  });
+
+  it('should handle invalid category IDs gracefully', () => {
+    component.filterEventsByCategory('invalid-category-id');
+    fixture.detectChanges();
+    expect(component.filteredEventList?.length).toBe(0);
+  });
+
 });
