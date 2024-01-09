@@ -30,13 +30,13 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 export class SearchFilterComponent implements OnInit {
   @Output() filterChanged = new EventEmitter<any>();
 
-  categories!: Category[]; // tu przechowuje wszystki kategorie
+  categories!: Category[];
 
   nameFilter: string = '';
   distanceFilter: number = 0;
   dateStartFilter: Date | null = new Date();
   dateEndFilter: Date | null = new Date();
-  selectedCategoriesIndexes: number[] = []; // Tablica do przechowywania zaznaczonych indeksów kategorii
+  selectedCategoriesIndexes: number[] = [];
   cityBbox?: number[];
 
   map: mapboxgl.Map | undefined;
@@ -71,7 +71,6 @@ export class SearchFilterComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // Opóźnij inicjalizację mapy, aby Angular miał więcej czasu
     setTimeout(() => {
       this.initializeGeocoder();
     }, 50);
@@ -87,7 +86,6 @@ export class SearchFilterComponent implements OnInit {
 
     geocoderFilter.addTo('#geocoderFilter');
 
-    // Add geocoder result to container.
     geocoderFilter.on('result', (e) => {
       this.cityBbox = e.result.bbox;
     });
@@ -136,7 +134,6 @@ export class SearchFilterComponent implements OnInit {
   }
 
   CleanFilter() {
-    // Przywróć filtrowaną listę do pierwotnej listy wydarzeń
     this.nameFilter = '';
     this.dateStartFilter = null;
     this.dateEndFilter = null;
@@ -148,10 +145,9 @@ export class SearchFilterComponent implements OnInit {
       '.mapboxgl-ctrl-geocoder input'
     );
     if (geocoderInput instanceof HTMLInputElement) {
-      geocoderInput.value = ''; // Wyczyść input geokodera
+      geocoderInput.value = '';
     }
 
-    // Emituj zdarzenie, że filtry zostały wyczyszczone
     this.filterChanged.emit({
       nameFilter: '',
       distanceFilter: 0,
@@ -161,26 +157,20 @@ export class SearchFilterComponent implements OnInit {
       cityBbox: undefined,
       isFiltersCleared: true,
     });
-    // Przenieś do /events/list po wyczyszczeniu filtrów
     this.router.navigate(['/events/list']);
   }
 
-  // Metoda do obsługi zaznaczania i odznaczania kategorii
-  //Ta metoda jest wywoływana, gdy użytkownik zmienia stan checkboxa poprzez kliknięcie.
+
   toggleCategory(categoryIndex: number) {
     const selectedIndex = this.selectedCategoriesIndexes.indexOf(categoryIndex);
 
     if (selectedIndex === -1) {
-      //Kategoria nie jest w tablicy, dodaj ją
       this.selectedCategoriesIndexes.push(categoryIndex);
     } else {
-      //Kategoria jest już w tablicy, usuń ją
       this.selectedCategoriesIndexes.splice(selectedIndex, 1);
     }
   }
 
-  //sprawdza, czy dany indeks kategorii znajduje się w tablicy
-  //jest po to by odznaczało przy czyszczeniu filtrów
   isSelectedCategory(index: number): boolean {
     return this.selectedCategoriesIndexes.includes(index);
   }

@@ -35,7 +35,7 @@ export class SearchFilterArchiveComponent implements OnInit {
   distanceFilter: number = 0;
   dateStartFilter: Date | null = new Date();
   dateEndFilter: Date | null = new Date();
-  selectedCategoriesIndexes: number[] = []; // Tablica do przechowywania zaznaczonych indeksów kategorii
+  selectedCategoriesIndexes: number[] = [];
   cityBbox?: number[];
 
   map: mapboxgl.Map | undefined;
@@ -67,7 +67,6 @@ export class SearchFilterArchiveComponent implements OnInit {
 
     geocoderFilter.addTo('#geocoderFilterArchive');
 
-    // Add geocoder result to container.
     geocoderFilter.on('result', (e) => {
       this.cityBbox = e.result.bbox;
     });
@@ -104,7 +103,6 @@ export class SearchFilterArchiveComponent implements OnInit {
   }
 
   CleanFilter() {
-      // Przywróć filtrowaną listę do pierwotnej listy wydarzeń
     this.nameFilter = '';
     this.dateStartFilter = null;
     this.dateEndFilter = null;
@@ -116,10 +114,9 @@ export class SearchFilterArchiveComponent implements OnInit {
       '.mapboxgl-ctrl-geocoder input'
     );
     if (geocoderInput instanceof HTMLInputElement) {
-      geocoderInput.value = ''; // Wyczyść input geokodera
+      geocoderInput.value = '';
     }
 
-    // Emituj zdarzenie, że filtry zostały wyczyszczone
     this.filterChanged.emit({
       nameFilter: '',
       distanceFilter: 0,
@@ -131,22 +128,18 @@ export class SearchFilterArchiveComponent implements OnInit {
     });
   }
 
-  // Metoda do obsługi zaznaczania i odznaczania kategorii
-  //Ta metoda jest wywoływana, gdy użytkownik zmienia stan checkboxa poprzez kliknięcie.
+
   toggleCategory(categoryIndex: number) {
     const selectedIndex = this.selectedCategoriesIndexes.indexOf(categoryIndex);
 
     if (selectedIndex === -1) {
-      //Kategoria nie jest w tablicy, dodaj ją
       this.selectedCategoriesIndexes.push(categoryIndex);
     } else {
-      //Kategoria jest już w tablicy, usuń ją
       this.selectedCategoriesIndexes.splice(selectedIndex, 1);
     }
   }
 
-  //sprawdza, czy dany indeks kategorii znajduje się w tablicy
-  //jest po to by odznaczało przy czyszczeniu filtrów
+
   isSelectedCategory(index: number): boolean {
     return this.selectedCategoriesIndexes.includes(index);
   }

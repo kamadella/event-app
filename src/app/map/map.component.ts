@@ -27,7 +27,6 @@ export class MapComponent implements OnInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    // Opóźnij inicjalizację mapy, aby Angular miał więcej czasu
     setTimeout(() => {
       this.retrieveEvents();
       this.initializeMap();
@@ -69,20 +68,17 @@ export class MapComponent implements OnInit {
     this.events
       ?.filter((e) => e.lng !== undefined && e.lat !== undefined)
       .forEach((e) => {
-        // create MapBox Marker
         const marker = new mapboxgl.Marker()
           .setLngLat([e.lng!, e.lat!])
           .addTo(this.map!);
-        // use GetElement to get HTML Element from marker and add event
         marker.getElement().addEventListener('click', () => {
-          //this.createPopUp(e);
           this.openDialog(e);
         });
       });
   }
 
   openDialog(event: Event) {
-    const dialogRef = this.dialog.open(MapDialogContentComponent, {
+    this.dialog.open(MapDialogContentComponent, {
       width: '500px',
       data: event,
     });
@@ -110,33 +106,6 @@ export class MapComponent implements OnInit {
     this.map!.flyTo({
       center: [event.lng!, event.lat!],
       zoom: 13,
-    });
-  }
-
-  createPopUp(event: Event) {
-    const popUps = document.getElementsByClassName('mapboxgl-popup');
-    /** Check if there is already a popup on the map and if so, remove it */
-    if (popUps[0]) popUps[0].remove();
-
-    const popup = new mapboxgl.Popup({ closeOnClick: true })
-      .setLngLat([event.lng!, event.lat!])
-      .setHTML(
-        `
-
-      <button class="btn-open-dialog btn btn-primary">Informacje</button>
-    `
-      )
-      .addTo(this.map!);
-
-    // Get the popup's content element
-    const popupContent = popup.getElement();
-
-    // Attach a click event listener to the button using event delegation
-    popupContent.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (target.classList.contains('btn-open-dialog')) {
-        this.openDialog(event);
-      }
     });
   }
 }

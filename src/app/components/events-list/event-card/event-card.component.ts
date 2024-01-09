@@ -22,7 +22,6 @@ export class EventCardComponent  {
 
 
   isEventLiked(): boolean {
-    // Replace this logic with your actual implementation
     return this.authService.isEventLiked(this.event.id!);
   }
 

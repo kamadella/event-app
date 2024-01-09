@@ -33,7 +33,6 @@ export class EventsListComponent implements OnInit {
   ngOnInit(): void {
     this.retrieveEvents();
     this.retrieveCategories();
-    // Odczytaj parametr category z adresu URL i aktualizuj listę wydarzeń
     this.route.params.subscribe((params) => {
       const categoryId = params['category'];
       if (categoryId) {
@@ -57,7 +56,6 @@ export class EventsListComponent implements OnInit {
           }))
         ),
         map((data) => {
-          // Sortowanie po dacie rozpoczęcia
           const sortedEvents = data.sort((a, b) => {
             const dateA = a.date_start ? new Date(a.date_start) : null;
             const dateB = b.date_start ? new Date(b.date_start) : null;
@@ -75,7 +73,6 @@ export class EventsListComponent implements OnInit {
       .subscribe((data) => {
         this.events = data;
         this.filteredEventList = this.events;
-        // Dodaj to tu, aby filtrowanie rozpoczęło się po wczytaniu danych
         this.route.params.subscribe((params) => {
           const categoryId = params['category'];
           if (categoryId) {
@@ -105,7 +102,6 @@ export class EventsListComponent implements OnInit {
   }
 
   filterEventsByCategory(categoryId: string): void {
-    // Filtrowanie wydarzeń po kategorii
     this.filteredEventList = this.events?.filter(
       (event) => event.category === categoryId
     );
@@ -119,25 +115,21 @@ export class EventsListComponent implements OnInit {
   }
 
   calculateBbox(cityBbox: number[], distanceFilter: number) {
-    const R = 6371; // Średnica Ziemi w kilometrach
-    const latPerKm = 1 / (R * (Math.PI / 180)); // Przybliżona liczba stopni szerokości na jeden kilometr
-    const lonPerKm = latPerKm / Math.cos(cityBbox[1] * (Math.PI / 180)); // Przybliżona liczba stopni długości na jeden kilometr
+    const R = 6371;
+    const latPerKm = 1 / (R * (Math.PI / 180));
+    const lonPerKm = latPerKm / Math.cos(cityBbox[1] * (Math.PI / 180));
 
-    // Obliczasz nowe współrzędne bbox z uwzględnieniem odległości
     const newMinLon = cityBbox[0] - lonPerKm * distanceFilter;
     const newMinLat = cityBbox[1] - latPerKm * distanceFilter;
     const newMaxLon = cityBbox[2] + lonPerKm * distanceFilter;
     const newMaxLat = cityBbox[3] + latPerKm * distanceFilter;
 
-    //cityBbox = [newMinLon, newMinLat, newMaxLon, newMaxLat];
     return [newMinLon, newMinLat, newMaxLon, newMaxLat];
   }
 
-  // Metoda obsługująca zmiany filtrów z komponentu SearchFilterComponent
   handleFilterChange(filters: any) {
-    // Logika filtrowania
     if (filters.isFiltersCleared) {
-      this.filteredEventList = this.events; // Przywróć pierwotny stan, jeśli filtry są puste
+      this.filteredEventList = this.events;
       if(this.isShowOnlyLikedEventsClicked){
         this.showOnlyLikedEvents()
       }
@@ -174,7 +166,7 @@ export class EventsListComponent implements OnInit {
         ?.toLowerCase()
         .includes(filters.nameFilter.toLowerCase());
 
-      let isInsideBbox = true; // Domyślnie załóż, że punkt jest wewnątrz bbox
+      let isInsideBbox = true;
 
       if (filters.cityBbox && event.lng && event.lat) {
         const isPointInsideBbox =
@@ -183,7 +175,7 @@ export class EventsListComponent implements OnInit {
           event.lng <= filters.cityBbox[2] &&
           event.lat <= filters.cityBbox[3];
 
-        isInsideBbox = isPointInsideBbox; // Ustaw wartość na podstawie sprawdzenia punktu w bbox
+        isInsideBbox = isPointInsideBbox;
       }
 
 
@@ -215,7 +207,6 @@ export class EventsListComponent implements OnInit {
         console.log(this.authService.userData.likedEvents);
         const likedEvents = this.authService.userData.likedEvents;
         this.filteredEventList = this.filteredEventList!.filter((event) => {
-          // Sprawdź, czy aktualne wydarzenie jest na liście polubionych
           return likedEvents.includes(event.id);
         });
       }

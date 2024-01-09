@@ -29,7 +29,7 @@ export class EditEventComponent implements OnInit {
     place_name: '',
   };
   reservedTickets: number = 0;
-  previousImage: string = ''; // Nazwa lub ścieżka poprzedniego zdjęcia
+  previousImage: string = '';
   currentCategory: Category = {};
   categories?: Category[];
 
@@ -76,17 +76,14 @@ export class EditEventComponent implements OnInit {
     this.retrieveCategory();
     this.initializeGeocoder();
     const currentYear = new Date().getFullYear();
-    this.minDate = new Date(currentYear - 2, 0, 1, 0, 0, 0); // 2 lata temu
-    this.maxDate = new Date(currentYear + 2, 11, 31, 23, 59, 59); // Za 2 lata
+    this.minDate = new Date(currentYear - 2, 0, 1, 0, 0, 0);
+    this.maxDate = new Date(currentYear + 2, 11, 31, 23, 59, 59);
   }
 
-    // Funkcja walidacyjna, która sprawdza, czy ciąg znaków nie składa się tylko ze spacjii
     notOnlySpaces: ValidatorFn = (control: AbstractControl) => {
       if (!control.value || control.value.trim() === '') {
-        // Jeśli wartość jest pusta lub składa się tylko ze spacjii, zwracamy błąd
         return { notOnlySpaces: true };
       }
-      // W przeciwnym razie uważamy, że jest to poprawne
       return null;
     };
 
@@ -98,7 +95,6 @@ export class EditEventComponent implements OnInit {
     });
     geocoder.addTo('#geocoder');
 
-    // Add geocoder result to container.
     geocoder.on('result', (e) => {
       var latitude = e.result.center[1];
       var longitude = e.result.center[0];
@@ -111,7 +107,6 @@ export class EditEventComponent implements OnInit {
       });
     });
 
-    // Clear results container when search is cleared.
     geocoder.on('clear', () => {
       this.eventForm.patchValue({
         lat: this.previousLocalization.lat,
@@ -229,9 +224,8 @@ export class EditEventComponent implements OnInit {
     this.eventForm.patchValue({
       published: false,
       ticketsLeft: newTicketsLeft,
-    }); // Ustaw published na false
+    });
 
-    // Zamień znaki nowej linii w opisie na znaczniki HTML <br>
     this.eventForm.value.description = this.eventForm.value.description.replace(/\n/g, '<br>');
 
     if (this.currentEvent.id) {
@@ -243,7 +237,7 @@ export class EditEventComponent implements OnInit {
         )
         .then(() => {
           console.log('Wydarzenie zaktualizowane pomyślnie!');
-          this.location.back(); // Wróć na poprzednią kartę
+          this.location.back();
         })
         .catch((err) => console.log(err));
     }
@@ -254,7 +248,7 @@ export class EditEventComponent implements OnInit {
       const selectedImageFile = event.target.files[0];
       this.selectedImageFile = selectedImageFile;
       this.ng2ImgMaxService
-        .resizeImage(selectedImageFile, 900, 506) // 16x9 ratio for 900 width
+        .resizeImage(selectedImageFile, 900, 506)
         .subscribe((result) => {
           this.selectedImageFile = new File([result], selectedImageFile.name, {
             type: result.type,

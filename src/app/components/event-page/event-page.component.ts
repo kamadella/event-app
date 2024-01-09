@@ -74,19 +74,13 @@ export class EventPageComponent implements OnInit {
   }
 
   canActivateEvent(): boolean {
-    // Sprawdź, czy użytkownik jest administratorem
     const isAdmin = this.authService.isAdmin;
-
-    // Sprawdź, czy wydarzenie ma właściwość 'published' ustawioną na true
     const isEventPublished = this.currentEvent.published === true;
-
-    // Zwróć true, jeśli użytkownik jest administratorem lub wydarzenie jest opublikowane
-    // W przeciwnym przypadku zwróć false
     return isAdmin || isEventPublished;
   }
 
   getCurrentEvent(id: string): void {
-    this.mapVisible = false; // Ustawia mapVisible na false przy zmianie wydarzenia
+    this.mapVisible = false;
     this.eventService
       .getOne(id)
       .snapshotChanges()
@@ -100,28 +94,25 @@ export class EventPageComponent implements OnInit {
       .subscribe((data) => {
         this.currentEvent = data;
         this.getCurrentCategory(this.currentEvent.category!);
-        this.cdr.detectChanges(); // Ręczne wywołanie detekcji zmian
+        this.cdr.detectChanges();
       });
   }
 
   deleteEvent(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px', // Dostosuj szerokość do swoich potrzeb
+      width: '400px',
       data: 'Czy na pewno chcesz usunąć?',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Użytkownik kliknął "OK" w potwierdzeniu
         if (this.currentEvent.id) {
-          // Wywołanie funkcji deleteEventWithImage
           if (this.currentEvent.tickets !== this.currentEvent.ticketsLeft) {
             this.dialog.open(AlertDialogComponent, {
               width: '400px',
               data: 'Nie można usunąć wydarzenia, istnieją przypisane do niego bilety',
             });
           } else {
-            //znajdz wszystkie komentarze pod wydarzeniem i je usuń
             this.commentService
               .getCommentsByEvent(this.currentEvent.id)
               .snapshotChanges()
@@ -132,7 +123,6 @@ export class EventPageComponent implements OnInit {
                 }));
 
                 if (commentsToDelete.length > 0) {
-                  // Usuń wszystkie te komentarze
                   commentsToDelete.forEach((comment) =>
                     this.commentService.delete(comment.id)
                   );
@@ -148,7 +138,6 @@ export class EventPageComponent implements OnInit {
                   ...c.payload.doc.data(),
                 }));
                 if (usersWithEventToDelete.length > 0) {
-                  // Usuń wszystkie te komentarze
                   usersWithEventToDelete.forEach((user) =>
                   this.userService
                   .removeLikedEventFromUser(user.uid, this.currentEvent.id!)
@@ -158,19 +147,16 @@ export class EventPageComponent implements OnInit {
               });
 
 
-            //usuń wydarznie
             this.eventService
               .deleteEventWithImage(this.currentEvent.id)
               .then(() => {
                 console.log('Usunięto wydarzenie i obrazek');
-                // Przekierowanie lub inne akcje po usunięciu
-                this.location.back(); // Wróć na poprzednią kartę
+                this.location.back();
               })
               .catch((err) => console.log(err));
           }
         }
       } else {
-        // Użytkownik kliknął "Anuluj" lub zamknął dialog
         console.log('Cancelled event delete.');
       }
     });
@@ -191,7 +177,6 @@ export class EventPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Użytkownik kliknął "OK" w potwierdzeniu
         if (this.currentEvent.id) {
           this.eventService
             .update(this.currentEvent.id, { published: status })
@@ -201,7 +186,6 @@ export class EventPageComponent implements OnInit {
             .catch((err) => console.log(err));
         }
       } else {
-        // Użytkownik kliknął "Anuluj" lub zamknął dialog
         console.log('Cancelled event publish.');
       }
     });
@@ -240,7 +224,6 @@ export class EventPageComponent implements OnInit {
   }
 
   isEventLiked(): boolean {
-    // Replace this logic with your actual implementation
     return this.authService.isEventLiked(this.currentEvent.id!);
   }
 
