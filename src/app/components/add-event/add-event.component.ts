@@ -67,17 +67,14 @@ export class AddEventComponent implements OnInit {
     this.initializeGeocoder();
 
     const currentYear = new Date().getFullYear();
-    this.minDate = new Date(currentYear - 2, 0, 1, 0, 0, 0); // 2 lata temu
-    this.maxDate = new Date(currentYear + 2, 11, 31, 23, 59, 59); // Za 2 lata
+    this.minDate = new Date(currentYear - 2, 0, 1, 0, 0, 0);
+    this.maxDate = new Date(currentYear + 2, 11, 31, 23, 59, 59);
   }
 
-  // Funkcja walidacyjna, która sprawdza, czy ciąg znaków nie składa się tylko ze spacjii
   notOnlySpaces: ValidatorFn = (control: AbstractControl) => {
     if (!control.value || control.value.trim() === '') {
-      // Jeśli wartość jest pusta lub składa się tylko ze spacjii, zwracamy błąd
       return { notOnlySpaces: true };
     }
-    // W przeciwnym razie uważamy, że jest to poprawne
     return null;
   };
 
@@ -90,7 +87,6 @@ export class AddEventComponent implements OnInit {
 
     geocoder.addTo('#geocoder');
 
-    // Add geocoder result to container.
     geocoder.on('result', (e) => {
       var latitude = e.result.center[1];
       var longitude = e.result.center[0];
@@ -136,9 +132,7 @@ export class AddEventComponent implements OnInit {
     if (event.target.files && event.target.files.length > 0) {
       const selectedImageFile = event.target.files[0];
 
-      // Sprawdź, czy plik jest obrazkiem
     if (selectedImageFile.type.startsWith('image/')) {
-      // Kontynuuj przetwarzanie tylko dla plików obrazków
       this.selectedImageFile = selectedImageFile;
 
       this.ng2ImgMaxService
@@ -148,14 +142,13 @@ export class AddEventComponent implements OnInit {
           console.log("skalowanie obrazu");
         });
 
-      // Preview zdjęcia
+      // Preview picture
       const reader = new FileReader();
       reader.onload = () => {
         this.imageURL = reader.result as string;
       };
       reader.readAsDataURL(selectedImageFile);
     } else {
-      // Wyświetl komunikat w przypadku nieprawidłowego formatu pliku
       this.dialog.open(AlertDialogComponent, {
         width: '400px',
         data: 'Wybrany plik nie jest obrazkiem.'
@@ -179,7 +172,6 @@ export class AddEventComponent implements OnInit {
     this.eventForm.value.createdAt = new Date();
     this.addingEvent = true;
 
-    // Zamień znaki nowej linii w opisie na znaczniki HTML <br>
     this.eventForm.value.description = this.eventForm.value.description.replace(/\n/g, '<br>');
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -189,7 +181,6 @@ export class AddEventComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Użytkownik kliknął "OK" w potwierdzeniu
         this.eventService
           .create(this.eventForm.value, this.selectedImageFile!)
           .then(() => {
@@ -200,11 +191,10 @@ export class AddEventComponent implements OnInit {
             this.router.navigate(['/events/list']);
           })
           .finally(() => {
-            this.addingEvent = false; // Odblokowanie przycisku po zakończeniu procesu
+            this.addingEvent = false;
           });
       } else {
-        // Użytkownik kliknął "Anuluj" lub zamknął dialog
-        this.addingEvent = false; // Odblokowanie przycisku po zakończeniu procesu
+        this.addingEvent = false;
       }
     });
   }

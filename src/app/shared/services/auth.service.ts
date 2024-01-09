@@ -5,7 +5,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { AngularFireStorage } from '@angular/fire/compat/storage'; // Import AngularFireStorage
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/components/dialogs/alert-dialog/alert-dialog.component';
 
@@ -13,14 +13,14 @@ import { AlertDialogComponent } from 'src/app/components/dialogs/alert-dialog/al
   providedIn: 'root',
 })
 export class AuthService {
-  userData: any; // Save logged in user data
+  userData: any;
 
   constructor(
-    public afs: AngularFirestore, // Inject Firestore service
-    public afAuth: AngularFireAuth, // Inject Firebase auth service
+    public afs: AngularFirestore,
+    public afAuth: AngularFireAuth,
     public router: Router,
-    public ngZone: NgZone, // NgZone service to remove outside scope warning
-    private storage: AngularFireStorage, // Wstrzyknięcie AngularFireStorage
+    public ngZone: NgZone,
+    private storage: AngularFireStorage,
     private dialog: MatDialog
   ) {
     /* Saving user data in localstorage when
@@ -65,7 +65,7 @@ export class AuthService {
               displayName: result.user!.displayName,
               photoURL: result.user!.photoURL,
               emailVerified: result.user!.emailVerified,
-              role: userData.get('role'), // Pobranie roli z bazy danych
+              role: userData.get('role'),
               likedEvents: userData.get('likedEvents'),
             };
 
@@ -73,10 +73,8 @@ export class AuthService {
             this.SetUserData(userWithRole);
 
             if (result.user!.emailVerified) {
-              // Jeśli adres e-mail jest zweryfikowany, przekieruj na stronę 'events/list'
               this.router.navigate(['events/list']);
             } else {
-              // Jeśli adres e-mail nie jest zweryfikowany, wyświetl informację użytkownikowi
               this.showAlertDialog(
                 'Adres e-mail nie został zweryfikowany. Proszę sprawdź swoją skrzynkę odbiorczą.'
               );
@@ -95,7 +93,6 @@ export class AuthService {
     displayName: string,
     confirmPassword: string
   ) {
-    // Check if passwords match
     if (password !== confirmPassword) {
       this.showAlertDialog('Passwords do not match.');
       return;
@@ -103,11 +100,9 @@ export class AuthService {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        /* Call the SendVerificaitonMail() function when new user sign
-        up and returns promise */
+
         this.SendVerificationMail();
 
-        // Ustawienie nazwy użytkownika (displayName)
         return result.user
           ?.updateProfile({
             displayName: displayName,
@@ -116,7 +111,6 @@ export class AuthService {
           })
           .then(() => {
             this.SetUserData(result.user);
-            //this.UpdateUserRole(result.user!.uid, 'user');
           });
       })
       .catch((error) => {
@@ -147,14 +141,12 @@ export class AuthService {
       });
   }
 
-  // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null && user.emailVerified !== false ? true : false;
   }
 
-  // W serwisie AuthService
-  // Sprawdź, czy użytkownik ma określoną rolę
+
   get isAdmin(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null && user.role === 'admin';
@@ -167,7 +159,6 @@ export class AuthService {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
-    // Sprawdź, czy pole role istnieje w obiekcie user
     const userData = {
       uid: user.uid,
       email: user.email,
@@ -192,7 +183,7 @@ export class AuthService {
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.userData = null; // Ustawienie userData na null lub inny początkowy stan
+      this.userData = null;
       this.router.navigate(['sign-in']);
     });
   }
@@ -214,7 +205,6 @@ export class AuthService {
     JSON.parse(localStorage.getItem('user')!);
   }
 
-  // Pobierz identyfikator użytkownika
   getUserId(): string {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user ? user.uid : '';
@@ -228,10 +218,8 @@ export class AuthService {
         return result!
           .updateProfile({ displayName: newDisplayName })
           .then(() => {
-            // Aktualizacja danych użytkownika w local storage
             this.userData.displayName = newDisplayName;
             localStorage.setItem('user', JSON.stringify(this.userData));
-            // Aktualizacja nazwy użytkownika w bazie danych Firestore
             return this.afs
               .doc(`users/${result!.uid}`)
               .update({ displayName: newDisplayName });
@@ -250,13 +238,8 @@ export class AuthService {
         return this.uploadImageToStorage(result!.uid, newImageFile).then(
           (downloadURL) => {
             return result!.updateProfile({ photoURL: downloadURL }).then(() => {
-              // Aktualizacja danych użytkownika w local storage
               this.userData.photoURL = downloadURL;
               localStorage.setItem('user', JSON.stringify(this.userData));
-
-              // Nie jest już potrzebna aktualizacja URL obrazka w bazie danych Firestore,
-              // ponieważ Firebase Authentication już przechowuje URL obrazka profilowego.
-              // Możesz go pobrać bezpośrednio z obiektu użytkownika.
 
               return downloadURL;
             });
@@ -280,7 +263,6 @@ export class AuthService {
     });
   }
 
-  // Dodaj wydarzenie do listy polubionych
   addLikedEvent(eventId: string) {
     const user = JSON.parse(localStorage.getItem('user')!);
     if (user) {
@@ -293,7 +275,6 @@ export class AuthService {
     }
   }
 
-  // Usuń wydarzenie z listy polubionych
   removeLikedEvent(eventId: string) {
     const user = JSON.parse(localStorage.getItem('user')!);
     if (user && user.likedEvents) {
@@ -312,15 +293,12 @@ export class AuthService {
     return false;
   }
 
-  // Aktualizuj dokument użytkownika w bazie danych Firestore
   private updateUser(user: any) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
     return userRef.update({ likedEvents: user.likedEvents })
       .then(() => {
-        // Update local storage after Firestore update
-        //localStorage.setItem('user', JSON.stringify(user));
         userRef.get().subscribe((userData) => {
           const userWithRole = {
             uid: user.uid,

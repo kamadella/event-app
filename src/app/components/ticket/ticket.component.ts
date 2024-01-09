@@ -64,7 +64,6 @@ export class TicketComponent implements OnInit {
 
   onReservedTicketsChange(): void {
     const reservedTickets = this.ticketForm.value.number;
-    // Tutaj wykonaj sprawdzenie dostępności biletów i ustaw odpowiednią wiadomość
     if (this.event.ticketsLeft < reservedTickets) {
       this.ticketsAvailabilityMessage = 'Nie ma wystarczającej ilości biletów.';
     } else {
@@ -73,12 +72,8 @@ export class TicketComponent implements OnInit {
   }
 
   saveTicket(): void {
-    // Pobierz identyfikator użytkownika
     const userId = this.authService.getUserId();
-
-    // Przypisz identyfikator użytkownika do biletu
     this.ticketForm.value.userId = userId;
-    // Przypisz identyfikator wydarzenia do biletu
     this.ticketForm.value.eventId = this.event.id;
 
     if (this.event.ticketsLeft >= this.ticketForm.value.number) {
@@ -88,13 +83,11 @@ export class TicketComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          // Użytkownik kliknął "OK" w potwierdzeniu
           this.ticketService.create(this.ticketForm.value).then(() => {
             console.log('Rezerwacja się powiodła');
             this.updateEvent(this.ticketForm.value.number);
           });
         } else {
-          // Użytkownik kliknął "Anuluj" lub zamknął dialog
           console.log('Cancelled reservation');
         }
       });

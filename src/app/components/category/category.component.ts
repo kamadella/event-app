@@ -37,7 +37,6 @@ export class CategoryComponent implements OnInit {
         this.submitted = true;
       });
     } else {
-      // Nazwa kategorii nie jest unikalna, obsłuż odpowiednio
       this.dialog.open(AlertDialogComponent, {
         width: '400px',
         data: 'Nazwa kategorii nie jest unikalna.',
@@ -74,14 +73,11 @@ export class CategoryComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Użytkownik kliknął "OK" w potwierdzeniu
         if (currentCategory.id) {
-          // Pobierz wydarzenia przypisane do kategorii
           const eventsCollection = this.eventService.getEventsByCategory(currentCategory.id);
 
           eventsCollection.get().subscribe((result) => {
             if (result.size === 0) {
-              // Brak przypisanych wydarzeń, możesz usunąć kategorię
               if (currentCategory.id) {
                 this.categoryService
                   .delete(currentCategory.id)
@@ -96,7 +92,6 @@ export class CategoryComponent implements OnInit {
           });
         }
       } else {
-        // Użytkownik kliknął "Anuluj" lub zamknął dialog
         console.log('Cancelled category delete.');
       }
     });

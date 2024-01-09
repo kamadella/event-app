@@ -27,16 +27,10 @@ export class AddCommentComponent  {
 
   saveComment(): void {
     this.comment.eventId = this.eventId;
-
-    // Pobierz identyfikator użytkownika
     const userId = this.authService.getUserId();
-
-    // Przypisz identyfikator użytkownika do komentarza
     this.comment.userId = userId;
-
     this.comment.date = new Date();
 
-    // Sprawdź czy komentarz nie jest samymi spacjami i entrami oraz czy nie przekracza limitu znaków
     if (
       this.comment.text &&
       this.comment.text.trim() !== '' &&

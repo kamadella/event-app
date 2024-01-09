@@ -42,7 +42,7 @@ export class EventService {
       (ref) =>
         ref
           .where('published', '==', true)
-          .where('date_end', dateComparison, currentDate.toISOString()) // Konwertuj obecną datę na string
+          .where('date_end', dateComparison, currentDate.toISOString())
     );
   }
 
@@ -80,7 +80,7 @@ export class EventService {
     const eventRef = this.eventsRef.doc(id);
 
     if (imageFile) {
-      // Wysyłanie nowego obrazka
+      // send new image
       const storageRef = this.storage.ref(`eventImages/${id}`);
       const uploadTask = this.storage.upload(`eventImages/${id}`, imageFile);
       await uploadTask.task;
@@ -90,7 +90,6 @@ export class EventService {
       data.img = downloadURL;
     }
 
-    // Aktualizacja pozostałych danych wydarzenia
     await eventRef.update(data);
   }
 
@@ -109,13 +108,9 @@ export class EventService {
 
   deleteEventWithImage(eventId: string): Promise<void> {
     const imagePath = `eventImages/${eventId}`;
-    // Usuń wydarzenie z bazą danych
     const eventDeletePromise = this.delete(eventId);
-
-    // Usuń również obrazek z Firebase Storage
     const imageDeletePromise = this.deleteImage(imagePath);
 
-    // Połącz obie obietnice w jedną i zwróć ją
     return Promise.all([eventDeletePromise, imageDeletePromise]).then(() => {
       console.log('Usunięto wydarzenie i obrazek');
     });

@@ -39,7 +39,6 @@ export class EventsArchiveComponent implements OnInit {
           }))
         ),
         map((data) => {
-          // Sortowanie po dacie rozpoczęcia
           const sortedEvents = data.sort((a, b) => {
             const dateA = a.date_start ? new Date(a.date_start) : null;
             const dateB = b.date_start ? new Date(b.date_start) : null;
@@ -85,26 +84,21 @@ export class EventsArchiveComponent implements OnInit {
   }
 
   calculateBbox(cityBbox: number[], distanceFilter: number) {
-    const R = 6371; // Średnica Ziemi w kilometrach
-    const latPerKm = 1 / (R * (Math.PI / 180)); // Przybliżona liczba stopni szerokości na jeden kilometr
-    const lonPerKm = latPerKm / Math.cos(cityBbox[1] * (Math.PI / 180)); // Przybliżona liczba stopni długości na jeden kilometr
+    const R = 6371;
+    const latPerKm = 1 / (R * (Math.PI / 180));
+    const lonPerKm = latPerKm / Math.cos(cityBbox[1] * (Math.PI / 180));
 
-    // Obliczasz nowe współrzędne bbox z uwzględnieniem odległości
     const newMinLon = cityBbox[0] - lonPerKm * distanceFilter;
     const newMinLat = cityBbox[1] - latPerKm * distanceFilter;
     const newMaxLon = cityBbox[2] + lonPerKm * distanceFilter;
     const newMaxLat = cityBbox[3] + latPerKm * distanceFilter;
-    console.log('jestem calculateBbox');
 
-    //cityBbox = [newMinLon, newMinLat, newMaxLon, newMaxLat];
     return [newMinLon, newMinLat, newMaxLon, newMaxLat];
   }
 
-  // Metoda obsługująca zmiany filtrów z komponentu SearchFilterComponent
   handleFilterChange(filters: any) {
-    // Logika filtrowania
     if (filters.isFiltersCleared) {
-      this.filteredEventList = this.events; // Przywróć pierwotny stan, jeśli filtry są puste
+      this.filteredEventList = this.events;
       return;
     }
 
@@ -134,7 +128,7 @@ export class EventsArchiveComponent implements OnInit {
         ?.toLowerCase()
         .includes(filters.nameFilter.toLowerCase());
 
-      let isInsideBbox = true; // Domyślnie załóż, że punkt jest wewnątrz bbox
+      let isInsideBbox = true;
 
       if (filters.cityBbox && event.lng && event.lat) {
         const isPointInsideBbox =
@@ -145,7 +139,7 @@ export class EventsArchiveComponent implements OnInit {
 
           console.log("event.lng: " + event.lng);
           console.log("event.lat: " + event.lat );
-        isInsideBbox = isPointInsideBbox; // Ustaw wartość na podstawie sprawdzenia punktu w bbox
+        isInsideBbox = isPointInsideBbox;
       }
       console.log("isInsideBbox: " + isInsideBbox);
 

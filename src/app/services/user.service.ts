@@ -26,7 +26,6 @@ export class UserService {
     return this.db.collection(this.dbPath, (ref) => ref.where('likedEvents', 'array-contains', eventId));
   }
 
-  // Usuń wydarzenie z listy polubionych danego użytkownika
   removeLikedEventFromUser(userId: string, eventId: string): Promise<void> {
     return this.usersRef.doc(userId).update({
       likedEvents: arrayRemove(eventId) as unknown as string[]

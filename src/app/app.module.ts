@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-// Firebase services + environment module
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -117,7 +116,7 @@ import { ScrollToTopComponent } from './components/scroll-to-top/scroll-to-top.c
     AngularFireAuthModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-    BrowserAnimationsModule, // for firestore
+    BrowserAnimationsModule,
     MatRadioModule,
     MatCheckboxModule,
     MatFormFieldModule,

@@ -17,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 export class CommentsListComponent implements OnInit {
   eventId?: string;
   comments?: Comment[];
-  users: { [userId: string]: User } = {}; // Obiekt do przechowywania danych użytkowników
+  users: { [userId: string]: User } = {};
 
   constructor(
     private commentService: CommentService,
@@ -51,7 +51,6 @@ export class CommentsListComponent implements OnInit {
   }
 
   loadUsers(): void {
-    // Pobierz dane użytkowników i zapisz je w obiekcie users
     this.userService
       .getAll()
       .snapshotChanges()
@@ -71,13 +70,11 @@ export class CommentsListComponent implements OnInit {
   }
 
   getUserName(userId: string): string {
-    // Pobierz nazwę użytkownika na podstawie jego identyfikatora
     const user = this.users[userId];
     return user ? user.displayName : 'Nieznany użytkownik';
   }
 
   getPhotoURL(userId: string): string {
-    // Pobierz nazwę użytkownika na podstawie jego identyfikatora
     const user = this.users[userId];
     return user
       ? user.photoURL
@@ -92,7 +89,6 @@ export class CommentsListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Użytkownik kliknął "OK" w potwierdzeniu
         if (currentComment.id) {
           this.commentService
             .delete(currentComment.id)
